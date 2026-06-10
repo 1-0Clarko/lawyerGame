@@ -12,7 +12,10 @@
 
 ## Code style
 - Implementations prefixed with the technology (e.g. `GDX_GraphicsManager`)
-- Javadoc on all public interfaces and methods
+- Javadoc on all public interfaces
+- Follow Java naming conventions:
+    - Classes and interfaces: `PascalCase`
+    - Methods and variables: `camelCase`
 
 ## Module structure
 - `api/` — shared interfaces, no external dependencies
