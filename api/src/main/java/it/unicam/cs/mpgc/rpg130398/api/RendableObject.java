@@ -8,17 +8,17 @@ public interface RendableObject extends Transform {
      * Restituisce i vertici LocalSpace(Relative all'oggetto).
      * @return array di vertici
      */
-    public Vertex[] getObjectVertices ();
-    public Vertex[] setObjectVertices (Vertex[] Vertices);
+    Vertex[] getObjectVertices ();
+    void setObjectVertices (Vertex[] Vertices);
     /**
      * Restituisce la Shader che questo oggetto vorrebbe usare
      */
-    public ShadersSource GetPreferdShader ();
+    ShadersSource GetPreferdShader ();
     /**
      * Imposta la Shader che questo oggetto vorrebbe usare.
      * Non è garantito che questa preferenza venga applicata
      */
-    public void SetPreferdShader (ShadersSource ShadersSource);
+    void SetPreferdShader (ShadersSource ShadersSource);
     /**
      * @return true se qualcosa è cambiato nell'oggetto vertici ecc
      */
