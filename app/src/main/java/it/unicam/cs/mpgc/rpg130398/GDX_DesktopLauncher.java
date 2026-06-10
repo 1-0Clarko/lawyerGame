@@ -5,7 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.EmptyGame;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game;
-import it.unicam.cs.mpgc.rpg130398.Graphics.GDX_TriangleTest;
+import it.unicam.cs.mpgc.rpg130398.Graphics.GDX_GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 
 
@@ -25,7 +25,7 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
 
             @Override
             public void create() {
-                GraphicsManager GraphicsManager = new GDX_TriangleTest();
+                GraphicsManager GraphicsManager = new GDX_GraphicsManager();
                 Game = new EmptyGame(GraphicsManager);
             }
 
