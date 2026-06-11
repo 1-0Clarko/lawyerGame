@@ -62,10 +62,10 @@ public class GDX_MeshRenderer {
             FormattedVertices[i++] = CurrentVertex.getPosition()[1];
             FormattedVertices[i++] = CurrentVertex.getPosition()[2];
             // Color
-            FormattedVertices[i++] = CurrentVertex.GetColor().getRed();
-            FormattedVertices[i++] = CurrentVertex.GetColor().getGreen();
-            FormattedVertices[i++] = CurrentVertex.GetColor().getBlue();
-            FormattedVertices[i++] = CurrentVertex.GetColor().getAlpha();
+            FormattedVertices[i++] = CurrentVertex.getColor().getRed();
+            FormattedVertices[i++] = CurrentVertex.getColor().getGreen();
+            FormattedVertices[i++] = CurrentVertex.getColor().getBlue();
+            FormattedVertices[i++] = CurrentVertex.getColor().getAlpha();
         }
         Mesh.setVertices(FormattedVertices);
     }

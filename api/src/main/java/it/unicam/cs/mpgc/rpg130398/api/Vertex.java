@@ -7,6 +7,6 @@ import java.awt.*;
  * Le coordinate spesso sono relative ad un oggetto o al mondo di gioco
  */
 public interface Vertex extends Positionable {
-    Color GetColor();
-    Color SetColor();
+    Color getColor();
+    void setColor(Color color);
 }
