@@ -43,7 +43,8 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public void resize(int width, int height) {
-
+        for (GDX_MeshRenderer r : MashObjects)
+            r.resize(width, height);
     }
 
     @Override

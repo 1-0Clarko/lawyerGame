@@ -25,12 +25,11 @@ public class GDX_MeshRenderer {
         this.FRUSTUM = FRUSTUM;
         this.DefaultShader = DefaultShader;
 
-        // Inizializza la mash del triangolo con i parametri
+        // Inizializza la mash
         Mesh = new Mesh( true, Object.getObjectVertices().length, 0,
                 new VertexAttribute( VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE ),
                 new VertexAttribute( VertexAttributes.Usage.ColorUnpacked, 4, ShaderProgram.COLOR_ATTRIBUTE) );
 
-        recalculateMash();
         setupShader();
         resize((int)ScreenSize.x, (int)ScreenSize.y);
     }
@@ -44,6 +43,7 @@ public class GDX_MeshRenderer {
             Object.clearDirty();
         }
 
+        InUseShader.bind();
         sendTransformDataToTheShader();
         Mesh.render(InUseShader, GL20.GL_TRIANGLES);
     }
@@ -52,7 +52,7 @@ public class GDX_MeshRenderer {
     }
     public RendableObject getObject() { return Object; }
     private void recalculateMash () {
-        // Estrarre pos.x, pos.y ,pos.z ,red ,green ,blue ,alpha da ogni vertice e inserirli in un array
+        // Estrarre pos.x, pos.y ,pos.z ,red ,green ,blue ,alpha di ogni vertice e li inserisce in un array
         float[] FormattedVertices = new float[Object.getObjectVertices().length*7];
 
         int i = 0;
@@ -62,10 +62,10 @@ public class GDX_MeshRenderer {
             FormattedVertices[i++] = CurrentVertex.getPosition()[1];
             FormattedVertices[i++] = CurrentVertex.getPosition()[2];
             // Color
-            FormattedVertices[i++] = CurrentVertex.getColor().getRed();
-            FormattedVertices[i++] = CurrentVertex.getColor().getGreen();
-            FormattedVertices[i++] = CurrentVertex.getColor().getBlue();
-            FormattedVertices[i++] = CurrentVertex.getColor().getAlpha();
+            FormattedVertices[i++] = (float) CurrentVertex.getColor().getRed()/255;
+            FormattedVertices[i++] = (float) CurrentVertex.getColor().getGreen()/255;
+            FormattedVertices[i++] = (float) CurrentVertex.getColor().getBlue()/255;
+            FormattedVertices[i++] = (float) CurrentVertex.getColor().getAlpha()/255;
         }
         Mesh.setVertices(FormattedVertices);
     }
@@ -77,10 +77,8 @@ public class GDX_MeshRenderer {
         } else {
             Shader = DefaultShader;
         }
-        if (!Shader.isCompiled()) // non DefaultShader
-            throw new RuntimeException("Shader non compilata");
-
-        Shader.bind();
+        if (!Shader.isCompiled())
+            throw new RuntimeException("Shader non compilata, errore");
 
         InUseShader = Shader;
     }
