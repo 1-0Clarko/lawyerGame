@@ -88,6 +88,9 @@ public class GDX_MeshRenderer {
         // Nessuna trasformazione applicata: i vertici restano nelle coordinate originali
         Matrix4 u_object_transform = new Matrix4().idt();
         InUseShader.setUniformMatrix("u_object_transform", u_object_transform);
+
+        // Invia la profondità massima, serve per rendere più scuri gli oggetti lontani
+        InUseShader.setUniformf("u_max_depth", FRUSTUM.z);
     }
     private void sendScreenProjectionDataToTheShader (int width, int height) {
         // Proiezione ortografica: mappa da da WorldSpace(0 <= pos.x,pos.y <= FRUSTUM) a clipSpace(-1<= pos.x,pos.y <= 1) che usa openGL

@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
-import it.unicam.cs.mpgc.rpg130398.resources.Shaders.Simple2D_Shader;
+import it.unicam.cs.mpgc.rpg130398.resources.Shaders.Simple3D_Shader;
 import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 
 public class GDX_GraphicsManager implements GraphicsManager {
@@ -25,7 +25,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
         Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
 
         // Compila lo Shader per gli oggetti senza preferenze
-        ShadersSource Shaders_source = new Simple2D_Shader();
+        ShadersSource Shaders_source = new Simple3D_Shader();
         DefaultShader = new ShaderProgram(Shaders_source.GetVertexShader(), Shaders_source.GetFragmentShader());
         if (!DefaultShader.isCompiled())
             throw new RuntimeException("Shader error: " + DefaultShader.getLog());
