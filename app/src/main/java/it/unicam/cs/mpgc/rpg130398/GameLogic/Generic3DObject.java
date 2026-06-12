@@ -8,6 +8,7 @@ import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 public class Generic3DObject implements RendableObject, Transform {
     private boolean isDirty;
     Vertex[] vertices;
+    short[] TriangleTriplets;
     ShadersSource PreferdShader;
 
     float[] pos = new float[3];
@@ -28,12 +29,13 @@ public class Generic3DObject implements RendableObject, Transform {
     }
     @Override
     public short[] getTriangleTriplets () {
-        //TODO In the next commit XD
-        return null;
+        return TriangleTriplets;
     }
     @Override
     public void setTriangleTriplets (short[] triplets) {
-        //TODO In the next commit XD
+        validateTriplets(triplets);
+        TriangleTriplets = triplets;
+        isDirty = true;
     }
     @Override
     public ShadersSource GetPreferdShader () {

@@ -45,4 +45,15 @@ public interface RendableObject extends Transform {
      * Chiamato dal graphics engine dopo aver letto isDirty
      */
     void clearDirty();
+
+
+
+    //VALIDATION
+    /**
+     * Validates that the given triplets array is not null, not empty, and a multiple of 3.
+     */
+    default void validateTriplets(short[] triplets) {
+        if (triplets.length % 3 != 0)
+            throw new IllegalArgumentException("Triplets length must be a multiple of 3, got: " + triplets.length);
+    }
 }
