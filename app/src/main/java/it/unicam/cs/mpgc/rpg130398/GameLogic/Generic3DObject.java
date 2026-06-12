@@ -27,6 +27,15 @@ public class Generic3DObject implements RendableObject, Transform {
         isDirty = true;
     }
     @Override
+    public short[] getTriangleTriplets () {
+        //TODO In the next commit XD
+        return null;
+    }
+    @Override
+    public void setTriangleTriplets (short[] triplets) {
+        //TODO In the next commit XD
+    }
+    @Override
     public ShadersSource GetPreferdShader () {
         return PreferdShader;
     }

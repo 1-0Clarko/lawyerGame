@@ -33,6 +33,7 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
             public void render() {
                 // Prima render poi updateLogic, per avere un frame rate più stabile
                 Game.render();
+                ///TODO updateLogic non dovrebbe essere aggiornato al ridimensionamento della finestra
                 Game.updateLogic(FrameCounter++);
             }
 
