@@ -23,6 +23,9 @@ public class GDX_GraphicsManager implements GraphicsManager {
     public GDX_GraphicsManager() {
         // Ridimensiona la finestra
         Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
+        // Per disegniare corretamente oggetti che si sovrapongono
+        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl.glDepthFunc(GL20.GL_LESS);
 
         // Compila lo Shader per gli oggetti senza preferenze
         ShadersSource Shaders_source = new Simple3D_Shader();
@@ -35,6 +38,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
     public void render() {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         for (GDX_MeshRenderer RendableObject : MashObjects) {
             RendableObject.render();

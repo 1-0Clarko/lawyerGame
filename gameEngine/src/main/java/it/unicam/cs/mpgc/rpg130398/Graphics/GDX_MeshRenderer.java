@@ -96,8 +96,17 @@ public class GDX_MeshRenderer {
         InUseShader = Shader;
     }
     private void sendTransformDataToTheShader () {
-        // Nessuna trasformazione applicata: i vertici restano nelle coordinate originali
-        Matrix4 u_object_transform = new Matrix4().idt();
+        float[] pos = Object.getPosition();
+        float[] rot = Object.getRotation();
+
+        // Movimento
+        Matrix4 u_object_transform = new Matrix4();
+        u_object_transform.setToTranslation(pos[0], pos[1], pos[2]);
+
+        // Rotazione, usa l'ordine specificato nell'interfaccia Rotatable dell'oggetto
+        u_object_transform.rotate(Vector3.Y, rot[1]);
+        u_object_transform.rotate(Vector3.Z, rot[2]);
+        u_object_transform.rotate(Vector3.X, rot[0]);
         InUseShader.setUniformMatrix("u_object_transform", u_object_transform);
     }
     private void sendScreenProjectionDataToTheShader (int width, int height) {

@@ -15,24 +15,25 @@ import java.awt.*;
 public final class EmptyGame implements Game {
     GraphicsManager Gm;
 
-    // FRUSTUM = (16, 9, 16);
+    // FRUSTUM = (16, 9, 16); (Confine massimo visibile)
+    // +x verso destra, +y verso l'alto, +z verso lo schermo, -z verso di te
     Vertex[] vertices1 = new Vertex[]{
-            new GenericVertex(3,3,0, Color.red),
-            new GenericVertex(6,3,16, Color.cyan),
-            new GenericVertex(4.5f,6,0, Color.pink)
-    };
-    Vertex[] vertices2 = new Vertex[]{
-            new GenericVertex(3,3,0, Color.red),
-            new GenericVertex(6,3,0, Color.cyan),
-            new GenericVertex(4.5f,6,16, Color.pink)
-    };
-    Vertex[] vertices3 = new Vertex[]{
-            new GenericVertex(3,3,16, Color.red),
-            new GenericVertex(6,3,0, Color.cyan),
-            new GenericVertex(4.5f,6,0, Color.pink)
+            // Base of the Pyramid
+            new GenericVertex(-3,-3,-3, Color.red),
+            new GenericVertex(3,-3,-3, Color.cyan),
+            new GenericVertex(-3,-3,3, Color.red),
+            new GenericVertex(3,-3,3, Color.cyan),
+            // Punta
+            new GenericVertex(0,3,0, Color.cyan),
     };
     short[] TriangleTriplets = new short[] { // Tels what vertices forms a triangle
-            0,1,2
+            0,1,4, // faccia davanti
+            1,3,4, // faccia destra
+            3,2,4, // faccia dietro
+            2,0,4, // faccia sinistra
+
+            0,1,2, // triangolo sotto1
+            2,3,1  // triangolo sotto2
     };
     RendableObject Triangle;
 
@@ -42,19 +43,14 @@ public final class EmptyGame implements Game {
         Triangle = new Generic3DObject();
         Triangle.setObjectVertices(vertices1);
         Triangle.setTriangleTriplets(TriangleTriplets);
+        Triangle.setPosition(new float[]{16/2, 9/2, 16/2});
 
         Gm.addObject(Triangle);
     }
 
     @Override
     public void updateLogic(long FrameNumber) {
-        if (((FrameNumber/20)%3) == 0)
-            Triangle.setObjectVertices(vertices1);
-        if (((FrameNumber/20)%3) == 1)
-            Triangle.setObjectVertices(vertices2);
-        if (((FrameNumber/20)%3) == 2)
-            Triangle.setObjectVertices(vertices3);
-
+        Triangle.setRotation(new float[]{FrameNumber,FrameNumber,FrameNumber});
     }
     @Override
     public void render() {Gm.render();};
