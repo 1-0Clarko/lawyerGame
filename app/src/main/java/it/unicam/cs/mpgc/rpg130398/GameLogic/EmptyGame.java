@@ -18,7 +18,7 @@ public final class EmptyGame implements Game {
     Vertex[] vertices1 = new Vertex[]{
             new GenericVertex(3,3,0, Color.red),
             new GenericVertex(6,3,0, Color.cyan),
-            new GenericVertex(4.5f,6,0, Color.pink)
+            new GenericVertex(4.5f,6,16, Color.pink)
     };
     Vertex[] vertices2 = new Vertex[]{
             new GenericVertex(3,3,0, Color.pink),

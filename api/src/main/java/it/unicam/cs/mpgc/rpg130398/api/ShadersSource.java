@@ -12,7 +12,6 @@ public interface ShadersSource {
      * la VertexShader necessita dei seguenti uniform da aggiornare nel tempo:
      *         uniform mat4 u_object_transform; // Sposta e ruota i vertici dell'oggetto nel mondo
      *         uniform mat4 u_screen_transform; // Proietta le coordinate del mondo in clip space [-1, 1]
-     *         uniform float u_max_depth;       // Profondità massima del frustum, usata per scurire i vertici lontani
      *
      * @return il source code della VertexShader
      */
