@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg130398.Graphics;
 
 import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 import java.awt.Color;
+import java.util.Arrays;
 
 public class GenericVertex implements Vertex {
     private float[] position = new float[3];
@@ -32,5 +33,13 @@ public class GenericVertex implements Vertex {
     @Override
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "Vertex{" +
+                "position=" + Arrays.toString(position) +
+                ", color=" + color +
+                '}';
     }
 }
