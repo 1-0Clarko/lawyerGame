@@ -8,14 +8,14 @@ import java.io.IOException;
 public interface ModelLoader {
 
     /**
-     * @param relativePath path relative to the project root
+     * @param relativePath path relative to the working directory, can change it inside build.gradle.kts
      */
     void setPath(String relativePath);
     /**
      * @throws IOException if the file does not exist or cannot be read
      * @throws UnsupportedOperationException if the file format is not supported
      */
-    void read()  throws IOException, UnsupportedOperationException;
+    void read() throws IOException, UnsupportedOperationException;
     /**
      * @return vertices read from the file,
      * null if the file has not been read successfully

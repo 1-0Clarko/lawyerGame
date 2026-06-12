@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
+import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 import it.unicam.cs.mpgc.rpg130398.api.Transform;
@@ -15,6 +16,18 @@ public class Generic3DObject implements RendableObject, Transform {
     float[] rot = new float[3];
 
     public Generic3DObject() {
+        isDirty = true;
+    }
+
+    public Generic3DObject(ModelLoader ModelLoader) {
+        try {
+            ModelLoader.read();
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        }
+        setObjectVertices(ModelLoader.getVertices());
+        setTriangleTriplets(ModelLoader.getTriangleTriplets());
+
         isDirty = true;
     }
 
