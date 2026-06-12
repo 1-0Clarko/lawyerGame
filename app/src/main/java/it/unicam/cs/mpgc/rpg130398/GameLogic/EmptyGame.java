@@ -15,20 +15,24 @@ import java.awt.*;
 public final class EmptyGame implements Game {
     GraphicsManager Gm;
 
+    // FRUSTUM = (16, 9, 16);
     Vertex[] vertices1 = new Vertex[]{
+            new GenericVertex(3,3,0, Color.red),
+            new GenericVertex(6,3,16, Color.cyan),
+            new GenericVertex(4.5f,6,0, Color.pink)
+    };
+    Vertex[] vertices2 = new Vertex[]{
             new GenericVertex(3,3,0, Color.red),
             new GenericVertex(6,3,0, Color.cyan),
             new GenericVertex(4.5f,6,16, Color.pink)
     };
-    Vertex[] vertices2 = new Vertex[]{
-            new GenericVertex(3,3,0, Color.pink),
-            new GenericVertex(6,3,0, Color.red),
-            new GenericVertex(4.5f,6,0, Color.cyan)
-    };
     Vertex[] vertices3 = new Vertex[]{
-            new GenericVertex(3,3,0, Color.cyan),
-            new GenericVertex(6,3,0, Color.pink),
-            new GenericVertex(4.5f,6,0, Color.red)
+            new GenericVertex(3,3,16, Color.red),
+            new GenericVertex(6,3,0, Color.cyan),
+            new GenericVertex(4.5f,6,0, Color.pink)
+    };
+    short[] TriangleTriplets = new short[] { // Tels what vertices forms a triangle
+            0,1,2
     };
     RendableObject Triangle;
 
@@ -37,6 +41,8 @@ public final class EmptyGame implements Game {
 
         Triangle = new Generic3DObject();
         Triangle.setObjectVertices(vertices1);
+        Triangle.setTriangleTriplets(TriangleTriplets);
+
         Gm.addObject(Triangle);
     }
 
