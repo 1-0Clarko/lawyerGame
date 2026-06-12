@@ -31,6 +31,9 @@ public final class EmptyGame implements Game {
             new GenericVertex(6,3,0, Color.cyan),
             new GenericVertex(4.5f,6,0, Color.pink)
     };
+    short[] TriangleTriplets = new short[] { // Tels what vertices forms a triangle
+            0,1,2
+    };
     RendableObject Triangle;
 
     public EmptyGame(GraphicsManager GraphicsManager) {
@@ -38,6 +41,8 @@ public final class EmptyGame implements Game {
 
         Triangle = new Generic3DObject();
         Triangle.setObjectVertices(vertices1);
+        Triangle.setTriangleTriplets(TriangleTriplets);
+
         Gm.addObject(Triangle);
     }
 

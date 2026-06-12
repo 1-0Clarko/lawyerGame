@@ -25,11 +25,7 @@ public class GDX_MeshRenderer {
         this.FRUSTUM = FRUSTUM;
         this.DefaultShader = DefaultShader;
 
-        // Inizializza la mash
-        Mesh = new Mesh( true, Object.getObjectVertices().length, 0,
-                new VertexAttribute( VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE ),
-                new VertexAttribute( VertexAttributes.Usage.ColorUnpacked, 4, ShaderProgram.COLOR_ATTRIBUTE) );
-
+        recalculateMash();
         setupShader();
         resize((int)ScreenSize.x, (int)ScreenSize.y);
     }
@@ -38,20 +34,35 @@ public class GDX_MeshRenderer {
     }
     public void render() {
         if (Object.isDirty()) {
-            recalculateMash();
+            if(!recalculateMash())
+                return;
             setupShader();
             Object.clearDirty();
         }
 
         InUseShader.bind();
         sendTransformDataToTheShader();
-        Mesh.render(InUseShader, GL20.GL_TRIANGLES);
+        Mesh.render(InUseShader, GL20.GL_TRIANGLES, 0, Object.getTriangleTriplets().length);
     }
     public void dispose() {
         Mesh.dispose();
     }
     public RendableObject getObject() { return Object; }
-    private void recalculateMash () {
+
+    /**
+     *
+     * @return true if the mash has been created, false otherwise
+     */
+    private boolean recalculateMash () {
+        if (Object.getObjectVertices() == null || Object.getTriangleTriplets() == null) {
+            return false;
+        }
+
+        // Inizializza la mash
+        Mesh = new Mesh( true, Object.getObjectVertices().length, Object.getTriangleTriplets().length,
+                new VertexAttribute( VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE ),
+                new VertexAttribute( VertexAttributes.Usage.ColorUnpacked, 4, ShaderProgram.COLOR_ATTRIBUTE) );
+
         // Estrarre pos.x, pos.y ,pos.z ,red ,green ,blue ,alpha di ogni vertice e li inserisce in un array
         float[] FormattedVertices = new float[Object.getObjectVertices().length*7];
 
@@ -68,6 +79,8 @@ public class GDX_MeshRenderer {
             FormattedVertices[i++] = (float) CurrentVertex.getColor().getAlpha()/255;
         }
         Mesh.setVertices(FormattedVertices);
+        Mesh.setIndices(Object.getTriangleTriplets());
+        return true;
     }
     private void setupShader () {
         ShaderProgram Shader = null;
