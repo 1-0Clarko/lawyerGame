@@ -37,7 +37,6 @@ public class GDX_GraphicsManager implements GraphicsManager {
     @Override
     public void render() {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         for (GDX_MeshRenderer RendableObject : MashObjects) {
@@ -68,5 +67,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
     }
 
     @Override
-    public boolean addText(RendableText textObject) {return false;}
+    public boolean addText(RendableText textObject) {
+        return false;
+    }
 }

@@ -19,6 +19,7 @@ public class GDX_MeshRenderer {
     ShaderProgram DefaultShader;
     ShaderProgram InUseShader;
     public Vector3 FRUSTUM;
+    int screenWidth, screenHeight;
 
     GDX_MeshRenderer(RendableObject Object, ShaderProgram DefaultShader, Vector3 FRUSTUM, Vector2 ScreenSize) {
         this.Object = Object;
@@ -29,8 +30,10 @@ public class GDX_MeshRenderer {
         setupShader();
         resize((int)ScreenSize.x, (int)ScreenSize.y);
     }
+
     public void resize(int width, int height) {
-        sendScreenProjectionDataToTheShader(width, height);
+        screenWidth = width;
+        screenHeight = height;
     }
     public void render() {
         if (Object.isDirty()) {
@@ -42,6 +45,7 @@ public class GDX_MeshRenderer {
 
         InUseShader.bind();
         sendTransformDataToTheShader();
+        sendScreenProjectionDataToTheShader(screenWidth, screenHeight);
         Mesh.render(InUseShader, GL20.GL_TRIANGLES, 0, Object.getTriangleTriplets().length);
     }
     public void dispose() {
