@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130398;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.EmptyGame;
@@ -14,14 +15,18 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
  */
 public class GDX_DesktopLauncher extends ApplicationAdapter {
     private static Game Game;
+    final static int FPSMAX = 30;
+    final static long LOGIC_UPDATE_INTERVAL = 1000 / (FPSMAX);
 
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setForegroundFPS(30);
-        config.setIdleFPS(30);
+        // ApplicationAdapter.render() è chiamato FPSMAX volte al secondo
+        config.setForegroundFPS(FPSMAX);
+        config.setIdleFPS(FPSMAX);
 
         new Lwjgl3Application(new ApplicationAdapter() {
             long FrameCounter = 0;
+            long lastLogicUpdate;
 
             @Override
             public void create() {
@@ -29,12 +34,15 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
                 Game = new EmptyGame(GraphicsManager);
             }
 
+
             @Override
             public void render() {
-                // Prima render poi updateLogic, per avere un frame rate più stabile
+                long now = System.currentTimeMillis();
+                if (now - lastLogicUpdate >= LOGIC_UPDATE_INTERVAL) {
+                    lastLogicUpdate = now;
+                    Game.updateLogic(FrameCounter++);
+                }
                 Game.render();
-                ///TODO updateLogic non dovrebbe essere aggiornato al ridimensionamento della finestra
-                Game.updateLogic(FrameCounter++);
             }
 
             @Override
@@ -47,6 +55,5 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
                 Game.dispose();
             }
         }, config);
-
     }
 }
