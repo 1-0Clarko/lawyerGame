@@ -16,7 +16,7 @@ import it.unicam.cs.mpgc.rpg130398.resources.Shaders.Simple3D_Shader;
 import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 
 public class GDX_GraphicsManager implements GraphicsManager {
-    public static Vector3 FRUSTUM = new Vector3(16, 9, 16);
+    public static Vector3 FRUSTUM = new Vector3(16, 9, 16);        // TODO il FRUSTUM dovrebbe essere ottenuto nel costruttore
     public static int START_WIDTH = 1920,  START_HEIGHT = 1080;
     ShaderProgram DefaultShader;
     Vector<GDX_MeshRenderer> MashObjects = new Vector<>();
@@ -28,6 +28,10 @@ public class GDX_GraphicsManager implements GraphicsManager {
         // Per disegniare corretamente oggetti che si sovrapongono
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
         Gdx.gl.glDepthFunc(GL20.GL_LESS);
+        // Per rispettare la trasparenza
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        // TODO tagliare le porzioni di geometria fuori dal FRUSTUM
 
         // Compila lo Shader per gli oggetti senza preferenze
         ShadersSource Shaders_source = new Simple3D_Shader();
@@ -38,7 +42,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.18f, 0.1f, 0.1f, 1f);
+        //Gdx.gl.glClearColor(0.18f, 0.1f, 0.1f, 1f); makes the window background red, usefull for debug
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         Matrix4 screen_projection = CalculateScreenProjection();

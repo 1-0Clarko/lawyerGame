@@ -21,8 +21,15 @@ public class Simple3D_Shader implements ShadersSource {
     public String GetFragmentShader() { return """
         varying vec4 v_color;
         varying float v_depth;
+        uniform float u_time;
+        
+        float random(vec2 seed, float time) {
+            return fract(tan(distance(seed * 1.61803398874989484820459, seed + time)) * seed.x);
+        }
+        
         void main() {
-            gl_FragColor = vec4(v_color.rgb * (1.0 - v_depth), v_color.a);
+            float noise = 0.6 + random(gl_FragCoord.xy, u_time * 0.001) * 0.4;
+            gl_FragColor = vec4(v_color.rgb * (1.0 - v_depth) * noise, v_color.a);
         }
         """;}
 }

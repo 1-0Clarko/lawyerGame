@@ -12,6 +12,7 @@ public interface GameFase {
      *
      * @param frameNumber frame counter since the start of the program
      * @return the next game phase, or itself if the phase has not ended.
+     * or null if the game is finished
      */
     GameFase update(long frameNumber);
 }

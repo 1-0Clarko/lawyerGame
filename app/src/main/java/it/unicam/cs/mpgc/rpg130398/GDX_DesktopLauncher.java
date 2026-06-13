@@ -4,8 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.EmptyGame;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.MyGoodGame;
 import it.unicam.cs.mpgc.rpg130398.Graphics.GDX_GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 
@@ -14,7 +13,7 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
  * Entry point della applicazione desktop
  */
 public class GDX_DesktopLauncher extends ApplicationAdapter {
-    private static Game Game;
+    private static it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game Game;
     final static int FPSMAX = 30;
     final static long LOGIC_UPDATE_INTERVAL = 1000 / (FPSMAX);
 
@@ -31,7 +30,7 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
             @Override
             public void create() {
                 GraphicsManager GraphicsManager = new GDX_GraphicsManager();
-                Game = new EmptyGame(GraphicsManager);
+                Game = new MyGoodGame(GraphicsManager);
             }
 
 
