@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import java.util.Vector;
 
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
@@ -36,18 +37,18 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+        Gdx.gl.glClearColor(0.18f, 0.1f, 0.1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        for (GDX_MeshRenderer RendableObject : MashObjects) {
-            RendableObject.render();
+        Matrix4 screen_projection = CalculateScreenProjection();
+        for (GDX_MeshRenderer MeshObject : MashObjects) {
+            MeshObject.render(screen_projection);
         }
     }
 
     @Override
     public void resize(int width, int height) {
-        for (GDX_MeshRenderer r : MashObjects)
-            r.resize(width, height);
+
     }
 
     @Override
@@ -62,12 +63,32 @@ public class GDX_GraphicsManager implements GraphicsManager {
         for (GDX_MeshRenderer r : MashObjects)
             if (r.getObject() == Object) return false;
 
-        MashObjects.add(new GDX_MeshRenderer(Object, DefaultShader, FRUSTUM, new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+        MashObjects.add(new GDX_MeshRenderer(Object, DefaultShader));
         return true;
     }
 
     @Override
     public boolean addText(RendableText textObject) {
         return false;
+    }
+
+    private Matrix4 CalculateScreenProjection() {
+        // Proiezione ortografica: mappa da da WorldSpace(0 <= pos.x,pos.y <= FRUSTUM) a clipSpace(-1<= pos.x,pos.y <= 1) che usa openGL
+        Matrix4 screen_projection = new Matrix4();
+        screen_projection.setToOrtho(0, FRUSTUM.x, 0, FRUSTUM.y, 0, FRUSTUM.z);
+        screen_projection.scale(1f, 1f, -1f);// Z axis is inverted to match OpenGL convention (negative z = from you to the screen)
+
+        // Riduce la dimensione di uno degli assi per mantenere l'aspect ratio FRUSTUM.x / FRUSTUM.y
+        float frustumAspect = FRUSTUM.x / FRUSTUM.y;
+        float windowAspect  = (float) Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+
+        if (windowAspect > frustumAspect) {
+            float scale = frustumAspect / windowAspect;
+            screen_projection.scale(scale, 1f, 1f);
+        } else {
+            float scale = windowAspect / frustumAspect;
+            screen_projection.scale(1f, scale, 1f);
+        }
+        return screen_projection;
     }
 }

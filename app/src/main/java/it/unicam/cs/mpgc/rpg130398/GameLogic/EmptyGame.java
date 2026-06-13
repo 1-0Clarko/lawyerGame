@@ -7,6 +7,7 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
+import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 
 import java.awt.*;
@@ -16,18 +17,23 @@ import java.awt.*;
  */
 public final class EmptyGame implements Game {
     GraphicsManager Gm;
+    RendableObject Background;
     RendableObject Triangle;
-
+    RendableText Text;
 
 
     public EmptyGame(GraphicsManager GraphicsManager) {
         Gm = GraphicsManager;
 
-        ModelLoader loader = new PLY_ModelLoader("models/Banana.ply");
-        Triangle = new Generic3DObject(loader);
-        Gm.addObject(Triangle);
+        ModelLoader loader = new PLY_ModelLoader("models/BlackScreen.ply");
+        Background = new Generic3DObject(loader);
+        Background.setPosition(new float[]{0, 0, 15.9f});
+        Gm.addObject(Background);
 
+        loader.setPath("models/Banana.ply");
+        Triangle = new Generic3DObject(loader);
         Triangle.setPosition(new float[]{16/2, 9/2, 16/2});
+        Gm.addObject(Triangle);
     }
 
     @Override

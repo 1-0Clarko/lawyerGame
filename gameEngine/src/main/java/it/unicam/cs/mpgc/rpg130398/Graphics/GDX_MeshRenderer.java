@@ -18,24 +18,15 @@ public class GDX_MeshRenderer {
     Mesh Mesh;
     ShaderProgram DefaultShader;
     ShaderProgram InUseShader;
-    public Vector3 FRUSTUM;
-    int screenWidth, screenHeight;
 
-    GDX_MeshRenderer(RendableObject Object, ShaderProgram DefaultShader, Vector3 FRUSTUM, Vector2 ScreenSize) {
+    GDX_MeshRenderer(RendableObject Object, ShaderProgram DefaultShader) {
         this.Object = Object;
-        this.FRUSTUM = FRUSTUM;
         this.DefaultShader = DefaultShader;
 
         recalculateMash();
         setupShader();
-        resize((int)ScreenSize.x, (int)ScreenSize.y);
     }
-
-    public void resize(int width, int height) {
-        screenWidth = width;
-        screenHeight = height;
-    }
-    public void render() {
+    public void render(Matrix4 screen_projection) {
         if (Object.isDirty()) {
             if(!recalculateMash())
                 return;
@@ -45,7 +36,7 @@ public class GDX_MeshRenderer {
 
         InUseShader.bind();
         sendTransformDataToTheShader();
-        sendScreenProjectionDataToTheShader(screenWidth, screenHeight);
+        sendScreenProjectionDataToTheShader(screen_projection);
         Mesh.render(InUseShader, GL20.GL_TRIANGLES, 0, Object.getTriangleTriplets().length);
     }
     public void dispose() {
@@ -113,23 +104,7 @@ public class GDX_MeshRenderer {
         u_object_transform.rotate(Vector3.X, rot[0]);
         InUseShader.setUniformMatrix("u_object_transform", u_object_transform);
     }
-    private void sendScreenProjectionDataToTheShader (int width, int height) {
-        // Proiezione ortografica: mappa da da WorldSpace(0 <= pos.x,pos.y <= FRUSTUM) a clipSpace(-1<= pos.x,pos.y <= 1) che usa openGL
-        Matrix4 u_screen_transform = new Matrix4();
-        u_screen_transform.setToOrtho(0, FRUSTUM.x, 0, FRUSTUM.y, 0, FRUSTUM.z);
-        u_screen_transform.scale(1f, 1f, -1f);// Z axis is inverted to match OpenGL convention (negative z = away from camera)
-
-        // Riduce la dimensione di uno degli assi per mantenere l'aspect ratio FRUSTUM.x / FRUSTUM.y
-        float frustumAspect = FRUSTUM.x / FRUSTUM.y;
-        float windowAspect  = (float) width / height;
-
-        if (windowAspect > frustumAspect) {
-            float scale = frustumAspect / windowAspect;
-            u_screen_transform.scale(scale, 1f, 1f);
-        } else {
-            float scale = windowAspect / frustumAspect;
-            u_screen_transform.scale(1f, scale, 1f);
-        }
-        InUseShader.setUniformMatrix("u_screen_transform", u_screen_transform);
+    private void sendScreenProjectionDataToTheShader (Matrix4 screen_transform) {
+        InUseShader.setUniformMatrix("u_screen_transform", screen_transform);
     }
 }

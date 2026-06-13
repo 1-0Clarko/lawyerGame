@@ -8,7 +8,7 @@ public class GenericTextObject implements RendableText, Positionable {
     String font;
 
     float[] pos = new float[3];
-    float size = 10;
+    float size = 1;
 
     public GenericTextObject() {
         isDirty = true;
