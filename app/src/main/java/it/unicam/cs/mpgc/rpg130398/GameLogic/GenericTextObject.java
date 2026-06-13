@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg130398.api.*;
 public class GenericTextObject implements RendableText, Positionable {
     private boolean isDirty;
     String text;
-    String font;
+    String fontPath;
 
     float[] pos = new float[3];
     float size = 1;
@@ -24,12 +24,12 @@ public class GenericTextObject implements RendableText, Positionable {
         isDirty = true;
     }
     @Override
-    public String getFont () {
-        return font;
+    public String getFontPath () {
+        return fontPath;
     }
     @Override
-    public void setFont (String font) {
-        this.font = font;
+    public void setFontPath(String fontPath) {
+        this.fontPath = fontPath;
         isDirty = true;
     }
     @Override

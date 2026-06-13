@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -18,7 +19,8 @@ public class GDX_TextRenderer {
     GDX_TextRenderer(RendableText Object, Vector2 ScreenSize) {
         this.Object = Object;
         this.batch = new SpriteBatch();
-        this.font = new BitmapFont(); // default GDX font
+
+        setupFont();
         resize((int) ScreenSize.x, (int) ScreenSize.y);
     }
 
@@ -29,13 +31,12 @@ public class GDX_TextRenderer {
 
     public void render(Matrix4 screen_projection) {
         if (Object.isDirty()) {
-            font.dispose();
-            font = new BitmapFont();
+            setupFont();
             Object.clearDirty();
         }
 
         float[] pos = Object.getPosition();
-        float scale = 0.04f;
+        float scale = 0.006f;
         batch.setProjectionMatrix(screen_projection);
         batch.setTransformMatrix(new Matrix4().scale(scale, scale, scale));
         batch.begin();
@@ -49,4 +50,20 @@ public class GDX_TextRenderer {
     }
 
     public RendableText getObject() { return Object; }
+
+    private void setupFont() {
+        if (font != null) font.dispose();
+
+        if (Object.getFontPath() != null && Gdx.files.internal(Object.getFontPath()).exists()) {
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Object.getFontPath()));
+            FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            params.size = 64;
+            font = generator.generateFont(params);
+            generator.dispose();
+        } else {
+            font = new BitmapFont();
+        }
+
+        font.getData().setScale(Object.getSize());
+    }
 }

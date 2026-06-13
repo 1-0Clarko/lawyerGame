@@ -14,4 +14,6 @@ java {
 dependencies {
     implementation(libs.gdx.core)
     implementation(project(":api"))
+    implementation(libs.gdx.freetype)
+    implementation(libs.gdx.freetype.natives) { artifact { classifier = "natives-desktop" } }
 }

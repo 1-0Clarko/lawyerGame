@@ -1,16 +1,11 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game;
-import it.unicam.cs.mpgc.rpg130398.Graphics.GenericVertex;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
-import it.unicam.cs.mpgc.rpg130398.api.Vertex;
-
-import java.awt.*;
 
 /**
  * l'unica cosa che fa è gestire il GraphicsManager
@@ -36,7 +31,8 @@ public final class EmptyGame implements Game {
         Gm.addObject(Triangle);
 
         Text = new GenericTextObject();
-        Text.setText("test di testo 0.0");
+        Text.setText("testo di test O_O");
+        Text.setFontPath("fonts/Undisclose.ttf");
         Text.setPosition(new float[]{6, 1, 0});
         Gm.addText(Text);
     }
@@ -46,9 +42,9 @@ public final class EmptyGame implements Game {
         Triangle.setRotation(new float[]{FrameNumber,FrameNumber,FrameNumber});
 
         if (FrameNumber%100 == 99)
-            Text.setText("test di testo -.0");
-        if (FrameNumber%100 == 34)
-            Text.setText("test di testo 0.0");
+            Text.setText("testo di test O_O");
+        if (FrameNumber%100 == 80)
+            Text.setText("testo di test -_O");
     }
     @Override
     public void render() {Gm.render();};
