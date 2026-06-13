@@ -34,11 +34,21 @@ public final class EmptyGame implements Game {
         Triangle = new Generic3DObject(loader);
         Triangle.setPosition(new float[]{16/2, 9/2, 16/2});
         Gm.addObject(Triangle);
+
+        Text = new GenericTextObject();
+        Text.setText("test di testo 0.0");
+        Text.setPosition(new float[]{6, 1, 0});
+        Gm.addText(Text);
     }
 
     @Override
     public void updateLogic(long FrameNumber) {
         Triangle.setRotation(new float[]{FrameNumber,FrameNumber,FrameNumber});
+
+        if (FrameNumber%100 == 99)
+            Text.setText("test di testo -.0");
+        if (FrameNumber%100 == 34)
+            Text.setText("test di testo 0.0");
     }
     @Override
     public void render() {Gm.render();};

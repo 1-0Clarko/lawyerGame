@@ -20,6 +20,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
     public static int START_WIDTH = 1920,  START_HEIGHT = 1080;
     ShaderProgram DefaultShader;
     Vector<GDX_MeshRenderer> MashObjects = new Vector<>();
+    Vector<GDX_TextRenderer> TextMeshObjects = new Vector<>();
 
     public GDX_GraphicsManager() {
         // Ridimensiona la finestra
@@ -43,6 +44,9 @@ public class GDX_GraphicsManager implements GraphicsManager {
         Matrix4 screen_projection = CalculateScreenProjection();
         for (GDX_MeshRenderer MeshObject : MashObjects) {
             MeshObject.render(screen_projection);
+        }
+        for (GDX_TextRenderer TextMeshObject : TextMeshObjects) {
+            TextMeshObject.render(screen_projection);
         }
     }
 
@@ -69,7 +73,11 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public boolean addText(RendableText textObject) {
-        return false;
+        for (GDX_TextRenderer r : TextMeshObjects)
+            if (r.getObject() == textObject) return false;
+
+        TextMeshObjects.add(new GDX_TextRenderer(textObject, new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+        return true;
     }
 
     private Matrix4 CalculateScreenProjection() {
