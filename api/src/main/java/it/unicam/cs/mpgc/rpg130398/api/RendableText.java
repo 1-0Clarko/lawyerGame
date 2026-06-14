@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg130398.api;
 
+import java.awt.*;
+
 /**
  * Represents a text object that can be rendered in the game world.
  * Has a x, y, z position but z is not used.
@@ -49,4 +51,13 @@ public interface RendableText extends Positionable {
      * Called by the graphics engine after reading isDirty.
      */
     void clearDirty();
+    /**
+     * @return the color of the text
+     */
+    Color getColor();
+
+    /**
+     * @param color the color of the text
+     */
+    void setColor(Color color);
 }

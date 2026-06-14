@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Monologue;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
@@ -7,7 +7,7 @@ public class SimpleMonologue implements Monologue {
     private final String[] pages;
     private final RendableText textObject;
     private final float charsPerFrame;
-    private final int endPagesFrames;
+    private final int endPagesWait;
 
     private int currentPage = -1;
     private float charIndex = 0;
@@ -15,12 +15,13 @@ public class SimpleMonologue implements Monologue {
     private boolean pageFinished = false;
     private boolean hasFinished = false;
 
-    public SimpleMonologue(String[] pages, RendableText textObject, float charsPerFrame, int endPagesFrames) {
+    public SimpleMonologue(String[] pages, RendableText textObject, float charsPerFrame, int endPagesWait) {
         this.pages = pages;
         this.textObject = textObject;
         this.charsPerFrame = charsPerFrame;
-        this.endPagesFrames = endPagesFrames;
+        this.endPagesWait = endPagesWait;
         textObject.setText("");
+        showNext();
     }
 
     @Override
@@ -35,7 +36,11 @@ public class SimpleMonologue implements Monologue {
 
     @Override
     public void update() {
-        if (hasFinished || pageFinished) return;
+        if (hasFinished) return;
+        if (pageFinished) {
+            showNext();
+            return;
+        }
 
         String current = pages[currentPage];
         if (charIndex < current.length()) {
@@ -43,7 +48,7 @@ public class SimpleMonologue implements Monologue {
             textObject.setText(getCurrent());
         } else {
             pauseCounter++;
-            if (pauseCounter >= endPagesFrames) {
+            if (pauseCounter >= endPagesWait) {
                 pageFinished = true;
 
                 if (currentPage == pages.length-1)
@@ -53,7 +58,7 @@ public class SimpleMonologue implements Monologue {
     }
 
     @Override
-    public boolean hasFinishedDisplaying() {
+    public boolean hasCurrentItemFinished() {
         return pageFinished;
     }
 

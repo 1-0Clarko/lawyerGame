@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.StartScene.StartScene;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.StartScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameFase;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 
