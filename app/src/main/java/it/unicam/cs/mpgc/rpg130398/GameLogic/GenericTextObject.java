@@ -2,15 +2,19 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
 import it.unicam.cs.mpgc.rpg130398.api.*;
 
+import java.awt.*;
+
 public class GenericTextObject implements RendableText, Positionable {
     private boolean isDirty;
     String text;
     String fontPath;
+    Color color;
 
     float[] pos = new float[3];
     float size = 1;
 
     public GenericTextObject() {
+        color = Color.white;
         isDirty = true;
     }
 
@@ -58,6 +62,13 @@ public class GenericTextObject implements RendableText, Positionable {
         if (position == null || position.length != 3)
             throw new IllegalArgumentException("Position not valid");
         pos = position;
+        isDirty = true;
+    }
+    @Override
+    public Color getColor() {return color;}
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
         isDirty = true;
     }
 }

@@ -40,4 +40,19 @@ public interface GraphicsManager {
      * @return se il testo è stato aggiunto
      */
     boolean addText(RendableText TextObject);
+    /**
+     * Rimuove un oggetto dalla scena.
+     *
+     * @param object oggetto da rimuovere
+     * @return true se l'oggetto è stato rimosso
+     */
+    boolean removeObject(RendableObject object);
+
+    /**
+     * Rimuove un testo dalla scena.
+     *
+     * @param textObject testo da rimuovere
+     * @return true se il testo è stato rimosso
+     */
+    boolean removeText(RendableText textObject);
 }

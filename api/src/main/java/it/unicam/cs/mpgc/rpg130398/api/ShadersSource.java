@@ -1,23 +1,25 @@
 package it.unicam.cs.mpgc.rpg130398.api;
 
 /**
- * Shader source code per una coppia di vertex e fragment shaders scritte in GLSL.
- * Renderizza i triangoli in input a schermo, se hanno vertici con posizione >= 0 e <= del FRUSTUM
+ * Shader source code for a vertex and fragment shader pair written in GLSL.
+ * Renders the input triangles to the screen if their vertices have position >= 0 and <= FRUSTUM.
  */
 public interface ShadersSource {
     /**
-     * la VertexShader necessita dei seguenti attribuiti per ogni vertice:
+     * The VertexShader requires the following attributes for each vertex:
      *         attribute vec3 a_position;
      *         attribute vec4 a_color;
-     * la VertexShader necessita dei seguenti uniform da aggiornare nel tempo:
-     *         uniform mat4 u_object_transform; // Sposta e ruota i vertici dell'oggetto nel mondo
-     *         uniform mat4 u_screen_transform; // Proietta le coordinate del mondo in clip space [-1, 1]
+     * The VertexShader requires the following uniforms to be updated over time:
+     *         uniform mat4 u_object_transform; // Moves and rotates the object's vertices in the world
+     *         uniform mat4 u_screen_transform; // Projects world coordinates to clip space [-1, 1]
+     *         uniform float u_time;            // Milliseconds elapsed since the object was added to the scene
      *
-     * @return il source code della VertexShader
+     * @return the source code of the VertexShader
      */
     String GetVertexShader();
+
     /**
-     * @return il source code della FragmentShader
+     * @return the source code of the FragmentShader
      */
     String GetFragmentShader();
 }

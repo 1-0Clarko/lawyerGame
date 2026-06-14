@@ -57,8 +57,13 @@ public class GDX_TextRenderer {
         if (Object.getFontPath() != null && Gdx.files.internal(Object.getFontPath()).exists()) {
             FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Object.getFontPath()));
             FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
             params.size = 64;
             font = generator.generateFont(params);
+
+            java.awt.Color c = Object.getColor();
+            font.setColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+
             generator.dispose();
         } else {
             font = new BitmapFont();

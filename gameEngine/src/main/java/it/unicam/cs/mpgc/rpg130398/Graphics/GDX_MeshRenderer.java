@@ -18,10 +18,12 @@ public class GDX_MeshRenderer {
     Mesh Mesh;
     ShaderProgram DefaultShader;
     ShaderProgram InUseShader;
+    final long CreationTimeMillis;
 
     GDX_MeshRenderer(RendableObject Object, ShaderProgram DefaultShader) {
         this.Object = Object;
         this.DefaultShader = DefaultShader;
+        CreationTimeMillis = System.currentTimeMillis();
 
         recalculateMash();
         setupShader();
@@ -37,6 +39,7 @@ public class GDX_MeshRenderer {
         InUseShader.bind();
         sendTransformDataToTheShader();
         sendScreenProjectionDataToTheShader(screen_projection);
+        sendTimeDataToTheShader();
         Mesh.render(InUseShader, GL20.GL_TRIANGLES, 0, Object.getTriangleTriplets().length);
     }
     public void dispose() {
@@ -106,5 +109,8 @@ public class GDX_MeshRenderer {
     }
     private void sendScreenProjectionDataToTheShader (Matrix4 screen_transform) {
         InUseShader.setUniformMatrix("u_screen_transform", screen_transform);
+    }
+    private void sendTimeDataToTheShader () {
+        InUseShader.setUniformf("u_time", System.currentTimeMillis()-CreationTimeMillis);
     }
 }
