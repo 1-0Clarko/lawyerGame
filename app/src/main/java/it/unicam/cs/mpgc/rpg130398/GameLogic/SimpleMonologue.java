@@ -6,20 +6,20 @@ import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 public class SimpleMonologue implements Monologue {
     private final String[] pages;
     private final RendableText textObject;
-    private final int charsPerFrame;
-    private final int pauseFrames;
+    private final float charsPerFrame;
+    private final int endPagesFrames;
 
     private int currentPage = -1;
-    private int charIndex = 0;
+    private float charIndex = 0;
     private int pauseCounter = 0;
     private boolean pageFinished = false;
     private boolean hasFinished = false;
 
-    public SimpleMonologue(String[] pages, RendableText textObject, int charsPerFrame, int pauseFrames) {
+    public SimpleMonologue(String[] pages, RendableText textObject, float charsPerFrame, int endPagesFrames) {
         this.pages = pages;
         this.textObject = textObject;
         this.charsPerFrame = charsPerFrame;
-        this.pauseFrames = pauseFrames;
+        this.endPagesFrames = endPagesFrames;
         textObject.setText("");
     }
 
@@ -40,10 +40,10 @@ public class SimpleMonologue implements Monologue {
         String current = pages[currentPage];
         if (charIndex < current.length()) {
             charIndex = Math.min(charIndex + charsPerFrame, current.length());
-            textObject.setText(current.substring(0, charIndex));
+            textObject.setText(getCurrent());
         } else {
             pauseCounter++;
-            if (pauseCounter >= pauseFrames) {
+            if (pauseCounter >= endPagesFrames) {
                 pageFinished = true;
 
                 if (currentPage == pages.length-1)
@@ -65,6 +65,6 @@ public class SimpleMonologue implements Monologue {
     @Override
     public String getCurrent() {
         if (hasFinished) return null;
-        return pages[currentPage].substring(0, charIndex);
+        return pages[currentPage].substring(0, (int)charIndex);
     }
 }
