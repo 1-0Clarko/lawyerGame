@@ -9,10 +9,11 @@ public class SimpleMonologue implements Monologue {
     private final int charsPerFrame;
     private final int pauseFrames;
 
-    private int currentPage = 0;
+    private int currentPage = -1;
     private int charIndex = 0;
     private int pauseCounter = 0;
     private boolean pageFinished = false;
+    private boolean hasFinished = false;
 
     public SimpleMonologue(String[] pages, RendableText textObject, int charsPerFrame, int pauseFrames) {
         this.pages = pages;
@@ -34,7 +35,7 @@ public class SimpleMonologue implements Monologue {
 
     @Override
     public void update() {
-        if (hasFinished() || pageFinished) return;
+        if (hasFinished || pageFinished) return;
 
         String current = pages[currentPage];
         if (charIndex < current.length()) {
@@ -42,8 +43,12 @@ public class SimpleMonologue implements Monologue {
             textObject.setText(current.substring(0, charIndex));
         } else {
             pauseCounter++;
-            if (pauseCounter >= pauseFrames)
+            if (pauseCounter >= pauseFrames) {
                 pageFinished = true;
+
+                if (currentPage == pages.length-1)
+                    hasFinished = true;
+            }
         }
     }
 
@@ -54,12 +59,12 @@ public class SimpleMonologue implements Monologue {
 
     @Override
     public boolean hasFinished() {
-        return currentPage >= pages.length;
+        return hasFinished;
     }
 
     @Override
     public String getCurrent() {
-        if (hasFinished()) return null;
+        if (hasFinished) return null;
         return pages[currentPage].substring(0, charIndex);
     }
 }
