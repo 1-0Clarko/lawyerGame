@@ -84,7 +84,27 @@ public class GDX_GraphicsManager implements GraphicsManager {
         TextMeshObjects.add(new GDX_TextRenderer(textObject, new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
         return true;
     }
+    @Override
+    public boolean removeObject(RendableObject object) {
+        for (GDX_MeshRenderer r : MashObjects) {
+            if (r.getObject() == object) {
+                MashObjects.remove(r);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    @Override
+    public boolean removeText(RendableText textObject) {
+        for (GDX_TextRenderer r : TextMeshObjects) {
+            if (r.getObject() == textObject) {
+                TextMeshObjects.remove(r);
+                return true;
+            }
+        }
+        return false;
+    }
     private Matrix4 CalculateScreenProjection() {
         // Orthographic projection: maps WorldSpace [0, FRUSTUM] to clip space [-1, 1]
         Matrix4 screen_projection = new Matrix4();
