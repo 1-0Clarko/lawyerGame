@@ -35,6 +35,7 @@ public class StartScene implements GameFase {
         TextBox = new GenericTextObject();
         TextBox.setFontPath("fonts/Undisclose.ttf");
         TextBox.setPosition(new float[]{4.3f,1,0});
+        TextBox.setColor(Color.gray);
         Graphic.addText(TextBox);
 
         ModelLoader Model = new PLY_ModelLoader("models/Corridor.ply");
@@ -59,9 +60,13 @@ public class StartScene implements GameFase {
     }
 
     public GameFase update(long FrameNumber) {
-        if (!animationQueue.hasFinished())
+        if (!animationQueue.hasFinished()) {
             animationQueue.update();
-        return this; //don't change the gameScene
+            return this; //don't change the gameScene
+        } else {
+            finish();
+            return null;
+        }
     }
     private void onFadeOutStart() {
         TextBox.setText("");
@@ -70,7 +75,9 @@ public class StartScene implements GameFase {
         TextBox.setColor(Color.red);
         TextBox.setPosition(new float[]{6.3f,1,0});
     }
-    private GameFase finish() {
-        return null;
+    private void finish() {
+        Graphic.removeText(TextBox);
+        Graphic.removeObject(Corridor);
+        Graphic.removeObject(BlackScreen);
     }
 }
