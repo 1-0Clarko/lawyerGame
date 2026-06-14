@@ -33,6 +33,8 @@ public class StartScene implements GameFase {
 
         TextBox = new GenericTextObject();
         TextBox.setFontPath("fonts/Undisclose.ttf");
+        TextBox.setPosition(new float[]{4.3f,1,0});
+        Graphic.addText(TextBox);
         playerMonologue = new SimpleMonologue(INTRO, TextBox, 2, 30);
         playerMonologue.showNext();
 
@@ -47,10 +49,16 @@ public class StartScene implements GameFase {
     }
 
     public GameFase update(long FrameNumber) {
-        if (FrameNumber <= 200)
-            BlackTransition.setOpacity(1-(FrameNumber/200f));
+        if (FrameNumber <= 10) {
+            BlackTransition.setOpacity(1-(FrameNumber/10f));
+            return this;
+        }
 
         playerMonologue.update();
+        if (playerMonologue.hasFinishedDisplaying())
+            playerMonologue.showNext();
+
+
         return this;
     }
 }
