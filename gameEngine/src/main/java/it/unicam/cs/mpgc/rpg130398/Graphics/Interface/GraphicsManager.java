@@ -8,6 +8,7 @@ import it.unicam.cs.mpgc.rpg130398.api.RendableText;
  * Oppure testo, oggetti che implementano {@link RendableText}
  *
  * Un oggetto è visibile solo se almeno parte di esso è compresa in: 0 <= pos.x, pos.y <= FRUSTUM.
+ * il FRUSTUM viene chiesto nel costruttore, oppure sarà la classe implementatrice a dichiararne uno.
  *
  * Per mostrare un oggetto che implementa {@link RendableObject} o {@link RendableText} in scena, basta aggiungere quell'ogetto utilizzando i rispettivi metodi: {addObject} e {addText}
  */
