@@ -1,11 +1,12 @@
 package it.unicam.cs.mpgc.rpg130398.api;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Loads a dialog tree from a file and returns the root node.
  */
-public interface DialogLoader {
+public interface DialogTreeLoader {
 
     /**
      * @param path path to the dialog file relative to the working directory
@@ -21,8 +22,9 @@ public interface DialogLoader {
     void read() throws IOException, UnsupportedOperationException;
 
     /**
-     * @return the root node of the dialog tree,
-     * null if the file has not been read successfully
+     * @return the map < id, Node >
+     * id = Node.getId().
+     * id = 0 is the root of the tree
      */
-    DialogNode getRoot();
+    Map<Integer, DialogNode> getNodes();
 }

@@ -1,13 +1,14 @@
 package it.unicam.cs.mpgc.rpg130398.api;
 
-import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Represents a single node in a dialog tree.
  * A node contains text to display and optional choices leading to other nodes.
- * When reached, it can set boolean flags in the game state.
+ * When reached, it can have a flag representing this node branch
  */
-public interface DialogNode {
+public interface DialogNode extends Serializable {
+    public record Child(int childrenId, String selectionMessage) {}
 
     /**
      * @return the text to display for this node
@@ -15,17 +16,34 @@ public interface DialogNode {
     String getText();
 
     /**
-     * @return the available choices from this node, empty if it is a leaf node
+     * @return the available id of this node children
+     * the children are also DialogNode
+     * can't be null, can be of size 0
      */
-    DialogNode[] getChoices();
+    Child[] getChildrens();
 
     /**
-     * @return the flags to set when this node is reached, can be empty
+     * @return the flag of this node, can be null
      */
-    Map<String, Boolean> getFlags();
+    String getFlag();
 
     /**
      * @return true if this node has no choices (end of a branch)
      */
     boolean isLeaf();
+
+    /**
+     * @return the unique identifier of this node
+     */
+    int getId();
+
+    /**
+     * @return true if this node has already been visited
+     */
+    boolean isVisited();
+
+    /**
+     * Marks this node as visited
+     */
+    void markVisited();
 }

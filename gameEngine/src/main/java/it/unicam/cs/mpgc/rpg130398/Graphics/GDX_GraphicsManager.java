@@ -28,7 +28,6 @@ public class GDX_GraphicsManager implements GraphicsManager {
         if (FRUSTUM_To_Use.length != 3)
             throw new IllegalArgumentException("the FRUSTUM need to have 3 coordinate");
         FRUSTUM = new Vector3(FRUSTUM_To_Use[0], FRUSTUM_To_Use[1], FRUSTUM_To_Use[2]);
-        Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
         // Enable depth testing to correctly render overlapping objects
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
         Gdx.gl.glDepthFunc(GL20.GL_LESS);
@@ -44,6 +43,8 @@ public class GDX_GraphicsManager implements GraphicsManager {
         DefaultShader = new ShaderProgram(Shaders_source.GetVertexShader(), Shaders_source.GetFragmentShader());
         if (!DefaultShader.isCompiled())
             throw new RuntimeException("Shader error: " + DefaultShader.getLog());
+
+        Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
     }
 
     @Override

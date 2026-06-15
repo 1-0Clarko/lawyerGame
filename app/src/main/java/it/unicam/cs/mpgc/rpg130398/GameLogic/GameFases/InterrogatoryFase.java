@@ -9,13 +9,16 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameFase;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Sequence;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.JSON_DialogTreeLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
+import it.unicam.cs.mpgc.rpg130398.api.DialogTreeLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
-import java.awt.*;
+import java.util.Map;
 
 public class InterrogatoryFase implements GameFase {
     Game Game;
@@ -42,6 +45,7 @@ public class InterrogatoryFase implements GameFase {
         CutSceneAnimations.add(EnterAnimation);
         Defendent = new Defendent();
         Dialogue = new DialogueMenager();
+
     }
 
     @Override
@@ -79,9 +83,19 @@ public class InterrogatoryFase implements GameFase {
     }
     private class DialogueMenager {
         RendableText text;
+        //  node-id     Node
+        Map<Integer, DialogNode> DialogueNodes;
 
         DialogueMenager () {
             text = new GenericTextObject();
+
+            DialogTreeLoader DialogLoader = new JSON_DialogTreeLoader("DialogTrees/InterogatoryDialog.json");
+            try {
+                DialogLoader.read();
+            }catch (java.io.IOException e) {
+                throw new RuntimeException(e);
+            }
+            DialogueNodes = DialogLoader.getNodes();
         }
 
 

@@ -1,0 +1,11 @@
+[
+  {"id":0,"text":"Prime parole del prigioniero","flag":"Ha iniziato","Children":[{"childrenId":1}]},
+    {"id":1,"text":"Seconde parole del prigioniero","Children":[{"childrenId":2}]},
+      {"id":2,"text":"Terze parole del prigioniero","Children":[{"childrenId":3,"selectionMessage":"Chiedi pinco"},{"childrenId":4,"selectionMessage":"Chiedi pallino"}]},
+        {"id":3,"text":"Mi hai chiesto di pinco\nBla Bla Bla..","flag":"pinco","Children":[]},
+          // Altri mesaggi sempre tabati qui per la scelta pinco
+            // altro ancora per pinco..
+        {"id":4,"text":"Mi hai chiesto di pallino\nBla Bla Bla..","flag":"pallino","Children":[]}
+          // Altri mesaggi sempre tabati qui per la scelta pallino
+            // altro ancora per pallino..
+]
