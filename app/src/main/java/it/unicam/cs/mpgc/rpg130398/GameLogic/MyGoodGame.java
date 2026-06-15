@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.InterrogatoryFase;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.StartScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameFase;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
@@ -10,7 +11,7 @@ public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.I
 
     public MyGoodGame(GraphicsManager GraphicsManager) {
         Graphics = GraphicsManager;
-        CurrentGameFace = new StartScene(this, Graphics);
+        CurrentGameFace = new InterrogatoryFase(this, Graphics);
     }
 
     @Override
