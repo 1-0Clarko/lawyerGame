@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class AnimationQueue implements Sequence<Animation> {
     private final List<Animation> queue = new ArrayList<>();
-    private int currentIndex = 0;
-    private boolean hasFinish;
+    private int currentAnimationIndex = -1;
+    private boolean hasFinish = true;
 
     /**
      * Adds an animation to the end of the queue.
@@ -21,6 +21,7 @@ public class AnimationQueue implements Sequence<Animation> {
      */
     public void add(Animation animation) {
         queue.add(animation);
+        hasFinish = false;
     }
 
     /**
@@ -32,13 +33,14 @@ public class AnimationQueue implements Sequence<Animation> {
         if (onStart == null)
             throw new NullPointerException();
         queue.add(new AnimationWithCallback(animation, onStart));
+        hasFinish = false;
     }
 
     @Override
     public void update() {
         if (hasFinished()) return;
-        if (getCurrent().hasFinished()) {
-            if (currentIndex == queue.size()-1)
+        if (currentAnimationIndex == -1 || getCurrent().hasFinished()) {
+            if (currentAnimationIndex == queue.size()-1)
                 hasFinish = true;
             showNext();
         }
@@ -50,8 +52,8 @@ public class AnimationQueue implements Sequence<Animation> {
         if (hasFinished())
             return;
 
-        currentIndex++;
-        Animation A = queue.get(currentIndex);
+        currentAnimationIndex++;
+        Animation A = queue.get(currentAnimationIndex);
         if (A instanceof AnimationWithCallback)
             ((AnimationWithCallback)A).onStart().run();
     }
@@ -68,7 +70,7 @@ public class AnimationQueue implements Sequence<Animation> {
 
     @Override
     public Animation getCurrent() {
-        return queue.get(currentIndex);
+        return queue.get(currentAnimationIndex);
     }
 
     private record AnimationWithCallback(Animation animation, Runnable onStart) implements Animation {
