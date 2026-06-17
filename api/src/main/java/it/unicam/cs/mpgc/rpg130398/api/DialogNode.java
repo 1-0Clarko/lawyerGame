@@ -4,12 +4,17 @@ import java.io.Serializable;
 
 /**
  * Represents a single node in a dialog tree.
+ * The tree is made by linking more DialogNode.
  * A node contains text to display and optional choices leading to other nodes.
- * When reached, it can have a flag representing this node branch
+ * When reached, it can have a flag representing this branch has been reached
  */
 public interface DialogNode extends Serializable {
-    public record Child(int childrenId, String selectionMessage) {}
-
+    public record Connection(
+            int id,                           // Nodo di destinazione.
+            String selectionMessage,          // Testo mostrato come scelta del giocatore.
+            int requiredTrust                 // Fiducia minima richiesta per rendere
+                                              // disponibile questa scelta.
+    ) {}
     /**
      * @return the text to display for this node
      */
@@ -20,7 +25,7 @@ public interface DialogNode extends Serializable {
      * the children are also DialogNode
      * can't be null, can be of size 0
      */
-    Child[] getChildrens();
+    Connection[] getConnection();
 
     /**
      * @return the flag of this node, can be null
@@ -46,4 +51,11 @@ public interface DialogNode extends Serializable {
      * Marks this node as visited
      */
     void markVisited();
+    /**
+     * Return how much reputation should be gained by the person that has made the question if he reaches this node
+     * Can be negative
+     *
+     * @return reputation delta
+     */
+    int getReputationGain();
 }

@@ -1,11 +1,13 @@
 [
-  {"id":0,"text":"Prime parole del prigioniero","flag":"Ha iniziato","Children":[{"childrenId":1}]},
-    {"id":1,"text":"Seconde parole del prigioniero","Children":[{"childrenId":2}]},
-      {"id":2,"text":"Terze parole del prigioniero","Children":[{"childrenId":3,"selectionMessage":"Chiedi pinco"},{"childrenId":4,"selectionMessage":"Chiedi pallino"}]},
-        {"id":3,"text":"Mi hai chiesto di pinco\nBla Bla Bla..","flag":"pinco","Children":[]},
-          // Altri mesaggi sempre tabati qui per la scelta pinco
-            // altro ancora per pinco..
-        {"id":4,"text":"Mi hai chiesto di pallino\nBla Bla Bla..","flag":"pallino","Children":[]}
-          // Altri mesaggi sempre tabati qui per la scelta pallino
-            // altro ancora per pallino..
+  {"id":0,"text":"Sei il terzo.","flag":"","reputationGain":0,"connections":[{"id":1,"selectionMessage":"Il terzo cosa?","requiredTrust":0},{"id":2,"selectionMessage":"Parliamo dell'omicidio.","requiredTrust":0}]},
+
+    {"id":1,"text":"Il terzo che cerca di farmi parlare.","flag":"","reputationGain":0,"connections":[{"id":3,"selectionMessage":"Voglio capire cosa è successo.","requiredTrust":0},{"id":4,"selectionMessage":"Hai ucciso quell'uomo?","requiredTrust":0}]},
+
+      {"id":3,"text":"Una risposta insolita. Forse non sei come gli altri.","flag":"","reputationGain":1,"connections":[{"id":5,"selectionMessage":"Aiutami a difenderti.","requiredTrust":0}]},
+
+        {"id":5,"text":"Difendermi? Perché dovresti?","flag":"","reputationGain":1,"connections":[]},
+
+      {"id":4,"text":"Vedo che hai già deciso cosa pensare di me.","flag":"","reputationGain":-1,"connections":[]},
+
+  {"id":2,"text":"Non parlerò dell'omicidio con qualcuno che mi ha appena incontrato.","flag":"","reputationGain":-1,"connections":[]}
 ]

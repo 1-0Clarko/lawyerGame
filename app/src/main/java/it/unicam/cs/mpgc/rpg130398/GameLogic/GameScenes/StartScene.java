@@ -1,11 +1,11 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes;
 
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper.AnimationQueue;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper.FadeAnimation;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.AnimationQueue;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FadeAnimation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.*;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper.SimpleMonologue;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimation;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
@@ -14,7 +14,7 @@ import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
 import java.awt.*;
 
-public class StartScene implements GameFase {
+public class StartScene implements GameScenes {
     Game Game;
     GraphicsManager Graphic;
 
@@ -48,9 +48,9 @@ public class StartScene implements GameFase {
 
 
         Animation FadeInTransition = new FadeAnimation(BlackScreen, 34, true);
-        Monologue playerMonologueIntro = new SimpleMonologue(INTRO, TextBox, 0.4f, 20);
+        Monologue playerMonologueIntro = new MonologueAnimation(INTRO, TextBox, 0.4f, 20);
         Animation FadeOutTransition = new FadeAnimation(BlackScreen, 25, false);
-        Monologue playerMonologueOutro = new SimpleMonologue(OUTRO, TextBox, 0.2f, 20);
+        Monologue playerMonologueOutro = new MonologueAnimation(OUTRO, TextBox, 0.2f, 20);
 
         animationQueue = new AnimationQueue();
         animationQueue.add(FadeInTransition);
@@ -59,7 +59,7 @@ public class StartScene implements GameFase {
         animationQueue.add(playerMonologueOutro, this::onOutroMonologueStart);
     }
 
-    public GameFase update(long FrameNumber) {
+    public GameScenes update(long FrameNumber) {
         if (!animationQueue.hasFinished()) {
             animationQueue.update();
             return this; //don't change the gameScene

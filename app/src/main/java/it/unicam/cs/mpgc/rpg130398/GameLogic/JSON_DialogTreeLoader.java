@@ -10,15 +10,12 @@ import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class JSON_DialogTreeLoader implements DialogTreeLoader {
     String relativePath;
 
-    Map<Integer, DialogNode> Nodes;
+    ArrayList<DialogNode> Nodes;
 
     public JSON_DialogTreeLoader() {}
     public JSON_DialogTreeLoader(String relativePath) {
@@ -32,21 +29,25 @@ public class JSON_DialogTreeLoader implements DialogTreeLoader {
 
     @Override
     public void read() throws IOException, UnsupportedOperationException {
-        Nodes = new HashMap<Integer, DialogNode>();
+        Nodes = new ArrayList<DialogNode>();
 
         String contenutoFile = Files.readString(Path.of(relativePath));
 
         Gson gson = new Gson();
         JsonArray NodeJsonArray = JsonParser.parseString(contenutoFile).getAsJsonArray();
         for (JsonElement NodeJson : NodeJsonArray) {
-            DialogNode CurrentNode = gson.fromJson(NodeJson, SimpleDialogNode.class);
+            DialogNode CurrentNode = gson.fromJson(NodeJson, GenericDialogNode.class);
 
-            Nodes.put(CurrentNode.getId(), CurrentNode);
+            Nodes.add(CurrentNode);
         }
+        Collection a = new ArrayList<DialogNode>();
+        a.add(new GenericDialogNode(0,"testo","flag",0,new DialogNode.Connection[]{new DialogNode.Connection(1, "Seleziona 1", 0)}));
+
+        System.out.println(gson.toJson(a));
     }
 
     @Override
-    public Map<Integer, DialogNode> getNodes() {
-        return Nodes;// Nodes;
+    public ArrayList<DialogNode> getNodes() {
+        return Nodes;
     }
 }

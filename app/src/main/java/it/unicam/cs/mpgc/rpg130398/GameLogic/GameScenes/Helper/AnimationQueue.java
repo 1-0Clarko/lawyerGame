@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Sequence;
