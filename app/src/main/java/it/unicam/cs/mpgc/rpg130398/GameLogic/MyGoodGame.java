@@ -1,16 +1,21 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
+import com.badlogic.gdx.InputAdapter;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 
 public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game {
     GraphicsManager Graphics;
+    InputManager Input;
     GameScenes CurrentGameFace;
 
-    public MyGoodGame(GraphicsManager GraphicsManager) {
+    public MyGoodGame(GraphicsManager GraphicsManager, InputManager InputManager) {
         Graphics = GraphicsManager;
-        CurrentGameFace = new InterrogatoryScene(this, Graphics);
+        Input = InputManager;
+
+        CurrentGameFace = new InterrogatoryScene(this, Graphics, Input);
     }
 
     @Override

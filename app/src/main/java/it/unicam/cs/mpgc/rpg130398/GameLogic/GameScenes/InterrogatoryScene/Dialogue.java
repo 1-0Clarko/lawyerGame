@@ -15,7 +15,7 @@ import it.unicam.cs.mpgc.rpg130398.api.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class DialogueManager {
+class DialogueWithDefendantManager {
     GraphicsManager Graphic;
     ModelLoader QuestionButtonModel;
 
@@ -27,14 +27,14 @@ class DialogueManager {
 
     Dialog DialogLogic;
 
-    protected DialogueManager(GraphicsManager Graphic) {
+    protected DialogueWithDefendantManager(GraphicsManager Graphic) {
         this.Graphic = Graphic;
         QuestionButtonModel = new PLY_ModelLoader("models/UIButtonRectangle.ply");
         try {QuestionButtonModel.read();} catch (IOException e) {throw new RuntimeException(e);}
 
         answeresText = new GenericTextObject();
         answeresText.setFontPath("fonts/Undisclose.ttf");
-        answeresText.setPosition(new float[]{7,6,0});
+        answeresText.setPosition(new float[]{8,4,0});
         answeresText.setSize(1);
         Graphic.addText(answeresText);
 
@@ -43,24 +43,29 @@ class DialogueManager {
         answeresTextAnimation = new MonologueAnimation(new String[]{DialogLogic.getCurrentNode().getText()}, answeresText, 0.3f, 0);
     }
 
-
+    boolean talking;
     protected void update () {
         if (!answeresTextAnimation.hasFinished()) {
             answeresTextAnimation.update();
+            talking = true;
+            return;
+        }
+
+        if (talking) {
+            listNextQuestions();
+            talking = false;
             return;
         }
 
         nextQuestions();
-
-        //           answeresTextAnimation = new MonologueAnimation(new String[]{DialogLogic.getCurrentNode().getText()}, answeresText, 0.3f, 0);
     }
-
-    private void nextQuestions() {
+    private void listNextQuestions() {
         Graphic.removeText(answeresText);
 
         ArrayList<DialogNode.Connection> choices = DialogLogic.getValidChoices();
+
         QuestionsButtons = new QuestionsButton[choices.size()];
-        float DistanceBetweenButtons = 16f/QuestionsButtons.length;
+        float DistanceBetweenButtons = 16f/choices.size();
         for (int i = 0; i < QuestionsButtons.length; i++) {
             float xPos = DistanceBetweenButtons*i+2.4f;
 
@@ -75,7 +80,12 @@ class DialogueManager {
             Box.setObjectVertices(QuestionButtonModel.getVertices());
             Box.setTriangleTriplets(QuestionButtonModel.getTriangleTriplets());
             Graphic.addObject(Box);
-            QuestionsButtons[i] = new QuestionsButton(answeresText, null, null);
+
+            QuestionsButtons[i] = new QuestionsButton(Text, Box, null);
         }
+    }
+
+    private void nextQuestions() {
+
     }
 }

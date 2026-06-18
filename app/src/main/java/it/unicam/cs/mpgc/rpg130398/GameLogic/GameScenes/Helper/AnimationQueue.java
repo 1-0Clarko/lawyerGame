@@ -40,8 +40,6 @@ public class AnimationQueue implements Sequence<Animation> {
     public void update() {
         if (hasFinished()) return;
         if (currentAnimationIndex == -1 || getCurrent().hasFinished()) {
-            if (currentAnimationIndex == queue.size()-1)
-                hasFinish = true;
             showNext();
         }
         getCurrent().update();
@@ -49,6 +47,9 @@ public class AnimationQueue implements Sequence<Animation> {
 
     @Override
     public void showNext() {
+        if (currentAnimationIndex == queue.size()-1)
+            hasFinish = true;
+
         if (hasFinished())
             return;
 
