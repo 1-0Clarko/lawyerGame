@@ -32,6 +32,7 @@ public class GenericDialog implements Dialog {
         for (DialogNode node : Nodes)
             this.Nodes.put(node.getId(), node);
         CurrentNode = this.Nodes.get(0); // The Start of the conversation is the node with id=0
+        unlockedFlags = new ArrayList<>();
     }
 
     @Override
@@ -64,6 +65,8 @@ public class GenericDialog implements Dialog {
 
         CurrentNode = Nodes.get(connection.id());
         thrust += CurrentNode.getReputationGain();
+        if (CurrentNode.getFlag() != null && !CurrentNode.getFlag().isEmpty())
+            unlockedFlags.add(CurrentNode.getFlag());
         CurrentNode.markVisited();
         return true;
     }

@@ -1,7 +1,7 @@
 [
   {"id":0,"text":"Sei il terzo.","flag":"","reputationGain":0,"connections":[{"id":1,"selectionMessage":"Il terzo cosa?","requiredTrust":0},{"id":2,"selectionMessage":"Parliamo dell'omicidio.","requiredTrust":0}]},
 
-    {"id":1,"text":"Il terzo che cerca di farmi parlare.","flag":"","reputationGain":0,"connections":[{"id":3,"selectionMessage":"Voglio capire cosa è successo.","requiredTrust":0},{"id":4,"selectionMessage":"Hai ucciso quell'uomo?","requiredTrust":0}]},
+    {"id":1,"text":"Il terzo che cerca di farmi parlare.","flag":"terzo","reputationGain":0,"connections":[{"id":3,"selectionMessage":"Voglio capire cosa è successo.","requiredTrust":0},{"id":4,"selectionMessage":"Hai ucciso quell'uomo?","requiredTrust":0}]},
 
       {"id":3,"text":"Una risposta insolita. Forse non sei come gli altri.","flag":"","reputationGain":1,"connections":[{"id":5,"selectionMessage":"Aiutami a difenderti.","requiredTrust":0}]},
 
@@ -9,5 +9,5 @@
 
       {"id":4,"text":"Vedo che hai già deciso cosa pensare di me.","flag":"","reputationGain":-1,"connections":[]},
 
-  {"id":2,"text":"Non parlerò dell'omicidio con qualcuno che mi ha appena incontrato.","flag":"","reputationGain":-1,"connections":[]}
+  {"id":2,"text":"Non parlerò dell'omicidio con qualcuno che mi ha\n appena incontrato.","flag":"","reputationGain":-1,"connections":[]}
 ]

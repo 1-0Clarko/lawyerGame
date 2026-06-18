@@ -67,6 +67,25 @@ public class Generic3DObject implements RendableObject, Transform {
     public void clearDirty() {
         isDirty = false;
     }
+
+    @Override
+    public float[] getBoundingBox() {
+        float[] boundBox = new float[6];
+        for (Vertex vertex : vertices) {
+            float[] vertPos = vertex.getPosition();
+
+            // Minimum pos
+            boundBox[0] = Math.min(boundBox[0], vertPos[0]); //min x
+            boundBox[1] = Math.min(boundBox[1], vertPos[1]); //min y
+            boundBox[2] = Math.min(boundBox[2], vertPos[2]); //min z
+            // Maximum pos
+            boundBox[3] = Math.max(boundBox[3], vertPos[0]); //max x
+            boundBox[4] = Math.max(boundBox[4], vertPos[1]); //max y
+            boundBox[5] = Math.max(boundBox[5], vertPos[2]); //max z
+        }
+        return boundBox;
+    }
+
     @Override
     public float[] getPosition() {
         return pos;

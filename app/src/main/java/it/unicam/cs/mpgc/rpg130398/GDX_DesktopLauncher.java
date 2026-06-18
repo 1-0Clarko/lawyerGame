@@ -34,7 +34,7 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
             @Override
             public void create() {
                 GraphicsManager GraphicsManager = new GDX_GraphicsManager(FRUSTUM);
-                InputManager InputManager = new GDX_InputManager(FRUSTUM);
+                InputManager InputManager = new GDX_InputManager(FRUSTUM, GraphicsManager);
 
                 Game = new MyGoodGame(GraphicsManager, InputManager);
             }

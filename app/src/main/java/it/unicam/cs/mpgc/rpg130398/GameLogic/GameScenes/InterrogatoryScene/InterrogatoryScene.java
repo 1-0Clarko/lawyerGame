@@ -32,7 +32,7 @@ public class InterrogatoryScene implements GameScenes {
         this.Game = game;
         this.Graphic = GraphicsManager;
         this.Input = InputManager;
-        DialogueManager = new DialogueWithDefendantManager(Graphic);
+        DialogueManager = new DialogueWithDefendantManager(Graphic, Input);
 
         SetupSceneObjects();
 
