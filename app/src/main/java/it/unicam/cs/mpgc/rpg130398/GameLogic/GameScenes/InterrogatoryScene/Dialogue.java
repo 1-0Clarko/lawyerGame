@@ -136,8 +136,6 @@ class DialogueWithDefendantManager {
         QuestionsButtons = null;
     }
     private void showCurrentNode() {
-        System.out.println("thrust:" +DialogLogic.getTrust());
-        System.out.println("flags:" +DialogLogic.getOpinionatedFlags());
         String defendantSpetch = DialogLogic.getCurrentNode().getText();
         Graphic.addText(answeresText);
         answeresTextAnimation = new MonologueAnimation(new String[]{defendantSpetch}, answeresText, 0.7f, 0);

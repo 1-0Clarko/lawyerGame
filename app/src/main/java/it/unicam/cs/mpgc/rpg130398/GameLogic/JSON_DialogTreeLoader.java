@@ -40,10 +40,6 @@ public class JSON_DialogTreeLoader implements DialogTreeLoader {
 
             Nodes.add(CurrentNode);
         }
-        Collection a = new ArrayList<DialogNode>();
-        a.add(new GenericDialogNode(0,"testo","flag",0,new DialogNode.Connection[]{new DialogNode.Connection(1, "Seleziona 1", 0)}));
-
-        System.out.println(gson.toJson(a));
     }
 
     @Override

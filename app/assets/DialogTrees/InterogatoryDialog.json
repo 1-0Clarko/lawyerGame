@@ -1,13 +1,5 @@
 [
-  {"id":0,"text":"Sei il terzo.","flag":"","reputationGain":0,"connections":[{"id":1,"selectionMessage":"Il terzo cosa?","requiredTrust":0},{"id":2,"selectionMessage":"Parliamo dell'omicidio.","requiredTrust":0}]},
-
-    {"id":1,"text":"Il terzo che cerca di farmi parlare.","flag":"terzo","reputationGain":0,"connections":[{"id":3,"selectionMessage":"Voglio capire cosa è successo.","requiredTrust":0},{"id":4,"selectionMessage":"Hai ucciso quell'uomo?","requiredTrust":0}]},
-
-      {"id":3,"text":"Una risposta insolita. Forse non sei come gli altri.","flag":"","reputationGain":1,"connections":[{"id":5,"selectionMessage":"Aiutami a difenderti.","requiredTrust":0}]},
-
-        {"id":5,"text":"Difendermi? Perché dovresti?","flag":"","reputationGain":1,"connections":[]},
-
-      {"id":4,"text":"Vedo che hai già deciso cosa pensare di me.","flag":"","reputationGain":-1,"connections":[]},
-
-  {"id":2,"text":"Non parlerò dell'omicidio con qualcuno che mi ha\n appena incontrato.","flag":"","reputationGain":-1,"connections":[]}
+  {"id":0,"text":"testo del nodo zero..","flag":"testo del nodo 0","connections":[{"idOther":1,"selectionMessage":"Opzione 1","minRequiredTrust":0,"maxRequiredTrust":0,"TrustDelta":-1},{"idOther":2,"selectionMessage":"Opzione 2","minRequiredTrust":0,"maxRequiredTrust":0,"TrustDelta":1}]},
+    {"id":1,"text":"testo del nodo uno..","connections":[]},
+    {"id":2,"text":"testo del nodo due..","connections":[]}
 ]

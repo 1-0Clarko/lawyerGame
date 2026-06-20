@@ -6,23 +6,24 @@ import java.io.Serializable;
  * Represents a single node in a dialog tree.
  * The tree is made by linking more DialogNode.
  * A node contains text to display and optional choices leading to other nodes.
- * When reached, it can have a flag representing this branch has been reached
+ * it can have a flag representing this branch, if is an important node
  */
 public interface DialogNode extends Serializable {
     public record Connection(
-            int id,                           // Nodo di destinazione.
-            String selectionMessage,          // Testo mostrato come scelta del giocatore.
-            int requiredTrust                 // Fiducia minima richiesta per rendere
-                                              // disponibile questa scelta.
+            int idOther,                      // Nodo id del nodo collegato.
+            String selectionMessage,          // Testo mostrato per andare da questo nodo al nodo collegato
+            int minRequiredTrust,             // Fiducia minima richiesta per andare da questo nodo al nodo collegato
+            int maxRequiredTrust,             // Fiducia massima richiesta per andare da questo nodo al nodo collegato
+            int TrustDelta                    // Modifica di fiducia da applicare quando si usa il collegamento
     ) {}
     /**
-     * @return the text to display for this node
+     * @return the text to display of this node
      */
     String getText();
 
     /**
-     * @return the available id of this node children
-     * the children are also DialogNode
+     * Returns the connections starting from this node
+     * @return Connection array
      * can't be null, can be of size 0
      */
     Connection[] getConnection();
@@ -33,7 +34,7 @@ public interface DialogNode extends Serializable {
     String getFlag();
 
     /**
-     * @return true if this node has no choices (end of a branch)
+     * @return true if there aren't any connections starting from this node (end of a branch)
      */
     boolean isLeaf();
 
@@ -51,11 +52,4 @@ public interface DialogNode extends Serializable {
      * Marks this node as visited
      */
     void markVisited();
-    /**
-     * Return how much reputation should be gained by the person that has made the question if he reaches this node
-     * Can be negative
-     *
-     * @return reputation delta
-     */
-    int getReputationGain();
 }

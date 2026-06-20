@@ -11,10 +11,11 @@ import java.util.*;
 public class GenericDialog implements Dialog {
     //      id node     node
     HashMap<Integer, DialogNode> Nodes;
+    Set<Integer> visitedNodes;    // id of already visited nodes
 
     DialogNode CurrentNode;
     int thrust;
-    ArrayList<String> unlockedFlags;
+    HashSet<String> unlockedFlags;
 
     public GenericDialog(ArrayList<DialogNode> Nodes) {
         setup(Nodes);
@@ -32,19 +33,13 @@ public class GenericDialog implements Dialog {
         for (DialogNode node : Nodes)
             this.Nodes.put(node.getId(), node);
         CurrentNode = this.Nodes.get(0); // The Start of the conversation is the node with id=0
-        unlockedFlags = new ArrayList<>();
+        unlockedFlags = new HashSet<>();
+        visitedNodes = new HashSet<>();
     }
 
     @Override
     public ArrayList<DialogNode.Connection> getValidChoices() {
         ArrayList<DialogNode.Connection> result = new ArrayList<>();
-
-        // if there is only one connection, it is considered always valid
-        if (CurrentNode.getConnection().length == 1) {
-            DialogNode.Connection soleConnection = CurrentNode.getConnection()[0];
-            result.add(soleConnection);
-            return result;
-        }
 
         for (DialogNode.Connection connection : CurrentNode.getConnection()) {
             if (isA_ValidChoices(connection))
@@ -63,10 +58,12 @@ public class GenericDialog implements Dialog {
         if (!getValidChoices().contains(connection))
             return false;
 
-        CurrentNode = Nodes.get(connection.id());
-        thrust += CurrentNode.getReputationGain();
+        CurrentNode = Nodes.get(connection.idOther());
+        thrust += connection.TrustDelta();
         if (CurrentNode.getFlag() != null && !CurrentNode.getFlag().isEmpty())
             unlockedFlags.add(CurrentNode.getFlag());
+
+        visitedNodes.add(CurrentNode.getId());
         CurrentNode.markVisited();
         return true;
     }
@@ -77,15 +74,17 @@ public class GenericDialog implements Dialog {
     }
 
     @Override
-    public Collection<String> getOpinionatedFlags() {
+    public Set<String> getOpinionatedFlags() {
         return unlockedFlags;
     }
     private boolean isA_ValidChoices(DialogNode.Connection connection) {
-        if (!Nodes.containsKey(connection.id()))
+        if (!Nodes.containsKey(connection.idOther()))
             return false;
-        if (connection.requiredTrust() > thrust)
+        if (thrust < connection.minRequiredTrust())
             return false;
-        if (Nodes.get(connection.id()).isVisited())
+        if (thrust > connection.maxRequiredTrust())
+            return false;
+        if (visitedNodes.contains(connection.idOther()))
             return false;
         return true;
     }

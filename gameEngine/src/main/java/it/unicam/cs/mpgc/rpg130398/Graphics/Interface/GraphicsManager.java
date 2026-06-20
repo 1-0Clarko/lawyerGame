@@ -58,8 +58,7 @@ public interface GraphicsManager {
     boolean removeText(RendableText textObject);
 
     /**
-     * Restituisce il fattore di scala applicato al contenuto per adattare
-     * il FRUSTUM alle dimensioni della finestra mantenendone le proporzioni.
+     * Restituisce il fattore di scala applicato al contenuto mantenendone le proporzioni.
      *
      * Il valore restituito contiene due componenti:
      * <ul>

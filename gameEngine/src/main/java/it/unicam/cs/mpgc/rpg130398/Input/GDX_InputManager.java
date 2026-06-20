@@ -8,7 +8,7 @@ import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 
 public class GDX_InputManager implements InputManager {
     private final Vector2 FRUSTUM;
-    private GraphicsManager Graphics;
+    private final GraphicsManager Graphics;
 
     public GDX_InputManager(float[] FRUSTUM, GraphicsManager GraphicsManager) {
         this.FRUSTUM = new Vector2(FRUSTUM[0], FRUSTUM[1]);

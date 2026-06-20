@@ -2,19 +2,19 @@ package it.unicam.cs.mpgc.rpg130398.api;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 import java.util.Vector;
 
 /**
  * It manages a Conversation between two people,
  * One person makes the questions and the other answere
- * the conversation fallows the roules imposed by a given DialogNode linked-tree
+ * the conversation fallows the roules imposed by a given DialogNode array making a networks of nodes
  *
  * The conversation ollways starts on the DialogNode with the id 0
- * The 'current node' rappresent where in the tree is the conversation
+ * The 'current node' rappresent where is the conversation inside the DialogNode array
+ * The user can not use the same Choice/Connection more the once. This blocks any loops in the dialog
  */
 public interface Dialog {
-
-
     /**
      *  Get the choices you can make from the current node
      */
@@ -25,7 +25,7 @@ public interface Dialog {
     DialogNode getCurrentNode ();
     /**
      * from the current node, it will follow the requested connection to a new node
-     * The status of the conversation such as the flags or the trust can change when following the node
+     * The status of the conversation such as the opinionated flags or the trust can change when following the node
      *
      * @return true if the connection was valid and it has been followed, false otherwise
      */
@@ -37,7 +37,7 @@ public interface Dialog {
     int getTrust();
     /**
      * returns a collection of flags that have been reached in the conversation
-     * @return list of flags collected
+     * @return set of flags collected
      */
-    Collection<String> getOpinionatedFlags();
+    Set<String> getOpinionatedFlags();
 }
