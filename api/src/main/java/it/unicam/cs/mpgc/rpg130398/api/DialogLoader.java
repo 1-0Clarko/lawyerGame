@@ -2,12 +2,11 @@ package it.unicam.cs.mpgc.rpg130398.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
- * Loads a dialog tree from a file and returns the node list.
+ * Loads a dialog from a file and returns the node list.
  */
-public interface DialogTreeLoader {
+public interface DialogLoader {
 
     /**
      * @param path path to the dialog file to read, relative to the working directory
@@ -24,7 +23,7 @@ public interface DialogTreeLoader {
 
     /**
      * Returns the list of read Nodes from the file or null if the file is not bean read
-     * @return the list of read Nodes from the file or null
+     * @return list of read Nodes or null
      */
     ArrayList<DialogNode> getNodes();
 }

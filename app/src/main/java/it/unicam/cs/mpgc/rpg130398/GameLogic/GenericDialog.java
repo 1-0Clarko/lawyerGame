@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
 import it.unicam.cs.mpgc.rpg130398.api.Dialog;
 import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
-import it.unicam.cs.mpgc.rpg130398.api.DialogTreeLoader;
+import it.unicam.cs.mpgc.rpg130398.api.DialogLoader;
 import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class GenericDialog implements Dialog {
     public GenericDialog(ArrayList<DialogNode> Nodes) {
         setup(Nodes);
     }
-    public GenericDialog(@NonNull DialogTreeLoader Loader) {
+    public GenericDialog(@NonNull DialogLoader Loader) {
         try {
             Loader.read();
         } catch (IOException e) {

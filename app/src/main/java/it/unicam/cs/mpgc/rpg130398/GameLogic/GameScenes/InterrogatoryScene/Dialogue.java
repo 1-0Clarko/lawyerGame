@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimatio
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.JSON_DialogTreeLoader;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.JSON_DialogLoader;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericDialog;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
@@ -45,7 +45,7 @@ class DialogueWithDefendantManager {
         answeresText.setSize(1);
         Graphic.addText(answeresText);
 
-        DialogTreeLoader DialogLoader = new JSON_DialogTreeLoader("DialogTrees/InterogatoryDialog.json");
+        DialogLoader DialogLoader = new JSON_DialogLoader("DialogTrees/InterogatoryDialog.json");
         DialogLogic = new GenericDialog(DialogLoader);
         showCurrentNode();
     }

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import it.unicam.cs.mpgc.rpg130398.api.DialogTreeLoader;
+import it.unicam.cs.mpgc.rpg130398.api.DialogLoader;
 import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
 
 import java.io.IOException;
@@ -12,13 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class JSON_DialogTreeLoader implements DialogTreeLoader {
+public class JSON_DialogLoader implements DialogLoader {
     String relativePath;
 
     ArrayList<DialogNode> Nodes;
 
-    public JSON_DialogTreeLoader() {}
-    public JSON_DialogTreeLoader(String relativePath) {
+    public JSON_DialogLoader() {}
+    public JSON_DialogLoader(String relativePath) {
         setPath(relativePath);
     }
 
