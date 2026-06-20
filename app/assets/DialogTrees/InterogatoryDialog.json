@@ -1,5 +1,5 @@
 [
-  {"id":0,"text":"testo del nodo zero..","flag":"testo del nodo 0","connections":[{"idOther":1,"selectionMessage":"Opzione 1","minRequiredTrust":0,"maxRequiredTrust":0,"TrustDelta":-1},{"idOther":2,"selectionMessage":"Opzione 2","minRequiredTrust":0,"maxRequiredTrust":0,"TrustDelta":1}]},
+  {"id":0,"text":"testo del nodo 0..","flag":"nodo 0 raggiunto","connections":[{"idOther":1,"selectionMessage":"Opzione uno","minRequiredTrust":0,"maxRequiredTrust":0,"RequireTrust":false,"TrustDelta":-1}, {"idOther":2,"selectionMessage":"Opzione due","minRequiredTrust":2,"maxRequiredTrust":20,"RequireTrust":true,"TrustDelta":1}]},
     {"id":1,"text":"testo del nodo uno..","connections":[]},
     {"id":2,"text":"testo del nodo due..","connections":[]}
 ]

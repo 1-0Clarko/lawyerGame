@@ -14,6 +14,7 @@ public interface DialogNode extends Serializable {
             String selectionMessage,          // Testo mostrato per andare da questo nodo al nodo collegato
             int minRequiredTrust,             // Fiducia minima richiesta per andare da questo nodo al nodo collegato
             int maxRequiredTrust,             // Fiducia massima richiesta per andare da questo nodo al nodo collegato
+            boolean RequireTrust,             // Dice se controllare o meno che siano rispettati i campi minRequiredTrust e maxRequiredTrust
             int TrustDelta                    // Modifica di fiducia da applicare quando si usa il collegamento
     ) {}
     /**

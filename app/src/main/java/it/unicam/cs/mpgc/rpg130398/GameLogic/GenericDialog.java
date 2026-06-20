@@ -80,10 +80,12 @@ public class GenericDialog implements Dialog {
     private boolean isA_ValidChoices(DialogNode.Connection connection) {
         if (!Nodes.containsKey(connection.idOther()))
             return false;
-        if (thrust < connection.minRequiredTrust())
-            return false;
-        if (thrust > connection.maxRequiredTrust())
-            return false;
+        if (connection.RequireTrust()) {
+            if (thrust < connection.minRequiredTrust())
+                return false;
+            if (thrust > connection.maxRequiredTrust())
+                return false;
+        }
         if (visitedNodes.contains(connection.idOther()))
             return false;
         return true;
