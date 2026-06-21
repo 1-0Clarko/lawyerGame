@@ -5,15 +5,14 @@ import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
 import java.util.Arrays;
 
 public class GenericDialogNode implements DialogNode {
-    private final int id;                 // Identificatore univoco del nodo di dialogo.
-    private final String text;            // Testo mostrato al giocatore quando il nodo viene raggiunto.
-    private final String flag;            // Flag opzionale, è impostato solo nei nodi importanti, puo essere null.
 
-    private final Connection[] connections;    // Collegamenti verso altri nodi.
-                                               // Se contiene un solo elemento, il dialogo
-                                               // prosegue automaticamente.
-
-    private transient boolean visited = false; // se è stato visitato
+    private final int id;                       // Identificatore univoco del nodo di dialogo.
+    private final String text;                  // Testo mostrato al giocatore quando il nodo viene raggiunto.
+    private final String flag;                  // Flag opzionale, è impostato solo nei nodi importanti, puo essere null.
+    private final Connection[] connections;      // Collegamenti verso altri nodi.
+    // Se contiene un solo elemento, il dialogo
+    // prosegue automaticamente.
+    private transient boolean visited = false;   // se è stato visitato
 
     public GenericDialogNode(int id, String text, String flag, Connection[] connections) {
         this.id = id;
@@ -32,11 +31,11 @@ public class GenericDialogNode implements DialogNode {
 
     @Override
     public String toString() {
-        return "SimpleDialogNode{" +
+        return "GenericDialogNode{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", flag='" + flag + '\'' +
-                ", conections=" + Arrays.toString(connections) +
+                ", connections=" + Arrays.toString(connections) +
                 ", visited=" + visited +
                 '}';
     }

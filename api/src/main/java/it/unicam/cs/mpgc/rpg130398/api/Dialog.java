@@ -1,9 +1,7 @@
 package it.unicam.cs.mpgc.rpg130398.api;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
-import java.util.Vector;
 
 /**
  * It manages a Conversation between two people,
@@ -19,10 +17,12 @@ public interface Dialog {
      *  Get the choices you can make from the current node
      */
     ArrayList<DialogNode.Connection> getValidChoices();
+
     /**
      * @return the current node
      */
-    DialogNode getCurrentNode ();
+    DialogNode getCurrentNode();
+
     /**
      * from the current node, it will follow the requested connection to a new node
      * The status of the conversation such as the opinionated flags or the trust can change when following the node
@@ -30,11 +30,13 @@ public interface Dialog {
      * @return true if the connection was valid and it has been followed, false otherwise
      */
     boolean makeChoices(DialogNode.Connection connection);
+
     /**
      * returns the current trust that the person answering has of the person making the questions
      * @return the trust
      */
     int getTrust();
+
     /**
      * returns a collection of flags that have been reached in the conversation
      * @return set of flags collected

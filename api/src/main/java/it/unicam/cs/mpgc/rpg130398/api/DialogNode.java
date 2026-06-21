@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130398.api;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Represents a single node in a dialog tree.
@@ -9,14 +10,27 @@ import java.io.Serializable;
  * it can have a flag representing this branch, if is an important node
  */
 public interface DialogNode extends Serializable {
+
     public record Connection(
-            int idOther,                      // Nodo id del nodo collegato.
-            String selectionMessage,          // Testo mostrato per andare da questo nodo al nodo collegato
-            int minRequiredTrust,             // Fiducia minima richiesta per andare da questo nodo al nodo collegato
-            int maxRequiredTrust,             // Fiducia massima richiesta per andare da questo nodo al nodo collegato
-            boolean RequireTrust,             // Dice se controllare o meno che siano rispettati i campi minRequiredTrust e maxRequiredTrust
-            int TrustDelta                    // Modifica di fiducia da applicare quando si usa il collegamento
-    ) {}
+            int idOther,                  // Nodo id del nodo collegato.
+            String selectionMessage,      // Testo mostrato per andare da questo nodo al nodo collegato
+            List<ConnectionRequirement> requirements,// Precondizioni da soddisfare per poter usare questo collegamento.
+                                                     // Vuota o null significa nessuna condizione per questo collegamento oltre a quelle di base del dialogo.
+            int trustDelta                 // Modifica di fiducia da applicare quando si usa il collegamento
+    ) {
+        /**
+         * @return true if every requirement of this connection is satisfied given the current state
+         */
+        public boolean isSatisfiedBy(DialogState state) {
+            if (requirements == null)
+                return true;
+            for (ConnectionRequirement requirement : requirements)
+                if (!requirement.isSatisfied(state))
+                    return false;
+            return true;
+        }
+    }
+
     /**
      * @return the text to display of this node
      */
