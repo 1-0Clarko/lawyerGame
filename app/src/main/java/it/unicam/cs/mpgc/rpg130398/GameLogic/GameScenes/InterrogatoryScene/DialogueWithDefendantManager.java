@@ -19,10 +19,13 @@ class DialogueWithDefendantManager {
     GraphicsManager Graphic;
     InputManager Input;
 
+    final int MAX_LENTH_TEXT_ON_BUTTON = 30;
+
     ModelLoader QuestionButtonModel;
 
-    RendableText answeresText; // The text for the answers of the dependent
+    RendableText answeresText; // The text for the answers of the defendant
     Animation answeresTextAnimation;
+    RendableText questionText; // The text for the question of the hovered button
 
     record QuestionsButton (RendableText text, RendableObject rectangle, DialogNode.Connection choice){};
     QuestionsButton[] QuestionsButtons;
@@ -45,6 +48,12 @@ class DialogueWithDefendantManager {
         answeresText.setSize(1);
         Graphic.addText(answeresText);
 
+        questionText = new GenericTextObject();
+        questionText.setPosition(new float[]{2f,3.5f,0});
+        questionText.setSize(4f);
+        questionText.setText("ciao");
+        Graphic.addText(questionText);
+
         DialogLoader DialogLoader = new JSON_DialogLoader("DialogTrees/InterogatoryDialog.json");
         DialogLogic = new GenericDialog(DialogLoader);
         showCurrentNode();
@@ -64,17 +73,9 @@ class DialogueWithDefendantManager {
             return;
         }
 
-        QuestionsButton buttonClicked = buttonClicked();
-        if (buttonClicked == null)
-            return;
-
-        DialogLogic.makeChoices(buttonClicked.choice);
-        showCurrentNode();
-        removeButtons();
+        updateButtonsInteractions();
     }
     private void listNextQuestions() {
-        Graphic.removeText(answeresText);
-
         ArrayList<DialogNode.Connection> choices = DialogLogic.getValidChoices();
 
         QuestionsButtons = new QuestionsButton[choices.size()];
@@ -82,10 +83,13 @@ class DialogueWithDefendantManager {
         for (int i = 0; i < QuestionsButtons.length; i++) {
             float xPos = DistanceBetweenButtons*i+2.4f;
 
+            String lineToDisplay = choices.get(i).selectionMessage().split("[.,?]", 2)[0];
+            lineToDisplay = lineToDisplay.length() > MAX_LENTH_TEXT_ON_BUTTON ? lineToDisplay.substring(0, MAX_LENTH_TEXT_ON_BUTTON)+"-" : lineToDisplay;
+
             RendableText Text = new GenericTextObject();
             Text.setSize(3);
-            Text.setPosition(new float[]{xPos,1,0});
-            Text.setText(choices.get(i).selectionMessage());
+            Text.setPosition(new float[]{xPos-0.7f,1,0});
+            Text.setText(lineToDisplay);
             Graphic.addText(Text);
 
             RendableObject Box = new Generic3DObject();
@@ -97,10 +101,22 @@ class DialogueWithDefendantManager {
             QuestionsButtons[i] = new QuestionsButton(Text, Box, choices.get(i));
         }
     }
+    private void updateButtonsInteractions() {
+        QuestionsButton buttonHovered = buttonHovered();
+        if (buttonHovered == null)
+            return;
+        questionText.setText(buttonHovered.choice.selectionMessage());
 
-    private QuestionsButton buttonClicked() {
         if (!Input.isCursorJustPressed())
-            return null;
+            return;
+
+        questionText.setText("");
+        DialogLogic.makeChoices(buttonHovered.choice);
+        showCurrentNode();
+        removeButtons();
+    }
+
+    private QuestionsButton buttonHovered() {
         for (QuestionsButton Button : QuestionsButtons) {
             float[] ButtonBounds = Button.rectangle.getBoundingBox();
             // index 0=min x, 1=min y, 2=min z  3=max x, 4=max y, 5=max z
@@ -138,6 +154,6 @@ class DialogueWithDefendantManager {
     private void showCurrentNode() {
         String defendantSpetch = DialogLogic.getCurrentNode().getText();
         Graphic.addText(answeresText);
-        answeresTextAnimation = new MonologueAnimation(new String[]{defendantSpetch}, answeresText, 0.7f, 0);
+        answeresTextAnimation = new MonologueAnimation(new String[]{defendantSpetch}, answeresText, 10*0.7f, 0);
     }
 }
