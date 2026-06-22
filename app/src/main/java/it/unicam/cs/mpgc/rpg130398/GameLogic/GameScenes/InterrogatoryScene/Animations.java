@@ -49,6 +49,8 @@ class startMonologAnimation implements Animation {
             "|- Il mio secondo caso come avvocato penalista d'ufficio... -|     ",
             "|- Pensavo che mi sarebbe capitato un taccheggiatore, non un presunto assassino. -|",
             "|- Nome sconosciuto. Origini sconosciute. Nessuno sa chi sia. -|",
+            "|- Accusa: omicidio. Una tecnica della centrale elettrica, trovata morta\n" +
+                    "sulla scena. -|",
             "|- E per di più in un carcere del genere... -| ",
             "|- Avrei dovuto aprire uno studio tutto mio.           \n"+
                     " Ma ormai è troppo tardi per ripensarci. -|",

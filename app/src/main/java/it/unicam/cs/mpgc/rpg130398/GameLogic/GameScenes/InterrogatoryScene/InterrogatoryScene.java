@@ -74,7 +74,7 @@ public class InterrogatoryScene implements GameScenes {
         Graphic.addObject(PhysicalFolder);
     }
     private void StartInitialAnimations() {
-        // setup the dependent model and the animation manager for its animations
+        // setup the defendant
         DefendantAnimationManager = new DefendantAnimationsManager(Graphic);
         loopAnimations.add(DefendantAnimationManager);
 
@@ -88,9 +88,9 @@ public class InterrogatoryScene implements GameScenes {
             DefendantAnimationManager.setAnimationStatus(TRUSTING);
         else if (trust >= 0)
             DefendantAnimationManager.setAnimationStatus(NEUTRAL);
-        else if (trust >= -2)
+        else if (trust >= -4)
             DefendantAnimationManager.setAnimationStatus(ANGRY);
-        else if (trust <= -4)
+        else
             killed();
     }
     private void killed() {
