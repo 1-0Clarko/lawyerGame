@@ -8,8 +8,9 @@ import java.util.*;
 
 public class GenericDialog implements Dialog, DialogState {
 
-    private final HashMap<Integer, DialogNode> nodes = new HashMap<>();   // id node -> node
-    private final Set<Integer> visitedNodes = new HashSet<>();           // id of already visited nodes
+    private final HashMap<Integer, DialogNode> nodes = new HashMap<>();         // id node -> node
+    private final Set<Integer> visitedNodes = new HashSet<>();                  // id of already visited nodes
+    private final Set<DialogNode.Connection> usedConnections = Collections.newSetFromMap(new IdentityHashMap<>()); // a set of all the used Connections
     private final HashSet<String> unlockedFlags = new HashSet<>();
     private DialogNode currentNode;
     private int trust;
@@ -32,6 +33,7 @@ public class GenericDialog implements Dialog, DialogState {
         for (DialogNode node : nodeList)
             nodes.put(node.getId(), node);
         currentNode = nodes.get(0); // The Start of the conversation is the node with id=0
+        currentNode.markVisited();
         unlockedFlags.clear();
         visitedNodes.clear();
     }
@@ -62,6 +64,7 @@ public class GenericDialog implements Dialog, DialogState {
             unlockedFlags.add(currentNode.getFlag());
 
         visitedNodes.add(currentNode.getId());
+        usedConnections.add(connection);
         currentNode.markVisited();
         return true;
     }
@@ -74,6 +77,11 @@ public class GenericDialog implements Dialog, DialogState {
     @Override
     public Set<String> getOpinionatedFlags() {
         return unlockedFlags;
+    }
+
+    @Override
+    public DialogNode getNodeFromID(int id) {
+        return nodes.get(id);
     }
 
     // --- DialogState: vista in sola lettura esposta ai Requirement ---
@@ -97,7 +105,7 @@ public class GenericDialog implements Dialog, DialogState {
     private boolean isAValidChoice(DialogNode.Connection connection) {
         if (!nodes.containsKey(connection.idOther()))
             return false;
-        if (visitedNodes.contains(connection.idOther()))
+        if (usedConnections.contains(connection))
             return false;
         return connection.isSatisfiedBy(this);
     }

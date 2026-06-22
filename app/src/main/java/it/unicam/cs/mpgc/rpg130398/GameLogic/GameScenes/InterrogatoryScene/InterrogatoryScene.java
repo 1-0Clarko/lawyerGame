@@ -8,7 +8,10 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.*;
 
+import java.awt.*;
 import java.util.ArrayList;
+
+import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.DefendantAnimationsManager.Status.*;
 
 public class InterrogatoryScene implements GameScenes {
     // External api
@@ -37,6 +40,11 @@ public class InterrogatoryScene implements GameScenes {
         SetupSceneObjects();
 
         StartInitialAnimations();
+
+        //TODO remove after finishing the scene
+        CutSceneAnimations.showNext();
+        CutSceneAnimations.showNext();
+        CutSceneAnimations.showNext();
     }
 
     @Override
@@ -51,6 +59,7 @@ public class InterrogatoryScene implements GameScenes {
         }
 
         DialogueManager.update();
+        handleTrustEvents();
 
         return this;
     }
@@ -72,10 +81,26 @@ public class InterrogatoryScene implements GameScenes {
         // setup the sitting and inner monologue cut scene
         CutSceneAnimations.add(new sitingAnimation(Table, PhysicalFolder));
         CutSceneAnimations.add(new startMonologAnimation(Graphic));
+    }
+    private void handleTrustEvents() {
+        int trust = DialogueManager.DialogLogic.getTrust();
+        if (trust >= 4)
+            DefendantAnimationManager.setAnimationStatus(TRUSTING);
+        else if (trust >= 0)
+            DefendantAnimationManager.setAnimationStatus(NEUTRAL);
+        else if (trust >= -2)
+            DefendantAnimationManager.setAnimationStatus(ANGRY);
+        else if (trust <= -4)
+            killed();
+    }
+    private void killed() {
+        DefendantAnimationManager.setAnimationStatus(KILLANIMATION);
+        // Moves the animation from a cyclic animation to a blocking animation
+        loopAnimations.remove(DefendantAnimationManager);
 
-        //TODO remove after finishing the scene
-        CutSceneAnimations.showNext();
-        CutSceneAnimations.showNext();
-        CutSceneAnimations.showNext();
+        CutSceneAnimations = new AnimationQueue();
+        CutSceneAnimations.add(DefendantAnimationManager);
+        CutSceneAnimations.add(new KilledAnimation(Table, PhysicalFolder, Graphic));
+
     }
 }

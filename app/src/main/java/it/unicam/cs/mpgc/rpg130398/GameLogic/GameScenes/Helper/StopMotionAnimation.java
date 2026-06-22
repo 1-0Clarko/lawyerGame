@@ -13,8 +13,9 @@ public class StopMotionAnimation implements Sequence<RendableObject> {
     private final GraphicsManager graphics;
     private final float frameInterval;
     private final boolean loop;
-    private int currentObject = 0;
+    private int currentIndex = -1;
     private float framePassedForCurrentObject = 0;
+    private boolean hasFinish = false;
 
     /**
      * @param graphics the graphics manager used to add and remove models
@@ -33,14 +34,15 @@ public class StopMotionAnimation implements Sequence<RendableObject> {
     @Override
     public void showNext() {
         if (hasFinished()) return;
-        if (currentObject >= 0) { //Dal secondo in poi
-            graphics.removeObject(models[currentObject]);
-        }
-        currentObject++;
-        if (loop && currentObject >= models.length)
-            currentObject = 0;
+        if (currentIndex != -1) //salta la prima chiamata, perché l'oggetto da nascondere non c'è nella prima chiamata
+            graphics.removeObject(models[currentIndex]);
 
-        graphics.addObject(models[currentObject]);
+        currentIndex++;
+        if (hasFinished()) return;
+        if (currentIndex == models.length && loop)
+            currentIndex = 0;
+
+        graphics.addObject(models[currentIndex]);
         framePassedForCurrentObject = 0;
     }
 
@@ -61,12 +63,14 @@ public class StopMotionAnimation implements Sequence<RendableObject> {
     public boolean hasFinished() {
         if (loop)
             return false;
-        return currentObject >= models.length;
+        return currentIndex == models.length;
     }
 
     @Override
     public RendableObject getCurrent() {
         if (hasFinished()) return null;
-        return models[currentObject];
+        if (currentIndex == -1)
+            return null;
+        return models[currentIndex];
     }
 }

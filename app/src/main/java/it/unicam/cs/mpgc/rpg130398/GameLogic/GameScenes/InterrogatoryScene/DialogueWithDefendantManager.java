@@ -12,6 +12,7 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.*;
 import it.unicam.cs.mpgc.rpg130398.api.Dialog;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -43,20 +44,20 @@ class DialogueWithDefendantManager {
         try {QuestionButtonModel.read();} catch (IOException e) {throw new RuntimeException(e);}
 
         answeresText = new GenericTextObject();
-        answeresText.setFontPath("fonts/Undisclose.ttf");
-        answeresText.setPosition(new float[]{7f,5,0});
-        answeresText.setSize(1);
+        answeresText.setFontPath("fonts/FreeHustle Hardcore.ttf");
+        answeresText.setColor(Color.GRAY);
+        answeresText.setPosition(new float[]{7f,6,0});
+        answeresText.setSize(0.9f);
         Graphic.addText(answeresText);
 
         questionText = new GenericTextObject();
-        questionText.setPosition(new float[]{2f,3.5f,0});
+        questionText.setPosition(new float[]{1.3f,2.5f,0});
         questionText.setSize(4f);
-        questionText.setText("ciao");
         Graphic.addText(questionText);
 
         DialogLoader DialogLoader = new JSON_DialogLoader("DialogTrees/InterogatoryDialog.json");
         DialogLogic = new GenericDialog(DialogLoader);
-        showCurrentNode();
+        showNodeDialog(DialogLogic.getCurrentNode());
     }
 
     boolean talking;
@@ -107,12 +108,15 @@ class DialogueWithDefendantManager {
             return;
         questionText.setText(buttonHovered.choice.selectionMessage());
 
+
         if (!Input.isCursorJustPressed())
             return;
 
+        // Clicked on button
         questionText.setText("");
+        DialogNode NextNode = DialogLogic.getNodeFromID(buttonHovered.choice.idOther());
+        showNodeDialog(NextNode);
         DialogLogic.makeChoices(buttonHovered.choice);
-        showCurrentNode();
         removeButtons();
     }
 
@@ -139,7 +143,7 @@ class DialogueWithDefendantManager {
             // check if the y is outside the ButtonBounds
             if (posY < ButtonBounds[1] || posY > ButtonBounds[4])
                 continue;
-            // Button is clicked
+            // Button is Hovered
             return Button;
         }
         return null;
@@ -151,8 +155,11 @@ class DialogueWithDefendantManager {
         }
         QuestionsButtons = null;
     }
-    private void showCurrentNode() {
-        String defendantSpetch = DialogLogic.getCurrentNode().getText();
+    private void showNodeDialog(DialogNode Node) {
+        String defendantSpetch = "";
+        if (!Node.isVisited())
+            defendantSpetch = Node.getText();
+
         Graphic.addText(answeresText);
         answeresTextAnimation = new MonologueAnimation(new String[]{defendantSpetch}, answeresText, 10*0.7f, 0);
     }

@@ -4,7 +4,11 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Sequence;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * Executes a queue of Animation.
@@ -16,14 +20,13 @@ public class AnimationQueue implements Sequence<Animation> {
     private boolean hasFinish = true;
 
     /**
-     * Adds an animation to the end of the queue.
-     * @param animation the animation to add
+     * Adds an animation/animations to the end of the queue.
+     * @param animations the animation to add
      */
-    public void add(Animation animation) {
-        queue.add(animation);
-        hasFinish = false;
+    public void add(Animation... animations) {
+        for (Animation animation : animations)
+            add(animation, null);
     }
-
     /**
      * Adds an animation to the end of the queue.
      * @param animation the animation to add
@@ -31,8 +34,9 @@ public class AnimationQueue implements Sequence<Animation> {
      */
     public void add(Animation animation, Runnable onStart) {
         if (onStart == null)
-            throw new NullPointerException();
-        queue.add(new AnimationWithCallback(animation, onStart));
+            queue.add(animation);
+        else
+            queue.add(new AnimationWithCallback(animation, onStart));
         hasFinish = false;
     }
 
@@ -49,10 +53,8 @@ public class AnimationQueue implements Sequence<Animation> {
     public void showNext() {
         if (currentAnimationIndex == queue.size()-1)
             hasFinish = true;
-
         if (hasFinished())
             return;
-
         currentAnimationIndex++;
         Animation A = queue.get(currentAnimationIndex);
         if (A instanceof AnimationWithCallback)

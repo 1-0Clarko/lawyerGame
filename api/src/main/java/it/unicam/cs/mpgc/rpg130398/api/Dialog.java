@@ -42,4 +42,9 @@ public interface Dialog {
      * @return set of flags collected
      */
     Set<String> getOpinionatedFlags();
+    /**
+     * returns the node how has the given id
+     * @return the found node or null if this id is not present in this dialog
+     */
+    DialogNode getNodeFromID(int id);
 }
