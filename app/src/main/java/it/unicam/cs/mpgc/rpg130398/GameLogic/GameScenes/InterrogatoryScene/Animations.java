@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
 
-import com.badlogic.gdx.graphics.g3d.Model;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.*;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
@@ -15,34 +14,36 @@ import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
 import java.awt.*;
 
-class sitingAnimation implements Animation {
-    RendableObject Table;
-    RendableObject PhysicalFolder;
+class SitingAnimation implements Animation {
+    private final RendableObject table;
+    private final RendableObject physicalFolder;
 
-    Animation TableAnimation;
-    Animation FolderAnimation;
+    private final Animation tableAnimation;
+    private final Animation folderAnimation;
 
-    protected sitingAnimation(RendableObject Table, RendableObject PhysicalFolder) {
-        this.Table = Table;
-        this.PhysicalFolder = PhysicalFolder;
+    protected SitingAnimation(RendableObject table, RendableObject physicalFolder) {
+        this.table = table;
+        this.physicalFolder = physicalFolder;
 
-        float[] Zero = new float[]{0f,0f,0f};
-        TableAnimation = new TransformAnimation(Table, new float[]{0.3f, -3f, 4f}, Zero, new float[]{-20f, 0f, 0f}, Zero,80, TransformAnimation.Easing.EASE_IN_OUT);
-        FolderAnimation = new TransformAnimation(PhysicalFolder, new float[]{0.3f, -3f, 4f}, Zero, new float[]{-20f, 0f, 0f}, Zero,80, TransformAnimation.Easing.EASE_IN_OUT);
+        float[] zero = new float[]{0f, 0f, 0f};
+        tableAnimation = new TransformAnimation(table, new float[]{0.3f, -3f, 4f}, zero, new float[]{-20f, 0f, 0f}, zero, 80, TransformAnimation.Easing.EASE_IN_OUT);
+        folderAnimation = new TransformAnimation(physicalFolder, new float[]{0.3f, -3f, 4f}, zero, new float[]{-20f, 0f, 0f}, zero, 80, TransformAnimation.Easing.EASE_IN_OUT);
     }
+
     @Override
     public void update() {
-        TableAnimation.update();
-        FolderAnimation.update();
+        tableAnimation.update();
+        folderAnimation.update();
     }
 
     @Override
     public boolean hasFinished() {
-        return TableAnimation.hasFinished();
+        return tableAnimation.hasFinished();
     }
 }
-class startMonologAnimation implements Animation {
-    GraphicsManager Graphic;
+
+class StartMonologAnimation implements Animation {
+    private final GraphicsManager graphic;
 
     static final String[] INTRO = {
             "      .           .           .",
@@ -52,173 +53,190 @@ class startMonologAnimation implements Animation {
             "|- Accusa: omicidio. Una tecnica della centrale elettrica, trovata morta\n" +
                     "sulla scena. -|",
             "|- E per di più in un carcere del genere... -| ",
-            "|- Avrei dovuto aprire uno studio tutto mio.           \n"+
+            "|- Avrei dovuto aprire uno studio tutto mio.           \n" +
                     " Ma ormai è troppo tardi per ripensarci. -|",
             "|- Se voglio costruire una difesa, devo capire chi ho davanti. -|",
             "|- Bene... iniziamo il colloquio. -|"};
-    RendableText TextBox;
-    RendableObject BlackBar;
 
-    AnimationQueue AnimationQueue = new AnimationQueue();
+    private final RendableText textBox;
+    private RendableObject blackBar;
 
-    protected startMonologAnimation(GraphicsManager Graphic) {
-        this.Graphic = Graphic;
-        TextBox = new GenericTextObject();
-        TextBox.setPosition(new float[]{1.6f,1.6f,1});
-        TextBox.setSize(4);
-        Graphic.addText(TextBox);
+    private final AnimationQueue animationQueue = new AnimationQueue();
 
-        ModelLoader Model = new PLY_ModelLoader(new float[] {-1,1,1});
-        Model.setPath("models/UIBlackBar.ply");
-        BlackBar = new Generic3DObject(Model);
-        BlackBar.setPosition(new float[]{0,0,1});
+    protected StartMonologAnimation(GraphicsManager graphic) {
+        this.graphic = graphic;
+        textBox = new GenericTextObject();
+        textBox.setPosition(new float[]{1.6f, 1.6f, 1});
+        textBox.setSize(4);
+        graphic.addText(textBox);
 
-        Animation FadeInBox = new FadeAnimation(BlackBar, 10, false);
-        AnimationQueue.add(FadeInBox, this::onTextStart);
-        Animation Monologue = new MonologueAnimation(INTRO, TextBox, 1f, 60);
-        AnimationQueue.add(Monologue);
-        Animation FadeOutBox = new FadeAnimation(BlackBar, 14, true);
-        AnimationQueue.add(FadeOutBox, this::onFadeOut);
+        ModelLoader model = new PLY_ModelLoader(new float[]{-1, 1, 1});
+        model.setPath("models/UIBlackBar.ply");
+        blackBar = new Generic3DObject(model);
+        blackBar.setPosition(new float[]{0, 0, 1});
+
+        Animation fadeInBox = new FadeAnimation(blackBar, 10, false);
+        animationQueue.add(fadeInBox, this::onTextStart);
+        Animation monologue = new MonologueAnimation(INTRO, textBox, 1f, 60);
+        animationQueue.add(monologue);
+        Animation fadeOutBox = new FadeAnimation(blackBar, 14, true);
+        animationQueue.add(fadeOutBox, this::onFadeOut);
     }
 
     @Override
     public void update() {
-        AnimationQueue.update();
+        animationQueue.update();
     }
 
     @Override
     public boolean hasFinished() {
-        return AnimationQueue.hasFinished();
+        return animationQueue.hasFinished();
     }
 
     private void onTextStart() {
-        Graphic.addObject(BlackBar);
+        graphic.addObject(blackBar);
     }
+
     private void onFadeOut() {
-        Graphic.removeText(TextBox);
+        graphic.removeText(textBox);
     }
 }
+
 class DefendantAnimationsManager implements Animation {
-    GraphicsManager Graphic;
 
-    StopMotionAnimation trustingAnimation;
-    StopMotionAnimation neutralAnimation;
-    StopMotionAnimation angryAnimation;
-    StopMotionAnimation killingAnimation;
-    enum Status {KILLANIMATION, ANGRY, NEUTRAL, TRUSTING};
+    private final GraphicsManager graphic;
 
-    Sequence<RendableObject> CurrentAnimation;
-    Status currentStatus;
+    private StopMotionAnimation trustingAnimation;
+    private StopMotionAnimation neutralAnimation;
+    private StopMotionAnimation angryAnimation;
+    private StopMotionAnimation killingAnimation;
 
-    protected DefendantAnimationsManager(GraphicsManager Graphic) {
-        this.Graphic = Graphic;
-        ModelLoader ModelLoader = new PLY_ModelLoader(new float[] {-1,1,1});
+    enum Status {KILLANIMATION, ANGRY, NEUTRAL, TRUSTING}
 
-        ModelLoader.setPath("models/DefendantSitting1.ply");
-        RendableObject DefendantSitting1 = new Generic3DObject(ModelLoader);
-        ModelLoader.setPath("models/DefendantSitting2.ply");
-        RendableObject DefendantSitting2 = new Generic3DObject(ModelLoader);
-        ModelLoader.setPath("models/DefendantSitting3.ply");
-        RendableObject DefendantSitting3 = new Generic3DObject(ModelLoader);
-        RendableObject[] Objects = new RendableObject[] {DefendantSitting1,DefendantSitting2,DefendantSitting3};
-        neutralAnimation = new StopMotionAnimation(Graphic, 80, true, Objects);
+    private Sequence<RendableObject> currentAnimation;
+    private Status currentStatus;
 
-        ModelLoader.setPath("models/DefendantSittingAngry1.ply");
-        RendableObject DefendantAngry1 = new Generic3DObject(ModelLoader);
-        ModelLoader.setPath("models/DefendantSittingAngry2.ply");
-        RendableObject DefendantAngry2 = new Generic3DObject(ModelLoader);
-        Objects = new RendableObject[] {DefendantAngry1, DefendantAngry2};
-        angryAnimation = new StopMotionAnimation(Graphic, 70, true, Objects);
+    protected DefendantAnimationsManager(GraphicsManager graphic) {
+        this.graphic = graphic;
+        ModelLoader modelLoader = new PLY_ModelLoader(new float[]{-1, 1, 1});
 
-        ModelLoader.setPath("models/DefendantSittingKill1.ply");
-        RendableObject DefendantKilling1 = new Generic3DObject(ModelLoader);
-        ModelLoader.setPath("models/DefendantSittingKill2.ply");
-        RendableObject DefendantKilling2 = new Generic3DObject(ModelLoader);
-        ModelLoader.setPath("models/DefendantSittingKill33.ply");
-        RendableObject DefendantKilling3 = new Generic3DObject(ModelLoader);
-        Objects = new RendableObject[] {DefendantKilling1, DefendantKilling1, DefendantKilling1, DefendantKilling2, DefendantKilling3};
-        killingAnimation = new StopMotionAnimation(Graphic, 10, false, Objects);
+        modelLoader.setPath("models/DefendantSitting1.ply");
+        RendableObject defendantSitting1 = new Generic3DObject(modelLoader);
+        modelLoader.setPath("models/DefendantSitting2.ply");
+        RendableObject defendantSitting2 = new Generic3DObject(modelLoader);
+        modelLoader.setPath("models/DefendantSitting3.ply");
+        RendableObject defendantSitting3 = new Generic3DObject(modelLoader);
+        RendableObject[] objects = new RendableObject[]{defendantSitting1, defendantSitting2, defendantSitting3};
+        neutralAnimation = new StopMotionAnimation(graphic, 80, true, objects);
 
-        CurrentAnimation = neutralAnimation;
+        modelLoader.setPath("models/DefendantSittingAngry1.ply");
+        RendableObject defendantAngry1 = new Generic3DObject(modelLoader);
+        modelLoader.setPath("models/DefendantSittingAngry2.ply");
+        RendableObject defendantAngry2 = new Generic3DObject(modelLoader);
+        objects = new RendableObject[]{defendantAngry1, defendantAngry2};
+        angryAnimation = new StopMotionAnimation(graphic, 70, true, objects);
+
+        modelLoader.setPath("models/DefendantSittingKill1.ply");
+        RendableObject defendantKilling1 = new Generic3DObject(modelLoader);
+        modelLoader.setPath("models/DefendantSittingKill2.ply");
+        RendableObject defendantKilling2 = new Generic3DObject(modelLoader);
+        modelLoader.setPath("models/DefendantSittingKill33.ply");
+        RendableObject defendantKilling3 = new Generic3DObject(modelLoader);
+        // DefendantKilling1 ripetuto 3 volte di proposito: rallenta il primo
+        // frame dell'animazione di morte rispetto agli ultimi due.
+        objects = new RendableObject[]{defendantKilling1, defendantKilling1, defendantKilling1, defendantKilling2, defendantKilling3};
+        killingAnimation = new StopMotionAnimation(graphic, 10, false, objects);
+
+        // TODO: trustingAnimation needs its own dedicated models
+        // (e.g. models/DefendantSittingTrusting*.ply). Until then it falls
+        // back to the neutral animation so TRUSTING never leaves the
+        // defendant invisible (see setAnimationStatus).
+        trustingAnimation = neutralAnimation;
+
+        currentAnimation = neutralAnimation;
         currentStatus = Status.NEUTRAL;
     }
+
     @Override
-    public void update () {
-        CurrentAnimation.update();
+    public void update() {
+        currentAnimation.update();
     }
 
     @Override
     public boolean hasFinished() {
-        return CurrentAnimation.hasFinished();
+        return currentAnimation.hasFinished();
     }
+
     public void setAnimationStatus(Status status) {
         if (status == currentStatus)
             return;
 
-        Graphic.removeObject(CurrentAnimation.getCurrent());
+        graphic.removeObject(currentAnimation.getCurrent());
         switch (status) {
-            case NEUTRAL: CurrentAnimation = neutralAnimation; break;
-            case ANGRY: CurrentAnimation = angryAnimation; break;
-            case KILLANIMATION: CurrentAnimation = killingAnimation; break;
+            case NEUTRAL -> currentAnimation = neutralAnimation;
+            case ANGRY -> currentAnimation = angryAnimation;
+            case KILLANIMATION -> currentAnimation = killingAnimation;
+            case TRUSTING -> currentAnimation = trustingAnimation;
         }
         currentStatus = status;
     }
 }
+
 class KilledAnimation implements Animation {
-    GraphicsManager Graphic;
+    private final GraphicsManager graphic;
 
-    RendableObject Table;
-    RendableObject PhysicalFolder;
-    RendableObject BlackScreen;
+    private final RendableObject table;
+    private final RendableObject physicalFolder;
+    private RendableObject blackScreen;
 
-    final int DURATION = 6;
+    private static final int DURATION = 6;
 
-    AnimationQueue CutScene = new AnimationQueue();
+    private final AnimationQueue cutScene = new AnimationQueue();
 
+    protected KilledAnimation(RendableObject table, RendableObject physicalFolder, GraphicsManager graphic) {
+        this.graphic = graphic;
 
-    protected KilledAnimation(RendableObject Table, RendableObject PhysicalFolder, GraphicsManager Graphic) {
-        this.Graphic = Graphic;
+        this.table = table;
+        this.physicalFolder = physicalFolder;
 
-        this.Table = Table;
-        this.PhysicalFolder = PhysicalFolder;
+        float[] zero = new float[]{0f, 0f, 0f};
+        float[] endPos = new float[]{-10f, -10f, 4f};
+        float[] endRot = new float[]{-80f, 0f, 0f};
 
-        float[] Zero = new float[]{0f,0f,0f};
-        float[] EndPos = new float[]{-10f,-10f,4f};
-        float[] EndRot = new float[]{-80f,0f,0f};
+        Animation tableTranslation = new TransformAnimation(table, zero, endPos, zero, endRot, DURATION, TransformAnimation.Easing.EASE_IN);
+        Animation folderTranslation = new TransformAnimation(physicalFolder, zero, endPos, zero, endRot, DURATION, TransformAnimation.Easing.EASE_IN);
+        Animation tableScale = new ScaleAnimation(table, DURATION, 2);
+        Animation folderScale = new ScaleAnimation(physicalFolder, DURATION, 2);
+        ParallelAnimation killAnimation = new ParallelAnimation(tableTranslation, folderTranslation, tableScale, folderScale);
 
+        ModelLoader model = new PLY_ModelLoader("models/BlackScreen.ply");
+        blackScreen = new Generic3DObject(model);
+        Animation fadeInTransition = new FadeAnimation(blackScreen, 34, false);
 
-        Animation TableTranslation = new TransformAnimation(Table, Zero, EndPos, Zero, EndRot,DURATION, TransformAnimation.Easing.EASE_IN);
-        Animation FolderTranslation = new TransformAnimation(PhysicalFolder, Zero, EndPos, Zero, EndRot,DURATION, TransformAnimation.Easing.EASE_IN);
-        Animation TableScale = new ScaleAnimation(Table, DURATION, 2);
-        Animation FolderScale = new ScaleAnimation(PhysicalFolder, DURATION, 2);
-        ParallelAnimation killAnimation = new ParallelAnimation(TableTranslation, FolderTranslation, TableScale, FolderScale);
+        GenericTextObject textBox = new GenericTextObject();
+        textBox.setFontPath("fonts/Undisclose.ttf");
+        textBox.setPosition(new float[]{4f, 5, 0});
+        textBox.setColor(Color.gray);
+        textBox.setSize(6);
+        graphic.addText(textBox);
+        Monologue gameOverTextAnimation = new MonologueAnimation(new String[]{"Game Over"}, textBox, 0.1f, 0);
 
-        ModelLoader Model = new PLY_ModelLoader("models/BlackScreen.ply");
-        BlackScreen = new Generic3DObject(Model);
-        Animation FadeInTransition = new FadeAnimation(BlackScreen, 34, false);
-
-        GenericTextObject TextBox = new GenericTextObject();
-        TextBox.setFontPath("fonts/Undisclose.ttf");
-        TextBox.setPosition(new float[]{4f,5,0});
-        TextBox.setColor(Color.gray);
-        TextBox.setSize(6);
-        Graphic.addText(TextBox);
-        Monologue GameOverTextAnimation = new MonologueAnimation(new String[] {"Game Over"}, TextBox, 0.1f, 0);
-
-        CutScene.add(killAnimation);
-        CutScene.add(FadeInTransition, this::onFadeStart);
-        CutScene.add(GameOverTextAnimation);
+        cutScene.add(killAnimation);
+        cutScene.add(fadeInTransition, this::onFadeStart);
+        cutScene.add(gameOverTextAnimation);
     }
+
     @Override
     public void update() {
-        CutScene.update();
+        cutScene.update();
     }
 
     @Override
     public boolean hasFinished() {
-        return CutScene.hasFinished();
+        return cutScene.hasFinished();
     }
+
     private void onFadeStart() {
-        Graphic.addObject(BlackScreen);
+        graphic.addObject(blackScreen);
     }
 }

@@ -1,166 +1,100 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimation;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.JSON_DialogLoader;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericDialog;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
-import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.*;
 import it.unicam.cs.mpgc.rpg130398.api.Dialog;
 
 import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
 
+/**
+ * Orchestrates the interrogatory dialog: drives the {@link Dialog} state
+ * machine, shows the defendant's lines, and shows/reacts to the question
+ * buttons (delegated to {@link QuestionButtonsUI}).
+ * <p>
+ * This class owns the conversation flow;
+ */
 class DialogueWithDefendantManager {
-    GraphicsManager Graphic;
-    InputManager Input;
 
-    final int MAX_LENTH_TEXT_ON_BUTTON = 30;
+    private final GraphicsManager graphic;
+    private final QuestionButtonsUI buttonsUI;
 
-    ModelLoader QuestionButtonModel;
+    private final RendableText answersText; // The text for the answers of the defendant
+    private Animation answersTextAnimation;
+    private final RendableText questionText; // The text for the question of the hovered button
 
-    RendableText answeresText; // The text for the answers of the defendant
-    Animation answeresTextAnimation;
-    RendableText questionText; // The text for the question of the hovered button
+    protected final Dialog dialogLogic;
 
-    record QuestionsButton (RendableText text, RendableObject rectangle, DialogNode.Connection choice){};
-    QuestionsButton[] QuestionsButtons;
+    private boolean talking;
 
-    Dialog DialogLogic;
+    protected DialogueWithDefendantManager(GraphicsManager graphic, InputManager input) {
+        this.graphic = graphic;
+        this.buttonsUI = new QuestionButtonsUI(graphic, input);
 
-
-
-
-    protected DialogueWithDefendantManager(GraphicsManager Graphic, InputManager Input) {
-        this.Graphic = Graphic;
-        this.Input = Input;
-
-        QuestionButtonModel = new PLY_ModelLoader("models/UIButtonRectangle.ply");
-        try {QuestionButtonModel.read();} catch (IOException e) {throw new RuntimeException(e);}
-
-        answeresText = new GenericTextObject();
-        answeresText.setFontPath("fonts/FreeHustle Hardcore.ttf");
-        answeresText.setColor(Color.GRAY);
-        answeresText.setPosition(new float[]{7f,6,0});
-        answeresText.setSize(0.9f);
-        Graphic.addText(answeresText);
+        answersText = new GenericTextObject();
+        answersText.setFontPath("fonts/FreeHustle Hardcore.ttf");
+        answersText.setColor(Color.GRAY);
+        answersText.setPosition(new float[]{7f, 6, 0});
+        answersText.setSize(0.9f);
+        graphic.addText(answersText);
 
         questionText = new GenericTextObject();
-        questionText.setPosition(new float[]{1.3f,2.5f,0});
+        questionText.setPosition(new float[]{1.3f, 2.5f, 0});
         questionText.setSize(4f);
-        Graphic.addText(questionText);
+        graphic.addText(questionText);
 
-        DialogLoader DialogLoader = new JSON_DialogLoader("DialogTrees/InterogatoryDialog.json");
-        DialogLogic = new GenericDialog(DialogLoader);
-        showNodeDialog(DialogLogic.getCurrentNode());
+        DialogLoader dialogLoader = new JSON_DialogLoader("DialogTrees/InterogatoryDialog.json");
+        dialogLogic = new GenericDialog(dialogLoader);
+        showNodeDialog(dialogLogic.getCurrentNode());
     }
 
-    boolean talking;
-    protected void update () {
-        if (!answeresTextAnimation.hasFinished()) {
-            answeresTextAnimation.update();
+    protected void update() {
+        if (!answersTextAnimation.hasFinished()) {
+            answersTextAnimation.update();
             talking = true;
             return;
         }
 
         if (talking) { // once has finished talking
-            listNextQuestions();
+            buttonsUI.show(dialogLogic.getValidChoices());
             talking = false;
             return;
         }
 
         updateButtonsInteractions();
     }
-    private void listNextQuestions() {
-        ArrayList<DialogNode.Connection> choices = DialogLogic.getValidChoices();
 
-        QuestionsButtons = new QuestionsButton[choices.size()];
-        float DistanceBetweenButtons = 16f/choices.size();
-        for (int i = 0; i < QuestionsButtons.length; i++) {
-            float xPos = DistanceBetweenButtons*i+2.4f;
-
-            String lineToDisplay = choices.get(i).selectionMessage().split("[.,?]", 2)[0];
-            lineToDisplay = lineToDisplay.length() > MAX_LENTH_TEXT_ON_BUTTON ? lineToDisplay.substring(0, MAX_LENTH_TEXT_ON_BUTTON)+"-" : lineToDisplay;
-
-            RendableText Text = new GenericTextObject();
-            Text.setSize(3);
-            Text.setPosition(new float[]{xPos-0.7f,1,0});
-            Text.setText(lineToDisplay);
-            Graphic.addText(Text);
-
-            RendableObject Box = new Generic3DObject();
-            Box.setPosition(new float[]{xPos+3,0.5f,0});
-            Box.setObjectVertices(QuestionButtonModel.getVertices());
-            Box.setTriangleTriplets(QuestionButtonModel.getTriangleTriplets());
-            Graphic.addObject(Box);
-
-            QuestionsButtons[i] = new QuestionsButton(Text, Box, choices.get(i));
-        }
-    }
     private void updateButtonsInteractions() {
-        QuestionsButton buttonHovered = buttonHovered();
-        if (buttonHovered == null)
+        DialogNode.Connection hoveredChoice = buttonsUI.getHoveredChoice();
+        if (hoveredChoice == null)
             return;
-        questionText.setText(buttonHovered.choice.selectionMessage());
 
+        questionText.setText(hoveredChoice.selectionMessage());
 
-        if (!Input.isCursorJustPressed())
+        if (!buttonsUI.isHoveredChoiceClicked())
             return;
 
         // Clicked on button
         questionText.setText("");
-        DialogNode NextNode = DialogLogic.getNodeFromID(buttonHovered.choice.idOther());
-        showNodeDialog(NextNode);
-        DialogLogic.makeChoices(buttonHovered.choice);
-        removeButtons();
+        DialogNode nextNode = dialogLogic.getNodeFromID(hoveredChoice.idOther());
+        showNodeDialog(nextNode);
+        dialogLogic.makeChoices(hoveredChoice);
+        buttonsUI.removeButtons();
     }
 
-    private QuestionsButton buttonHovered() {
-        for (QuestionsButton Button : QuestionsButtons) {
-            float[] ButtonBounds = Button.rectangle.getBoundingBox();
-            // index 0=min x, 1=min y, 2=min z  3=max x, 4=max y, 5=max z
-
-            // From localSpace to WorldSpace
-            ButtonBounds[0] += Button.rectangle.getPosition()[0];
-            ButtonBounds[1] += Button.rectangle.getPosition()[1];
-            ButtonBounds[2] += Button.rectangle.getPosition()[2];
-            ButtonBounds[3] += Button.rectangle.getPosition()[0];
-            ButtonBounds[4] += Button.rectangle.getPosition()[1];
-            ButtonBounds[5] += Button.rectangle.getPosition()[2];
-
-            float[] CursorPos = Input.getCursorPos();
-            float posX = CursorPos[0];
-            float posY = CursorPos[1];
-
-            // check if the x is outside the ButtonBounds
-            if (posX < ButtonBounds[0] || posX > ButtonBounds[3])
-                continue;
-            // check if the y is outside the ButtonBounds
-            if (posY < ButtonBounds[1] || posY > ButtonBounds[4])
-                continue;
-            // Button is Hovered
-            return Button;
+    boolean once = true;
+    private void showNodeDialog(DialogNode node) {
+        String defendantSpeech = node.isVisited() ? "" : node.getText();
+        if (once) { //shows the defendent text for the first node. This is necessary because node.isVisited() on the first node is always true from the start
+            defendantSpeech = node.getText();
+            once = false;
         }
-        return null;
-    }
-    private void removeButtons() {
-        for (QuestionsButton Button : QuestionsButtons) {
-            Graphic.removeObject(Button.rectangle);
-            Graphic.removeText(Button.text);
-        }
-        QuestionsButtons = null;
-    }
-    private void showNodeDialog(DialogNode Node) {
-        String defendantSpetch = "";
-        if (!Node.isVisited())
-            defendantSpetch = Node.getText();
 
-        Graphic.addText(answeresText);
-        answeresTextAnimation = new MonologueAnimation(new String[]{defendantSpetch}, answeresText, 10*0.7f, 0);
+        graphic.addText(answersText);
+        answersTextAnimation = new MonologueAnimation(new String[]{defendantSpeech}, answersText, 10 * 0.7f, 0);
     }
 }
