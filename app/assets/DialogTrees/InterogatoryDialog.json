@@ -23,7 +23,7 @@
 						] },
 						{ "id": 6, "text": "Dovrei uccidervi tutti come ho fatto con quella ragazza.", "flag": "minaccia di morte l'avvocato", "connections": [
 								{ "idOther": 33, "selectionMessage": "Adesso basta, o ti dai una calmata o ti lascio marcire qui come ti sta bene.\nNon ho mai sentito una persona così.", "trustDelta": -4 },
-								{ "idOther": 7, "selectionMessage": "Ti stai sfogando con me, tranquillo non mi hai nemmeno scalfito, vedi io credo\nche le persone siano più oneste quando sono arrabbiate.", "trustDelta": 1 }
+								{ "idOther": 7, "selectionMessage": "Ti stai sfogando con me, tranquillo non mi hai nemmeno scalfito, vedi io credo\nche le persone siano più oneste quando sono arrabbiate.", "trustDelta": 2 }
 							] },
 							{ "id": 7, "text": "Sei la prima persona che non si arrabbia dopo che ha sentito\ncerte cose, lo sai che ho ucciso quella ragazza che mi\nvoleva fermare vero.\nÈ successo veramente, e le tue parole non possono salvarla.\nNon vuoi farle giustizia?", "connections": [
 									{ "idOther": 8, "selectionMessage": "Non è il mio lavoro giudicare i clienti, io faccio uscire fuori la verità.\nComunque lasciamo perdere le persone prima di me, vorrei farti altre domande.", "trustDelta": 1 },

@@ -14,6 +14,11 @@ import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScen
 
 public class InterrogatoryScene implements GameScenes {
 
+    private static final int FPS = 30;
+    private static final int TIME_LIMIT_SECONDS = 4 * 60;
+    private static final int TIME_LIMIT_FRAMES = TIME_LIMIT_SECONDS * FPS; // 7200 frames
+    private long INITIAL_FRAME_NUMBER = -1;
+
     // External api
     private final Game game;
     private final GraphicsManager graphic;
@@ -31,6 +36,10 @@ public class InterrogatoryScene implements GameScenes {
     private final ArrayList<Animation> loopAnimations = new ArrayList<>();
     private AnimationQueue cutSceneAnimations = new AnimationQueue();
 
+    // Time limit / scene end handling
+    private boolean timerStopped; // true once KILLED happens: the time limit no longer matters
+    private boolean interrogatoryOver; // true once we've moved past the dialog (END reached or time is up)
+
     public InterrogatoryScene(Game game, GraphicsManager graphic, InputManager input) {
         this.game = game;
         this.graphic = graphic;
@@ -39,10 +48,16 @@ public class InterrogatoryScene implements GameScenes {
         dialogueManager = new DialogueWithDefendantManager(graphic, input);
         setupSceneObjects();
         startInitialAnimations();
+        cutSceneAnimations.showNext();
+        cutSceneAnimations.showNext();
+        cutSceneAnimations.showNext();
     }
 
     @Override
     public GameScenes update(long frameNumber) {
+        if (INITIAL_FRAME_NUMBER == -1)
+            INITIAL_FRAME_NUMBER = frameNumber;
+
         // Updates the loop animations
         for (Animation animation : loopAnimations)
             animation.update();
@@ -54,7 +69,9 @@ public class InterrogatoryScene implements GameScenes {
 
         dialogueManager.update();
         handleTrustEvents();
-        return this;
+        handleTimeLimit(frameNumber);
+        handleDialogEnd();
+        return interrogatoryOver ? nextScene() : this;
     }
 
     private void setupSceneObjects() {
@@ -85,6 +102,9 @@ public class InterrogatoryScene implements GameScenes {
      * trust < -3 -> killed.
      */
     private void handleTrustEvents() {
+        if (timerStopped) // already killed, nothing left to update here
+            return;
+
         int trust = dialogueManager.dialogLogic.getTrust();
         if (trust >= 4)
             defendantAnimationManager.setAnimationStatus(TRUSTING);
@@ -96,12 +116,54 @@ public class InterrogatoryScene implements GameScenes {
             killed();
     }
 
+    /**
+     * If the dialog reached its END node, the interrogatory is over and the
+     * scene moves on to the defense scene, with no need to wait for the time
+     * limit.
+     */
+    private void handleDialogEnd() {
+        if (timerStopped || interrogatoryOver)
+            return;
+
+        if ("END".equals(dialogueManager.dialogLogic.getCurrentNode().getFlag()))
+            interrogatoryOver = true;
+    }
+
+    /**
+     * If the time limit is reached before the dialog naturally ends, a guard
+     * interrupts the interrogatory and the scene moves on to the defense
+     * scene. Does nothing once the defendant has been killed (timerStopped)
+     * or the interrogatory is already over.
+     */
+    private void handleTimeLimit(long frameNumber) {
+        if (timerStopped || interrogatoryOver)
+            return;
+
+        if (frameNumber-INITIAL_FRAME_NUMBER < TIME_LIMIT_FRAMES)
+            return;
+
+        interrogatoryOver = true;
+        dialogueManager.clear();
+        loopAnimations.remove(defendantAnimationManager);
+        cutSceneAnimations = new AnimationQueue();
+        cutSceneAnimations.add(new GuardInterruptionAnimation(graphic));
+    }
+
     private void killed() {
+        timerStopped = true;
         defendantAnimationManager.setAnimationStatus(KILLANIMATION);
         // Moves the animation from a cyclic animation to a blocking animation
         loopAnimations.remove(defendantAnimationManager);
         cutSceneAnimations = new AnimationQueue();
         cutSceneAnimations.add(defendantAnimationManager);
         cutSceneAnimations.add(new KilledAnimation(table, physicalFolder, graphic));
+    }
+
+    /**
+     * @return the next scene to move to once the interrogatory is over.
+     * TODO: replace with `new DefenseScene(...)` once that scene exists.
+     */
+    private GameScenes nextScene() {
+        return this;
     }
 }

@@ -240,3 +240,68 @@ class KilledAnimation implements Animation {
         graphic.addObject(blackScreen);
     }
 }
+/**
+ * Cutscene played when the conversation time limit runs out: a guard
+ * interrupts the interrogatory. Structured like {@link StartMonologAnimation}
+ * (black bar fade in, monologue lines, fade out), but shorter and triggered
+ * by the time limit rather than by the start of the scene.
+ */
+class GuardInterruptionAnimation implements Animation {
+    private final GraphicsManager graphic;
+
+    static final String[] GUARD_LINES = {
+            "|- Avvocato, il tempo è scaduto. -|",
+            "|- Deve presentarsi in aula, ora. -|"};
+
+    private final RendableText textBox;
+    private final RendableObject blackBar;
+    private final RendableObject blackScreen;
+
+    private final AnimationQueue animationQueue = new AnimationQueue();
+
+    protected GuardInterruptionAnimation(GraphicsManager graphic) {
+        this.graphic = graphic;
+        textBox = new GenericTextObject();
+        textBox.setPosition(new float[]{1.6f, 1.6f, 1});
+        textBox.setSize(4);
+        graphic.addText(textBox);
+
+        ModelLoader model = new PLY_ModelLoader(new float[]{-1, 1, 1});
+        model.setPath("models/UIBlackBar.ply");
+        blackBar = new Generic3DObject(model);
+        blackBar.setPosition(new float[]{0, 0, 1});
+
+        model = new PLY_ModelLoader("models/BlackScreen.ply");
+        blackScreen = new Generic3DObject(model);
+
+        Animation fadeInBox = new FadeAnimation(blackBar, 10, false);
+        animationQueue.add(fadeInBox, this::onTextStart);
+        Animation monologue = new MonologueAnimation(GUARD_LINES, textBox, 1f, 60);
+        animationQueue.add(monologue);
+        Animation fadeOutBox = new FadeAnimation(blackBar, 14, true);
+        animationQueue.add(fadeOutBox, this::onFadeOut);
+        Animation fadeOutTransition = new FadeAnimation(blackScreen, 34, false);
+        animationQueue.add(fadeOutTransition, this::onFadeStart);
+    }
+
+    @Override
+    public void update() {
+        animationQueue.update();
+    }
+
+    @Override
+    public boolean hasFinished() {
+        return animationQueue.hasFinished();
+    }
+
+    private void onTextStart() {
+        graphic.addObject(blackBar);
+    }
+
+    private void onFadeOut() {
+        graphic.removeText(textBox);
+    }
+    private void onFadeStart() {
+        graphic.addObject(blackScreen);
+    }
+}

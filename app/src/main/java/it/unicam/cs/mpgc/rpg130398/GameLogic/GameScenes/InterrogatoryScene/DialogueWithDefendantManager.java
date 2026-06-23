@@ -67,6 +67,11 @@ class DialogueWithDefendantManager {
 
         updateButtonsInteractions();
     }
+    protected void clear() {
+        graphic.removeText(answersText);
+        graphic.removeText(questionText);
+        buttonsUI.removeButtons();
+    }
 
     private void updateButtonsInteractions() {
         DialogNode.Connection hoveredChoice = buttonsUI.getHoveredChoice();
