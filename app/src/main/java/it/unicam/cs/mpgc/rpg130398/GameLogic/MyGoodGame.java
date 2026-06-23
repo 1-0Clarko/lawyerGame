@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
 import com.badlogic.gdx.InputAdapter;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.StartScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
@@ -15,7 +16,7 @@ public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.I
         Graphics = GraphicsManager;
         Input = InputManager;
 
-        CurrentGameFace = new InterrogatoryScene(this, Graphics, Input);
+        CurrentGameFace = new StartScene(this, Graphics, Input);
     }
 
     @Override

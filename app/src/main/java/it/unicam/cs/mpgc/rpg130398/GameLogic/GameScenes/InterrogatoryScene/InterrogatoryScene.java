@@ -51,9 +51,6 @@ public class InterrogatoryScene implements GameScenes {
         dialogueManager = new DialogueWithDefendantManager(graphic, input);
         setupSceneObjects();
         startAnimations();
-        cutSceneAnimations.showNext();
-        cutSceneAnimations.showNext();
-        cutSceneAnimations.showNext();
     }
 
     @Override
@@ -107,6 +104,8 @@ public class InterrogatoryScene implements GameScenes {
         // setup the sitting and inner monologue cut scene
         cutSceneAnimations.add(new SitingAnimation(table, physicalFolder));
         cutSceneAnimations.add(new StartMonologAnimation(graphic), null, this::startTheClock);
+
+        cutSceneAnimations.update();
     }
 
     /**

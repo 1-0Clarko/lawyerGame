@@ -124,7 +124,7 @@
 				{ "id": 26, "text": "Mi dispiace che la pensi così, ecco una prova per te.", "connections": [
 						{ "idOther": 27, "selectionMessage": "", "trustDelta": 10 }
 					] },
-					{ "id": 27, "text": "Adesso mi credi? Puoi tenerti il dito come prova per\nl'udienza.\nMi ricrescerà prima dell'udienza.\nMostralo solo se pensi di poter intimidire i giudici\nabbastanza da convincerli a lasciarmi andare.\nSe non ci riesci... darò il massimo per riconquistare\nla mia libertà.\nSe capisci cosa intendo.", "flag": "Hai una prova che il prigioniero non è umano", "connections": [
+					{ "id": 27, "text": "<Il prigioniero si taglia il dito con un gesto veloce dell'altra mano>\nAdesso mi credi? Puoi tenerti il dito come prova per l'udienza.\nMi ricrescerà prima dell'udienza.\nMostralo solo se pensi di poter intimidire i giudici\nabbastanza da convincerli a lasciarmi andare.\nSe non ci riesci... darò il massimo per riconquistare\nla mia libertà.\nSe capisci cosa intendo.", "flag": "Hai una prova che il prigioniero non è umano", "connections": [
 							{ "idOther": 28, "selectionMessage": "Ho capito, puoi smetterla con le minacce.\nComunque sì, adesso ti credo." }
 						] },
 				{ "id": 28, "text": "Mi fa piacere sentirlo, immagino vuoi farmi delle domande.", "connections": [
