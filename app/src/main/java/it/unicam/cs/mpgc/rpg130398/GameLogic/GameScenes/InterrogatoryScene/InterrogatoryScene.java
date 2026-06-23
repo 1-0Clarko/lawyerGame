@@ -15,7 +15,7 @@ import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScen
 public class InterrogatoryScene implements GameScenes {
 
     private static final int FPS = 30;
-    private static final int TIME_LIMIT_SECONDS = 4 * 60;
+    private static final int TIME_LIMIT_SECONDS = 8 * 60;
     private static final int TIME_LIMIT_FRAMES = TIME_LIMIT_SECONDS * FPS; // 7200 frames
     private long INITIAL_FRAME_NUMBER = -1;
 
@@ -38,7 +38,7 @@ public class InterrogatoryScene implements GameScenes {
 
     // Time limit / scene end handling
     private boolean timerStopped; // true once KILLED happens: the time limit no longer matters
-    private boolean interrogatoryOver; // true once we've moved past the dialog (END reached or time is up)
+    private boolean interrogatoryOver; // true once we've moved past the dialog (END reached, time is up, or no more questions)
 
     public InterrogatoryScene(Game game, GraphicsManager graphic, InputManager input) {
         this.game = game;
@@ -48,11 +48,6 @@ public class InterrogatoryScene implements GameScenes {
         dialogueManager = new DialogueWithDefendantManager(graphic, input);
         setupSceneObjects();
         startInitialAnimations();
-        
-        // TODO REMOVE once finish
-        cutSceneAnimations.showNext();
-        cutSceneAnimations.showNext();
-        cutSceneAnimations.showNext();
     }
 
     @Override
@@ -124,16 +119,23 @@ public class InterrogatoryScene implements GameScenes {
     }
 
     /**
-     * If the dialog reached its END node, the interrogatory is over and the
-     * scene moves on to the defense scene, with no need to wait for the time
-     * limit.
+     * The interrogatory ends either when the dialog reaches its END node, or
+     * when the player exhausted every question and clicked the "no more
+     * questions" fallback button. Either way, the scene moves on to the
+     * defense scene with no need to wait for the time limit.
      */
     private void handleDialogEnd() {
         if (timerStopped || interrogatoryOver)
             return;
 
-        if ("END".equals(dialogueManager.dialogLogic.getCurrentNode().getFlag()))
-            interrogatoryOver = true;
+        boolean reachedEndNode = "END".equals(dialogueManager.dialogLogic.getCurrentNode().getFlag());
+        boolean exhaustedQuestions = dialogueManager.isOver();
+
+        if (!reachedEndNode && !exhaustedQuestions)
+            return;
+
+        clearUI();
+        interrogatoryOver = true;
     }
 
     /**
@@ -146,7 +148,7 @@ public class InterrogatoryScene implements GameScenes {
         if (timerStopped || interrogatoryOver)
             return;
 
-        if (frameNumber-INITIAL_FRAME_NUMBER < TIME_LIMIT_FRAMES)
+        if (frameNumber - INITIAL_FRAME_NUMBER < TIME_LIMIT_FRAMES)
             return;
 
         clearUI();
@@ -166,14 +168,17 @@ public class InterrogatoryScene implements GameScenes {
         cutSceneAnimations.add(defendantAnimationManager);
         cutSceneAnimations.add(new KilledAnimation(table, physicalFolder, graphic));
     }
+
     private void clearUI() {
         dialogueManager.clear();
     }
+
     /**
      * @return the next scene to move to once the interrogatory is over.
      * TODO: replace with `new DefenseScene(...)` once that scene exists.
      */
     private GameScenes nextScene() {
+        System.out.println("Scena tribunale da aggiungere");
         return this;
     }
 }

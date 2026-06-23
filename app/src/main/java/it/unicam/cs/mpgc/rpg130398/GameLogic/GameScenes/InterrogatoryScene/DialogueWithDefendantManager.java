@@ -22,6 +22,8 @@ import java.util.ArrayList;
  */
 class DialogueWithDefendantManager {
 
+    private static final String NO_MORE_QUESTIONS_MESSAGE = "Non ho altre domande, ci vediamo in tribunale.";
+
     private final GraphicsManager graphic;
     private final QuestionButtonsUI buttonsUI;
     private final FlagsDisplayUI flagsUI;
@@ -33,6 +35,8 @@ class DialogueWithDefendantManager {
     protected final Dialog dialogLogic;
 
     private boolean talking;
+    private boolean awaitingFallbackClick; // true while only the "no more questions" button is shown
+    private boolean dialogOver; // true once the fallback button has been clicked
 
     protected DialogueWithDefendantManager(GraphicsManager graphic, InputManager input) {
         this.graphic = graphic;
@@ -56,6 +60,14 @@ class DialogueWithDefendantManager {
         showNodeDialog(dialogLogic.getCurrentNode());
     }
 
+    /**
+     * @return true once the player clicked the "no more questions" fallback
+     * button (no DialogNode.Connection was valid from the current node).
+     */
+    protected boolean isOver() {
+        return dialogOver;
+    }
+
     protected void update() {
         flagsUI.update(new ArrayList<>(dialogLogic.getOpinionatedFlags()));
 
@@ -66,18 +78,53 @@ class DialogueWithDefendantManager {
         }
 
         if (talking) { // once has finished talking
-            buttonsUI.show(dialogLogic.getValidChoices());
+            showNextQuestionsOrFallback();
             talking = false;
+            return;
+        }
+
+        if (awaitingFallbackClick) {
+            updateFallbackInteraction();
             return;
         }
 
         updateButtonsInteractions();
     }
+
     protected void clear() {
         graphic.removeText(answersText);
         graphic.removeText(questionText);
         buttonsUI.removeButtons();
         flagsUI.removeRows();
+    }
+
+    private void showNextQuestionsOrFallback() {
+        ArrayList<DialogNode.Connection> choices = dialogLogic.getValidChoices();
+        if (choices.isEmpty()) {
+            awaitingFallbackClick = true;
+            DialogNode.Connection fallback = new DialogNode.Connection(
+                    dialogLogic.getCurrentNode().getId(), NO_MORE_QUESTIONS_MESSAGE, null, 0);
+            ArrayList<DialogNode.Connection> fallbackChoices = new ArrayList<>();
+            fallbackChoices.add(fallback);
+            buttonsUI.show(fallbackChoices);
+            return;
+        }
+        buttonsUI.show(choices);
+    }
+
+    private void updateFallbackInteraction() {
+        DialogNode.Connection hoveredChoice = buttonsUI.getHoveredChoice();
+        if (hoveredChoice == null)
+            questionText.setText("");
+        else
+            questionText.setText(hoveredChoice.selectionMessage());
+
+        if (!buttonsUI.isHoveredChoiceClicked())
+            return;
+
+        questionText.setText("");
+        buttonsUI.removeButtons();
+        dialogOver = true;
     }
 
     private void updateButtonsInteractions() {
@@ -107,6 +154,6 @@ class DialogueWithDefendantManager {
         }
 
         graphic.addText(answersText);
-        answersTextAnimation = new MonologueAnimation(new String[]{defendantSpeech}, answersText, 10 * 0.7f, 0);
+        answersTextAnimation = new MonologueAnimation(new String[]{defendantSpeech}, answersText, 3.5f, 0);
     }
 }
