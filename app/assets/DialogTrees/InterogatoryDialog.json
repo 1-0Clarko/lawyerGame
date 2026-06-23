@@ -21,7 +21,7 @@
 					{ "id": 5, "text": "Cosi insolenti, ma ve ne pentirete.", "connections": [
 							{ "idOther": 6, "selectionMessage": "Sicuro" }
 						] },
-						{ "id": 6, "text": "Dovrei uccidervi tutti come ho fatto con quella ragazza.", "flag": "minaccia di morte l'avvocato", "connections": [
+						{ "id": 6, "text": "Dovrei uccidervi tutti come ho fatto con quella ragazza.", "flag": "instabilità mentale", "connections": [
 								{ "idOther": 33, "selectionMessage": "Adesso basta, o ti dai una calmata o ti lascio marcire qui come ti sta bene.\nNon ho mai sentito una persona così.", "trustDelta": -4 },
 								{ "idOther": 7, "selectionMessage": "Ti stai sfogando con me, tranquillo non mi hai nemmeno scalfito, vedi io credo\nche le persone siano più oneste quando sono arrabbiate.", "trustDelta": 2 }
 							] },
@@ -33,7 +33,7 @@
 								{ "id": 8, "text": "Sai è bello non essere disprezzato da voi, per una volta.", "connections": [
 										{ "idOther": 7, "selectionMessage": "" }
 									] },
-								{ "id": 9, "text": "Ho parlato con degli ispettori di qualche tipo, erano\nvestiti molto elegante e sembravano far finta di non aver\nsentito cosa dicevo.\nAlmeno, sono piuttosto sicuro che non hanno riportato quello\nche gli ho detto.\nPerché li ho sentiti dire che ero un dipendente della\ncentrale elettrica, cosa che non sono.", "flag": "degli ispettori nascondono qualcosa", "connections": [
+								{ "id": 9, "text": "Ho parlato con degli ispettori di qualche tipo, erano\nvestiti molto elegante e sembravano far finta di non aver\nsentito cosa dicevo.\nAlmeno, sono piuttosto sicuro che non hanno riportato quello\nche gli ho detto.\nPerché li ho sentiti dire che ero un dipendente della\ncentrale elettrica, cosa che non sono.", "flag": "gli ispettori nascondono qualcosa", "connections": [
 										{ "idOther": 50, "selectionMessage": "Elegante? Più nel senso di un'uniforme, o abiti civili? Riesci a descriverli\nmeglio?" }
 									] },
 									{ "id": 50, "text": "Erano uniformi ma non quelle della polizia.\nAvevano un simbolo sul petto, lo stesso che ho visto sui\ncamion fuori di qui e alla centrale.\nNon erano alla centrale elettrica per me, erano alla\ncentrale prima ancora che arrivasse la polizia.", "connections": [

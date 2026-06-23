@@ -48,6 +48,8 @@ public class InterrogatoryScene implements GameScenes {
         dialogueManager = new DialogueWithDefendantManager(graphic, input);
         setupSceneObjects();
         startInitialAnimations();
+        
+        // TODO REMOVE once finish
         cutSceneAnimations.showNext();
         cutSceneAnimations.showNext();
         cutSceneAnimations.showNext();
@@ -67,11 +69,16 @@ public class InterrogatoryScene implements GameScenes {
             return this;
         }
 
+        if (timerStopped)
+            return this;
+        if (interrogatoryOver)
+            return nextScene();
+
         dialogueManager.update();
         handleTrustEvents();
         handleTimeLimit(frameNumber);
         handleDialogEnd();
-        return interrogatoryOver ? nextScene() : this;
+        return this;
     }
 
     private void setupSceneObjects() {
@@ -142,14 +149,15 @@ public class InterrogatoryScene implements GameScenes {
         if (frameNumber-INITIAL_FRAME_NUMBER < TIME_LIMIT_FRAMES)
             return;
 
+        clearUI();
         interrogatoryOver = true;
-        dialogueManager.clear();
         loopAnimations.remove(defendantAnimationManager);
         cutSceneAnimations = new AnimationQueue();
         cutSceneAnimations.add(new GuardInterruptionAnimation(graphic));
     }
 
     private void killed() {
+        clearUI();
         timerStopped = true;
         defendantAnimationManager.setAnimationStatus(KILLANIMATION);
         // Moves the animation from a cyclic animation to a blocking animation
@@ -158,7 +166,9 @@ public class InterrogatoryScene implements GameScenes {
         cutSceneAnimations.add(defendantAnimationManager);
         cutSceneAnimations.add(new KilledAnimation(table, physicalFolder, graphic));
     }
-
+    private void clearUI() {
+        dialogueManager.clear();
+    }
     /**
      * @return the next scene to move to once the interrogatory is over.
      * TODO: replace with `new DefenseScene(...)` once that scene exists.

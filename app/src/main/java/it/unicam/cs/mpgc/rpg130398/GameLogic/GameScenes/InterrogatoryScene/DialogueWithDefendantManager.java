@@ -10,11 +10,13 @@ import it.unicam.cs.mpgc.rpg130398.api.*;
 import it.unicam.cs.mpgc.rpg130398.api.Dialog;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Orchestrates the interrogatory dialog: drives the {@link Dialog} state
- * machine, shows the defendant's lines, and shows/reacts to the question
- * buttons (delegated to {@link QuestionButtonsUI}).
+ * machine, shows the defendant's lines, shows/reacts to the question buttons
+ * (delegated to {@link QuestionButtonsUI}), and shows the collected flags
+ * (delegated to {@link FlagsDisplayUI}).
  * <p>
  * This class owns the conversation flow;
  */
@@ -22,6 +24,7 @@ class DialogueWithDefendantManager {
 
     private final GraphicsManager graphic;
     private final QuestionButtonsUI buttonsUI;
+    private final FlagsDisplayUI flagsUI;
 
     private final RendableText answersText; // The text for the answers of the defendant
     private Animation answersTextAnimation;
@@ -34,6 +37,7 @@ class DialogueWithDefendantManager {
     protected DialogueWithDefendantManager(GraphicsManager graphic, InputManager input) {
         this.graphic = graphic;
         this.buttonsUI = new QuestionButtonsUI(graphic, input);
+        this.flagsUI = new FlagsDisplayUI(graphic);
 
         answersText = new GenericTextObject();
         answersText.setFontPath("fonts/FreeHustle Hardcore.ttf");
@@ -53,6 +57,8 @@ class DialogueWithDefendantManager {
     }
 
     protected void update() {
+        flagsUI.update(new ArrayList<>(dialogLogic.getOpinionatedFlags()));
+
         if (!answersTextAnimation.hasFinished()) {
             answersTextAnimation.update();
             talking = true;
@@ -71,14 +77,15 @@ class DialogueWithDefendantManager {
         graphic.removeText(answersText);
         graphic.removeText(questionText);
         buttonsUI.removeButtons();
+        flagsUI.removeRows();
     }
 
     private void updateButtonsInteractions() {
         DialogNode.Connection hoveredChoice = buttonsUI.getHoveredChoice();
         if (hoveredChoice == null)
-            return;
-
-        questionText.setText(hoveredChoice.selectionMessage());
+            questionText.setText("");
+        else
+            questionText.setText(hoveredChoice.selectionMessage());
 
         if (!buttonsUI.isHoveredChoiceClicked())
             return;
