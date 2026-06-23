@@ -2,13 +2,15 @@ package it.unicam.cs.mpgc.rpg130398;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.math.Vector3;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.MyGoodGame;
 import it.unicam.cs.mpgc.rpg130398.Graphics.GDX_GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
-
+import it.unicam.cs.mpgc.rpg130398.Input.GDX_InputManager;
+import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 
 /**
  * Entry point della applicazione desktop
@@ -32,7 +34,9 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
             @Override
             public void create() {
                 GraphicsManager GraphicsManager = new GDX_GraphicsManager(FRUSTUM);
-                Game = new MyGoodGame(GraphicsManager);
+                InputManager InputManager = new GDX_InputManager(FRUSTUM, GraphicsManager);
+
+                Game = new MyGoodGame(GraphicsManager, InputManager);
             }
 
 

@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.Graphics;
 
+import com.badlogic.gdx.graphics.glutils.VertexArray;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 
@@ -52,8 +53,12 @@ public class PLY_ModelLoader implements ModelLoader {
     String path;
     Vertex[] vertices;
     short[] TriangleTriplets;
+    float[] verticesScale = new float[] {1,1,1};
 
-    public PLY_ModelLoader() {};
+    public PLY_ModelLoader(){}
+    public PLY_ModelLoader(float[] verticesScale){
+        this.verticesScale = verticesScale;
+    }
 
     public PLY_ModelLoader(String relativePath) {
         setPath(relativePath);
@@ -97,6 +102,7 @@ public class PLY_ModelLoader implements ModelLoader {
 
         vertices = readVertices(buffer, foundedParameters);
         TriangleTriplets = readTriangleTriplets(buffer, foundedParameters);
+        scaleVertices();
     }
     /**
      * If it found a parameter it adds it inside foundedParameters
@@ -198,5 +204,16 @@ public class PLY_ModelLoader implements ModelLoader {
             result[resultSize++] = (short) Integer.parseInt(faceParts[3]);
         }
         return result;
+    }
+    private void scaleVertices () {
+        for (Vertex vertice : vertices) {
+            float[] newPos = new float[] {
+                    vertice.getPosition()[0]*verticesScale[0],
+                    vertice.getPosition()[1]*verticesScale[1],
+                    vertice.getPosition()[2]*verticesScale[2]
+            };
+            vertice.setPosition(newPos);
+        }
+
     }
 }

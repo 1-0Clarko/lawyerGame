@@ -25,10 +25,13 @@ dependencies {
     implementation(project(":gameEngine"))
     implementation(project(":api"))
 
-    // DDX framework
+    // GDX framework
     implementation(libs.gdx.core)
     implementation(libs.gdx.backend)
     implementation(libs.gdx.natives) { artifact { classifier = "natives-desktop" } }
+
+    // google json reader
+    implementation(libs.gson)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

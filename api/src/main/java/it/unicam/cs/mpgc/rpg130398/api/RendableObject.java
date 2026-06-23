@@ -6,7 +6,7 @@ import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 /**
  * Represents an object that can be rendered in the game world.
  * Holds the geometry (vertices and triangle indices) and needs a transform (position, rotation).
- * Triangles must be defined using index triplets via getTriangleTriplets().
+ * Triangles must be defined using index triplets.
  *
  * The dirty flag signals the graphics engine that the object has changed and needs to be re-rendered.
  */
@@ -18,8 +18,9 @@ public interface RendableObject extends Transform {
     Vertex[] getObjectVertices ();
     void setObjectVertices (Vertex[] Vertices);
     /**
-     * Returns the index triplets that define the triangles of this object.
-     * Each group of 3 indices refers to vertices in getObjectVertices().
+     * Returns an array contenting triplets of indices.
+     * Each group of 3 indices refers to a position inside getObjectVertices().
+     * Triplet make up a triangle of the object.
      * @return array of index triplets
      */
     short[] getTriangleTriplets();
@@ -46,7 +47,17 @@ public interface RendableObject extends Transform {
      */
     void clearDirty();
 
-
+    /**
+     * Returns a float array of 6 values.
+     * Value 1 is the minimum x of all the vertices
+     * Value 2 is the minimum y of all the vertices
+     * Value 3 is the minimum z of all the vertices
+     * Value 4 is the maximum x of all the vertices
+     * Value 5 is the maximum y of all the vertices
+     * Value 6 is the maximum z of all the vertices
+     * @return the bounds of the object in localSpace
+     */
+    float[] getBoundingBox();
 
     //VALIDATION
     /**

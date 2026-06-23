@@ -5,6 +5,7 @@
 guava = "33.5.0-jre"
 junit = "4.13.2"
 gdx = "1.12.1"
+gson = "2.13.2"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -14,5 +15,8 @@ junit = { module = "junit:junit", version.ref = "junit" }
 gdx-core     = { module = "com.badlogicgames.gdx:gdx",                  version.ref = "gdx" }
 gdx-backend  = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3",   version.ref = "gdx" }
 gdx-natives  = { module = "com.badlogicgames.gdx:gdx-platform",         version.ref = "gdx" }
+# librery to render .ttf font files
 gdx-freetype         = { module = "com.badlogicgames.gdx:gdx-freetype",          version.ref = "gdx" }
 gdx-freetype-natives = { module = "com.badlogicgames.gdx:gdx-freetype-platform", version.ref = "gdx" }
+# google json
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

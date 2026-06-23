@@ -1,22 +1,25 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes;
 
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper.AnimationQueue;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper.FadeAnimation;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.AnimationQueue;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FadeAnimation;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.*;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper.SimpleMonologue;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimation;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
 import java.awt.*;
 
-public class StartScene implements GameFase {
-    Game Game;
-    GraphicsManager Graphic;
+public class StartScene implements GameScenes {
+    Game game;
+    GraphicsManager graphic;
+    InputManager input;
 
     // Oggetti grafici
     RendableText TextBox;
@@ -28,29 +31,30 @@ public class StartScene implements GameFase {
 
     AnimationQueue animationQueue;
 
-    public StartScene(Game game, GraphicsManager Gm) {
-        this.Game = game;
-        this.Graphic = Gm;
+    public StartScene(Game game, GraphicsManager graphic, InputManager input) {
+        this.game = game;
+        this.graphic = graphic;
+        this.input = input;
 
         TextBox = new GenericTextObject();
         TextBox.setFontPath("fonts/Undisclose.ttf");
         TextBox.setPosition(new float[]{4.3f,1,0});
         TextBox.setColor(Color.gray);
-        Graphic.addText(TextBox);
+        graphic.addText(TextBox);
 
         ModelLoader Model = new PLY_ModelLoader("models/Corridor.ply");
         Corridor = new Generic3DObject(Model);
-        Graphic.addObject(Corridor);
+        graphic.addObject(Corridor);
 
         Model.setPath("models/BlackScreen.ply");
         BlackScreen = new Generic3DObject(Model);
-        Graphic.addObject(BlackScreen);
+        graphic.addObject(BlackScreen);
 
 
         Animation FadeInTransition = new FadeAnimation(BlackScreen, 34, true);
-        Monologue playerMonologueIntro = new SimpleMonologue(INTRO, TextBox, 0.4f, 20);
+        Monologue playerMonologueIntro = new MonologueAnimation(INTRO, TextBox, 0.4f, 20);
         Animation FadeOutTransition = new FadeAnimation(BlackScreen, 25, false);
-        Monologue playerMonologueOutro = new SimpleMonologue(OUTRO, TextBox, 0.2f, 20);
+        Monologue playerMonologueOutro = new MonologueAnimation(OUTRO, TextBox, 0.2f, 20);
 
         animationQueue = new AnimationQueue();
         animationQueue.add(FadeInTransition);
@@ -59,13 +63,13 @@ public class StartScene implements GameFase {
         animationQueue.add(playerMonologueOutro, this::onOutroMonologueStart);
     }
 
-    public GameFase update(long FrameNumber) {
+    public GameScenes update(long FrameNumber) {
         if (!animationQueue.hasFinished()) {
             animationQueue.update();
             return this; //don't change the gameScene
         } else {
             finish();
-            return null;
+            return new InterrogatoryScene(game, graphic, input);
         }
     }
     private void onFadeOutStart() {
@@ -76,8 +80,8 @@ public class StartScene implements GameFase {
         TextBox.setPosition(new float[]{6.3f,1,0});
     }
     private void finish() {
-        Graphic.removeText(TextBox);
-        Graphic.removeObject(Corridor);
-        Graphic.removeObject(BlackScreen);
+        graphic.removeText(TextBox);
+        graphic.removeObject(Corridor);
+        graphic.removeObject(BlackScreen);
     }
 }

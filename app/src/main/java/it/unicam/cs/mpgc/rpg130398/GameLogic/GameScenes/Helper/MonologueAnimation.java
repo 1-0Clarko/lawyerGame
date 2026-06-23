@@ -1,9 +1,9 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameFases.Helper;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Monologue;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
-public class SimpleMonologue implements Monologue {
+public class MonologueAnimation implements Monologue {
     private final String[] pages;
     private final RendableText textObject;
     private final float charsPerFrame;
@@ -15,7 +15,7 @@ public class SimpleMonologue implements Monologue {
     private boolean pageFinished = false;
     private boolean hasFinished = false;
 
-    public SimpleMonologue(String[] pages, RendableText textObject, float charsPerFrame, int endPagesWait) {
+    public MonologueAnimation(String[] pages, RendableText textObject, float charsPerFrame, int endPagesWait) {
         this.pages = pages;
         this.textObject = textObject;
         this.charsPerFrame = charsPerFrame;

@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class GenericTextObject implements RendableText, Positionable {
     private boolean isDirty;
-    String text;
+    String text = "";
     String fontPath;
     Color color;
 

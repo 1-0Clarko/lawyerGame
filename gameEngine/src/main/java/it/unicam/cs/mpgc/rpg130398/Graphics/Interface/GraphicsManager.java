@@ -56,4 +56,21 @@ public interface GraphicsManager {
      * @return true se il testo è stato rimosso
      */
     boolean removeText(RendableText textObject);
+
+    /**
+     * Restituisce il fattore di scala applicato al contenuto mantenendone le proporzioni.
+     *
+     * Il valore restituito contiene due componenti:
+     * <ul>
+     *     <li>indice 0: scala applicata sull'asse X</li>
+     *     <li>indice 1: scala applicata sull'asse Y</li>
+     * </ul>
+     *
+     * Un valore inferiore a 1 indica che l'asse è stato compresso per
+     * preservare l'aspect ratio del FRUSTUM, mentre un valore pari a 1
+     * indica che non è stata applicata alcuna riduzione su quell'asse.
+     *
+     * @return array contenente i fattori di scala {scaleX, scaleY}
+     */
+    float[] getContentScale();
 }

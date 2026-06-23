@@ -23,12 +23,12 @@ public class GDX_GraphicsManager implements GraphicsManager {
     Vector<GDX_TextRenderer> TextMeshObjects = new Vector<>();
 
     Matrix4 calculated_screen_projection;
+    Vector2 contentScale;
 
     public GDX_GraphicsManager(float[] FRUSTUM_To_Use) {
         if (FRUSTUM_To_Use.length != 3)
             throw new IllegalArgumentException("the FRUSTUM need to have 3 coordinate");
         FRUSTUM = new Vector3(FRUSTUM_To_Use[0], FRUSTUM_To_Use[1], FRUSTUM_To_Use[2]);
-        Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
         // Enable depth testing to correctly render overlapping objects
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
         Gdx.gl.glDepthFunc(GL20.GL_LESS);
@@ -44,6 +44,8 @@ public class GDX_GraphicsManager implements GraphicsManager {
         DefaultShader = new ShaderProgram(Shaders_source.GetVertexShader(), Shaders_source.GetFragmentShader());
         if (!DefaultShader.isCompiled())
             throw new RuntimeException("Shader error: " + DefaultShader.getLog());
+
+        Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
     }
 
     @Override
@@ -113,6 +115,10 @@ public class GDX_GraphicsManager implements GraphicsManager {
         }
         return false;
     }
+    @Override
+    public float[] getContentScale() {
+        return new float[] {contentScale.x, contentScale.y};
+    }
     private void CalculateScreenProjection() {
         // Orthographic projection: maps WorldSpace [0, FRUSTUM] to clip space [-1, 1]
         calculated_screen_projection = new Matrix4();
@@ -122,13 +128,14 @@ public class GDX_GraphicsManager implements GraphicsManager {
         // Scale one axis to preserve the FRUSTUM aspect ratio
         float frustumAspect = FRUSTUM.x / FRUSTUM.y;
         float windowAspect  = (float) Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
-        if (windowAspect > frustumAspect) {
-            float scale = frustumAspect / windowAspect;
-            calculated_screen_projection.scale(scale, 1f, 1f);
-        } else {
-            float scale = windowAspect / frustumAspect;
-            calculated_screen_projection.scale(1f, scale, 1f);
-        }
+
+        contentScale = new Vector2(1,1);
+        if (windowAspect > frustumAspect)
+            contentScale.x = frustumAspect / windowAspect;
+        else
+            contentScale.y = windowAspect / frustumAspect;;
+
+        calculated_screen_projection.scale(contentScale.x, contentScale.y, 1f);
     }
     /**
      * Restricts rendering to the area of the window that corresponds to the FRUSTUM.
