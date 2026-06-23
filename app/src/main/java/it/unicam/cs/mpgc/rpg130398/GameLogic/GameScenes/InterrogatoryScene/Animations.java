@@ -117,27 +117,27 @@ class DefendantAnimationsManager implements Animation {
         this.graphic = graphic;
         ModelLoader modelLoader = new PLY_ModelLoader(new float[]{-1, 1, 1});
 
-        modelLoader.setPath("models/DefendantSitting1.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSitting1.ply");
         RendableObject defendantSitting1 = new Generic3DObject(modelLoader);
-        modelLoader.setPath("models/DefendantSitting2.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSitting2.ply");
         RendableObject defendantSitting2 = new Generic3DObject(modelLoader);
-        modelLoader.setPath("models/DefendantSitting3.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSitting3.ply");
         RendableObject defendantSitting3 = new Generic3DObject(modelLoader);
         RendableObject[] objects = new RendableObject[]{defendantSitting1, defendantSitting2, defendantSitting3};
         neutralAnimation = new StopMotionAnimation(graphic, 80, true, objects);
 
-        modelLoader.setPath("models/DefendantSittingAngry1.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSittingAngry1.ply");
         RendableObject defendantAngry1 = new Generic3DObject(modelLoader);
-        modelLoader.setPath("models/DefendantSittingAngry2.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSittingAngry2.ply");
         RendableObject defendantAngry2 = new Generic3DObject(modelLoader);
         objects = new RendableObject[]{defendantAngry1, defendantAngry2};
         angryAnimation = new StopMotionAnimation(graphic, 70, true, objects);
 
-        modelLoader.setPath("models/DefendantSittingKill1.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSittingKill1.ply");
         RendableObject defendantKilling1 = new Generic3DObject(modelLoader);
-        modelLoader.setPath("models/DefendantSittingKill2.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSittingKill2.ply");
         RendableObject defendantKilling2 = new Generic3DObject(modelLoader);
-        modelLoader.setPath("models/DefendantSittingKill33.ply");
+        modelLoader.setPath("models/InterrogatoryScene/DefendantSittingKill33.ply");
         RendableObject defendantKilling3 = new Generic3DObject(modelLoader);
         // DefendantKilling1 ripetuto 3 volte di proposito: rallenta il primo
         // frame dell'animazione di morte rispetto agli ultimi due.
@@ -145,7 +145,7 @@ class DefendantAnimationsManager implements Animation {
         killingAnimation = new StopMotionAnimation(graphic, 10, false, objects);
 
         // TODO: trustingAnimation needs its own dedicated models
-        // (e.g. models/DefendantSittingTrusting*.ply). Until then it falls
+        // (e.g. models/InterrogatoryScene/DefendantSittingTrusting*.ply). Until then it falls
         // back to the neutral animation so TRUSTING never leaves the
         // defendant invisible (see setAnimationStatus).
         trustingAnimation = neutralAnimation;

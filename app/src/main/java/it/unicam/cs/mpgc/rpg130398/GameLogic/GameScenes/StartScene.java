@@ -42,7 +42,7 @@ public class StartScene implements GameScenes {
         TextBox.setColor(Color.gray);
         graphic.addText(TextBox);
 
-        ModelLoader Model = new PLY_ModelLoader("models/Corridor.ply");
+        ModelLoader Model = new PLY_ModelLoader("models/StartScene/Corridor.ply");
         Corridor = new Generic3DObject(Model);
         graphic.addObject(Corridor);
 

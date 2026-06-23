@@ -78,19 +78,19 @@ public class InterrogatoryScene implements GameScenes {
 
     private void setupSceneObjects() {
         ModelLoader model = new PLY_ModelLoader(new float[]{-1, 1, 1});
-        model.setPath("models/Table.ply");
+        model.setPath("models/InterrogatoryScene/Table.ply");
         table = new Generic3DObject(model);
         graphic.addObject(table);
 
-        model.setPath("models/Folder.ply");
+        model.setPath("models/InterrogatoryScene/Folder.ply");
         physicalFolder = new Generic3DObject(model);
         graphic.addObject(physicalFolder);
 
-        model.setPath("models/clockBody.ply");
+        model.setPath("models/InterrogatoryScene/clockBody.ply");
         clockBody = new Generic3DObject(model);
         clockBody.setPosition(CLOCK_POS);
 
-        model.setPath("models/clockHand.ply");
+        model.setPath("models/InterrogatoryScene/clockHand.ply");
         clockHand = new Generic3DObject(model);
         float[] clockHandPos = {CLOCK_POS[0], CLOCK_POS[1], CLOCK_POS[2]-1};
         clockHand.setPosition(clockHandPos);
