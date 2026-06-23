@@ -15,30 +15,27 @@ import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 import java.awt.*;
 
 class SitingAnimation implements Animation {
-    private final RendableObject table;
-    private final RendableObject physicalFolder;
 
-    private final Animation tableAnimation;
-    private final Animation folderAnimation;
+    private final ParallelAnimation Animations;
 
-    protected SitingAnimation(RendableObject table, RendableObject physicalFolder) {
-        this.table = table;
-        this.physicalFolder = physicalFolder;
+    protected SitingAnimation(RendableObject ... objects) {
+        Animations = new ParallelAnimation();
 
-        float[] zero = new float[]{0f, 0f, 0f};
-        tableAnimation = new TransformAnimation(table, new float[]{0.3f, -3f, 4f}, zero, new float[]{-20f, 0f, 0f}, zero, 80, TransformAnimation.Easing.EASE_IN_OUT);
-        folderAnimation = new TransformAnimation(physicalFolder, new float[]{0.3f, -3f, 4f}, zero, new float[]{-20f, 0f, 0f}, zero, 80, TransformAnimation.Easing.EASE_IN_OUT);
+        for (RendableObject object : objects) {
+            float[] zero = new float[]{0f, 0f, 0f};
+            Animation Animation = new TransformAnimation(object, new float[]{0.3f, -3f, 4f}, zero, new float[]{-20f, 0f, 0f}, zero, 80, TransformAnimation.Easing.EASE_IN_OUT);
+            Animations.add(Animation);
+        }
     }
 
     @Override
     public void update() {
-        tableAnimation.update();
-        folderAnimation.update();
+        Animations.update();
     }
 
     @Override
     public boolean hasFinished() {
-        return tableAnimation.hasFinished();
+        return Animations.hasFinished();
     }
 }
 

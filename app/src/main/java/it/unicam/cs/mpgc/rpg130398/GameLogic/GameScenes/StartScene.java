@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.AnimationQueue;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FadeAnimation;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.*;
@@ -9,14 +10,16 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimatio
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
 import java.awt.*;
 
 public class StartScene implements GameScenes {
-    Game Game;
-    GraphicsManager Graphic;
+    Game game;
+    GraphicsManager graphic;
+    InputManager input;
 
     // Oggetti grafici
     RendableText TextBox;
@@ -28,23 +31,24 @@ public class StartScene implements GameScenes {
 
     AnimationQueue animationQueue;
 
-    public StartScene(Game game, GraphicsManager Gm) {
-        this.Game = game;
-        this.Graphic = Gm;
+    public StartScene(Game game, GraphicsManager graphic, InputManager input) {
+        this.game = game;
+        this.graphic = graphic;
+        this.input = input;
 
         TextBox = new GenericTextObject();
         TextBox.setFontPath("fonts/Undisclose.ttf");
         TextBox.setPosition(new float[]{4.3f,1,0});
         TextBox.setColor(Color.gray);
-        Graphic.addText(TextBox);
+        graphic.addText(TextBox);
 
         ModelLoader Model = new PLY_ModelLoader("models/Corridor.ply");
         Corridor = new Generic3DObject(Model);
-        Graphic.addObject(Corridor);
+        graphic.addObject(Corridor);
 
         Model.setPath("models/BlackScreen.ply");
         BlackScreen = new Generic3DObject(Model);
-        Graphic.addObject(BlackScreen);
+        graphic.addObject(BlackScreen);
 
 
         Animation FadeInTransition = new FadeAnimation(BlackScreen, 34, true);
@@ -65,7 +69,7 @@ public class StartScene implements GameScenes {
             return this; //don't change the gameScene
         } else {
             finish();
-            return null;
+            return new InterrogatoryScene(game, graphic, input);
         }
     }
     private void onFadeOutStart() {
@@ -76,8 +80,8 @@ public class StartScene implements GameScenes {
         TextBox.setPosition(new float[]{6.3f,1,0});
     }
     private void finish() {
-        Graphic.removeText(TextBox);
-        Graphic.removeObject(Corridor);
-        Graphic.removeObject(BlackScreen);
+        graphic.removeText(TextBox);
+        graphic.removeObject(Corridor);
+        graphic.removeObject(BlackScreen);
     }
 }

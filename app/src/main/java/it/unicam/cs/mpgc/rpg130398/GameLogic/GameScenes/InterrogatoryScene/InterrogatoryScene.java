@@ -15,9 +15,10 @@ import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScen
 public class InterrogatoryScene implements GameScenes {
 
     private static final int FPS = 30;
-    private static final int TIME_LIMIT_SECONDS = 8 * 60;
-    private static final int TIME_LIMIT_FRAMES = TIME_LIMIT_SECONDS * FPS; // 7200 frames
-    private long INITIAL_FRAME_NUMBER = -1;
+    private static final int TIME_LIMIT_SECONDS = 7*60;
+    private static final int FRAME_LIMIT = TIME_LIMIT_SECONDS*FPS;
+    private static int remainingFrames = FRAME_LIMIT;
+    private static final float[] CLOCK_POS = {14, 7, 12};
 
     // External api
     private final Game game;
@@ -27,6 +28,8 @@ public class InterrogatoryScene implements GameScenes {
     // Scene 3D objects
     private RendableObject table;
     private RendableObject physicalFolder;
+    private RendableObject clockBody;
+    private RendableObject clockHand;
 
     // Managers
     private DialogueWithDefendantManager dialogueManager;
@@ -47,14 +50,14 @@ public class InterrogatoryScene implements GameScenes {
 
         dialogueManager = new DialogueWithDefendantManager(graphic, input);
         setupSceneObjects();
-        startInitialAnimations();
+        startAnimations();
+        cutSceneAnimations.showNext();
+        cutSceneAnimations.showNext();
+        cutSceneAnimations.showNext();
     }
 
     @Override
     public GameScenes update(long frameNumber) {
-        if (INITIAL_FRAME_NUMBER == -1)
-            INITIAL_FRAME_NUMBER = frameNumber;
-
         // Updates the loop animations
         for (Animation animation : loopAnimations)
             animation.update();
@@ -71,7 +74,7 @@ public class InterrogatoryScene implements GameScenes {
 
         dialogueManager.update();
         handleTrustEvents();
-        handleTimeLimit(frameNumber);
+        handleTimeLimit();
         handleDialogEnd();
         return this;
     }
@@ -85,16 +88,25 @@ public class InterrogatoryScene implements GameScenes {
         model.setPath("models/Folder.ply");
         physicalFolder = new Generic3DObject(model);
         graphic.addObject(physicalFolder);
+
+        model.setPath("models/clockBody.ply");
+        clockBody = new Generic3DObject(model);
+        clockBody.setPosition(CLOCK_POS);
+
+        model.setPath("models/clockHand.ply");
+        clockHand = new Generic3DObject(model);
+        float[] clockHandPos = {CLOCK_POS[0], CLOCK_POS[1], CLOCK_POS[2]-1};
+        clockHand.setPosition(clockHandPos);
     }
 
-    private void startInitialAnimations() {
+    private void startAnimations() {
         // setup the defendant
         defendantAnimationManager = new DefendantAnimationsManager(graphic);
         loopAnimations.add(defendantAnimationManager);
 
         // setup the sitting and inner monologue cut scene
         cutSceneAnimations.add(new SitingAnimation(table, physicalFolder));
-        cutSceneAnimations.add(new StartMonologAnimation(graphic));
+        cutSceneAnimations.add(new StartMonologAnimation(graphic), null, this::startTheClock);
     }
 
     /**
@@ -144,11 +156,12 @@ public class InterrogatoryScene implements GameScenes {
      * scene. Does nothing once the defendant has been killed (timerStopped)
      * or the interrogatory is already over.
      */
-    private void handleTimeLimit(long frameNumber) {
+    private void handleTimeLimit() {
         if (timerStopped || interrogatoryOver)
             return;
 
-        if (frameNumber - INITIAL_FRAME_NUMBER < TIME_LIMIT_FRAMES)
+        remainingFrames--;
+        if (remainingFrames != 0)
             return;
 
         clearUI();
@@ -180,5 +193,12 @@ public class InterrogatoryScene implements GameScenes {
     private GameScenes nextScene() {
         System.out.println("Scena tribunale da aggiungere");
         return this;
+    }
+    private void startTheClock() {
+        // setup the clock
+        graphic.addObject(clockBody);
+        graphic.addObject(clockHand);
+        float[] zero = {0,0,0};
+        loopAnimations.add(new TransformAnimation(clockHand, CLOCK_POS, CLOCK_POS, zero, new float[]{0,0,-90}, FRAME_LIMIT, TransformAnimation.Easing.LINEAR));
     }
 }

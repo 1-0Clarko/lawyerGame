@@ -154,6 +154,6 @@ class DialogueWithDefendantManager {
         }
 
         graphic.addText(answersText);
-        answersTextAnimation = new MonologueAnimation(new String[]{defendantSpeech}, answersText, 3.5f, 0);
+        answersTextAnimation = new MonologueAnimation(new String[]{defendantSpeech}, answersText, 1f, 0);
     }
 }
