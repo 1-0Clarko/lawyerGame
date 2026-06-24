@@ -17,7 +17,7 @@ import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 
 public class GDX_GraphicsManager implements GraphicsManager {
     public static Vector3 FRUSTUM;
-    public static int START_WIDTH = 1920, START_HEIGHT = 1080;
+    public static int START_WIDTH = 1280, START_HEIGHT = 720;
     ShaderProgram DefaultShader;
     Vector<GDX_MeshRenderer> MashObjects = new Vector<>();
     Vector<GDX_TextRenderer> TextMeshObjects = new Vector<>();
@@ -35,8 +35,6 @@ public class GDX_GraphicsManager implements GraphicsManager {
         // Enable alpha blending for transparency support
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        // Enable scissor test to not render geometry outside the FRUSTUM area
-        Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
 
 
         // Compile the default shader for objects without a preferred shader
@@ -50,7 +48,13 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public void render() {
+        // 1. Disabilita temporaneamente lo scissor per pulire l'INTERA finestra anche le parti tagliate
+        Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
+        Gdx.gl.glClearColor(0, 0, 0, 1); // Imposta lo sfondo esterno su nero (o un colore a scelta)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        // 2. Riabilita lo scissor per il disegno della geometria di gioco
+        Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
         Gdx.gl.glEnable(GL20.GL_BLEND);
 
         // Render 3D objects with depth testing
