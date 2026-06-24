@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.StartScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
@@ -16,10 +17,7 @@ public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.I
         Graphics = GraphicsManager;
         Input = InputManager;
 
-        //TODO change after finishing the scene
-        HashSet<String> opinionatedFlags = new HashSet<>();
-        opinionatedFlags.add("prova");
-        CurrentGameFace = new TrialScene(this, Graphics, Input, opinionatedFlags);
+        CurrentGameFace = new StartScene(this, Graphics, Input);
     }
 
     @Override
