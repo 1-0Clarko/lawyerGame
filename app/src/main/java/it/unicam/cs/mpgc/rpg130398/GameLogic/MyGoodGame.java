@@ -1,11 +1,11 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import com.badlogic.gdx.InputAdapter;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.StartScene;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
+
+import java.util.HashSet;
 
 public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game {
     GraphicsManager Graphics;
@@ -16,7 +16,10 @@ public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.I
         Graphics = GraphicsManager;
         Input = InputManager;
 
-        CurrentGameFace = new StartScene(this, Graphics, Input);
+        //TODO change after finishing the scene
+        HashSet<String> opinionatedFlags = new HashSet<>();
+        opinionatedFlags.add("prova");
+        CurrentGameFace = new TrialScene(this, Graphics, Input, opinionatedFlags);
     }
 
     @Override

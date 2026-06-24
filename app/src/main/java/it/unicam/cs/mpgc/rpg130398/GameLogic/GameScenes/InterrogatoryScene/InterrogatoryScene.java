@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.*;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.*;
 import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
@@ -187,11 +188,9 @@ public class InterrogatoryScene implements GameScenes {
 
     /**
      * @return the next scene to move to once the interrogatory is over.
-     * TODO: replace with `new DefenseScene(...)` once that scene exists.
      */
     private GameScenes nextScene() {
-        System.out.println("Scena tribunale da aggiungere");
-        return this;
+        return new TrialScene(game, graphic, input, dialogueManager.dialogLogic.getOpinionatedFlags());
     }
     private void startTheClock() {
         // setup the clock
