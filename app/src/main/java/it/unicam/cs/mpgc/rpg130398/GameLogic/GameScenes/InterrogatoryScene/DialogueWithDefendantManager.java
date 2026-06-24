@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
 
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FlagsDisplayUI;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimation;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.QuestionButtonsUI;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.JSON_DialogLoader;

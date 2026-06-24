@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
@@ -23,7 +23,7 @@ import java.util.List;
  * Graphics objects are only (re)created when the number of collected flags
  * changes, not on every update call.
  */
-class FlagsDisplayUI {
+public class FlagsDisplayUI {
 
     private static final float ROW_HEIGHT = 0.6f;
     private static final float BOTTOM_Y = 3.5f;
@@ -39,7 +39,7 @@ class FlagsDisplayUI {
     private final List<FlagRow> rows = new ArrayList<>();
     private int lastKnownFlagCount = -1; // -1 forces the first build
 
-    protected FlagsDisplayUI(GraphicsManager graphic) {
+    public FlagsDisplayUI(GraphicsManager graphic) {
         this.graphic = graphic;
 
         flagIconModel = new PLY_ModelLoader(new float[] {-1,1,1});
@@ -55,7 +55,7 @@ class FlagsDisplayUI {
      * Refreshes the displayed rows if the number of collected flags changed
      * since the last call. Cheap to call every frame.
      */
-    protected void update(List<String> collectedFlagsInDiscoveryOrder) {
+    public void update(List<String> collectedFlagsInDiscoveryOrder) {
         if (collectedFlagsInDiscoveryOrder.size() == lastKnownFlagCount)
             return;
 
@@ -84,7 +84,7 @@ class FlagsDisplayUI {
         }
     }
 
-    protected void removeRows() {
+    public void removeRows() {
         for (FlagRow row : rows) {
             graphic.removeText(row.label());
             graphic.removeObject(row.icon());

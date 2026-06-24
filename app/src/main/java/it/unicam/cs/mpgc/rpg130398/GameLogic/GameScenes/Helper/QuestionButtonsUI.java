@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * of {@link DialogNode.Connection} into clickable 3D buttons and reports back
  * which one (if any) is hovered or clicked.
  */
-class QuestionButtonsUI {
+public class QuestionButtonsUI {
 
     private static final int MAX_LENGTH_TEXT_ON_BUTTON = 30;
 
@@ -34,7 +34,7 @@ class QuestionButtonsUI {
 
     private QuestionButton[] questionButtons = new QuestionButton[0];
 
-    protected QuestionButtonsUI(GraphicsManager graphic, InputManager input) {
+    public QuestionButtonsUI(GraphicsManager graphic, InputManager input) {
         this.graphic = graphic;
         this.input = input;
 
@@ -50,7 +50,7 @@ class QuestionButtonsUI {
      * Creates and shows one button per available choice, replacing any
      * buttons currently on screen.
      */
-    protected void show(ArrayList<DialogNode.Connection> choices) {
+    public void show(ArrayList<DialogNode.Connection> choices) {
         removeButtons();
 
         questionButtons = new QuestionButton[choices.size()];
@@ -81,7 +81,7 @@ class QuestionButtonsUI {
      * @return the corresponding connection of the button currently under the cursor, or
      * null if none is hovered (or no buttons are shown).
      */
-    protected DialogNode.Connection getHoveredChoice() {
+    public DialogNode.Connection getHoveredChoice() {
         QuestionButton hovered = hoveredButton();
         return hovered == null ? null : hovered.choice();
     }
@@ -89,14 +89,14 @@ class QuestionButtonsUI {
     /**
      * @return true if the cursor was just pressed while hovering a button
      */
-    protected boolean isHoveredChoiceClicked() {
+    public boolean isHoveredChoiceClicked() {
         return hoveredButton() != null && input.isCursorJustPressed();
     }
 
     /**
      * Removes all currently shown buttons from the graphics and clears them.
      */
-    protected void removeButtons() {
+    public void removeButtons() {
         for (QuestionButton button : questionButtons) {
             graphic.removeObject(button.rectangle());
             graphic.removeText(button.text());
