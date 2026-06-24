@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.AnimationQueue;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FadeAnimation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimation;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.ParallelAnimation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
@@ -15,9 +14,7 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
-import org.lwjgl.opengl.ARBEnhancedLayouts;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -61,7 +58,7 @@ public class TrialScene implements GameScenes {
             "Grazie per aver giocato!",
             "Hai raggiunto la fine della versione attualmente disponibile.",
             "La scena finale del processo, in cui potrai utilizzare le informazioni raccolte\n per costruire la difesa del tuo cliente, non è ancora implementata.",
-            "Grazie per il tempo che hai dedicato al gioco!"
+            "Grazie per il tempo che hai dedicato al gioco!\nqueste sono le flag che hai sbloccato"
     };
     /**
      * @param collectedFlags the flags that the player collected in the interrogatory dialog
@@ -71,9 +68,10 @@ public class TrialScene implements GameScenes {
         this.graphic = graphic;
         this.input = input;
 
-        setupSceneObjects();
 
-        dialogueManager = new DialogueWithJudgeManager();
+        dialogueManager = new DialogueWithJudgeManager(graphic, collectedFlags.stream().toList());
+
+        setupSceneObjects();
         setupPlaceHolderText();
         setupAnimations();
     }
@@ -81,7 +79,11 @@ public class TrialScene implements GameScenes {
     @Override
     public GameScenes update(long frameNumber) {
         // Updates the loop animations
-        cutSceneAnimations.update();
+        if (!cutSceneAnimations.hasFinished()) {
+            cutSceneAnimations.update();
+            return this;
+        }
+        dialogueManager.update();
 
         return this;
     }
@@ -111,6 +113,7 @@ public class TrialScene implements GameScenes {
 
         ModelLoader model = new PLY_ModelLoader("models/BlackScreen.ply");
         RendableObject blackScreen = new Generic3DObject(model);
+        blackScreen.setPosition(new float[] {0,0,0.01f}); // Move a little more far to prevent z fighting with UI elements
         graphic.addObject(blackScreen);
         Animation fadeInTransition = new FadeAnimation(blackScreen, 34, true);
         cutSceneAnimations.add(fadeInTransition);
