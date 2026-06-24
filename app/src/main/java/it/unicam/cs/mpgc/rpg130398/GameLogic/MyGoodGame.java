@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.StartScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;

@@ -9,6 +9,7 @@ import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.*;
 
+import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 
 import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.DefendantAnimationsManager.Status.*;
@@ -147,6 +148,8 @@ public class InterrogatoryScene implements GameScenes {
             return;
 
         clearUI();
+        clearSceneObjects();
+        clearDefendant();
         interrogatoryOver = true;
     }
 
@@ -184,6 +187,15 @@ public class InterrogatoryScene implements GameScenes {
 
     private void clearUI() {
         dialogueManager.clear();
+    }
+    private void clearSceneObjects() {
+        graphic.removeObject(table);
+        graphic.removeObject(physicalFolder);
+        graphic.removeObject(clockBody);
+        graphic.removeObject(clockHand);
+    }
+    private void clearDefendant() {
+        defendantAnimationManager.clear();
     }
 
     /**

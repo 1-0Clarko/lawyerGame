@@ -95,6 +95,7 @@ class StartMonologAnimation implements Animation {
     }
 
     private void onFadeOut() {
+        graphic.removeObject(blackBar);
         graphic.removeText(textBox);
     }
 }
@@ -168,7 +169,7 @@ class DefendantAnimationsManager implements Animation {
         if (status == currentStatus)
             return;
 
-        graphic.removeObject(currentAnimation.getCurrent());
+        clear();
         switch (status) {
             case NEUTRAL -> currentAnimation = neutralAnimation;
             case ANGRY -> currentAnimation = angryAnimation;
@@ -176,6 +177,9 @@ class DefendantAnimationsManager implements Animation {
             case TRUSTING -> currentAnimation = trustingAnimation;
         }
         currentStatus = status;
+    }
+    protected void clear() {
+        graphic.removeObject(currentAnimation.getCurrent());
     }
 }
 
