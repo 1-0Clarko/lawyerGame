@@ -8,11 +8,11 @@ import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 
 public class GDX_InputManager implements InputManager {
     private final Vector2 FRUSTUM;
-    private final GraphicsManager Graphics;
+    private final GraphicsManager graphics;
 
     public GDX_InputManager(float[] FRUSTUM, GraphicsManager GraphicsManager) {
         this.FRUSTUM = new Vector2(FRUSTUM[0], FRUSTUM[1]);
-        this.Graphics = GraphicsManager;
+        this.graphics = GraphicsManager;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class GDX_InputManager implements InputManager {
         Vector2 pos = new Vector2( Gdx.input.getX(), (Gdx.graphics.getHeight()-Gdx.input.getY()) );
 
         Vector2 screenSize = new Vector2( Gdx.graphics.getWidth(), Gdx.graphics.getHeight() );
-        float[] wordSpacePos = { (pos.x/screenSize.x)*FRUSTUM.x/Graphics.getContentScale()[0], (pos.y/screenSize.y)*FRUSTUM.y/Graphics.getContentScale()[1] };
+        float[] wordSpacePos = { (pos.x/screenSize.x)*FRUSTUM.x/ graphics.getContentScale()[0], (pos.y/screenSize.y)*FRUSTUM.y/ graphics.getContentScale()[1] };
 
         return wordSpacePos;
     }

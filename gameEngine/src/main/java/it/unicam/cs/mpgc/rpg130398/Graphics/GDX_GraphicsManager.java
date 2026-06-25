@@ -19,8 +19,8 @@ public class GDX_GraphicsManager implements GraphicsManager {
     public static Vector3 FRUSTUM;
     public static int START_WIDTH = 1280, START_HEIGHT = 720;
     ShaderProgram DefaultShader;
-    Vector<GDX_MeshRenderer> MashObjects = new Vector<>();
-    Vector<GDX_TextRenderer> TextMeshObjects = new Vector<>();
+    Vector<GDX_MeshRenderer> mashObjects = new Vector<>();
+    Vector<GDX_TextRenderer> textMeshObjects = new Vector<>();
 
     Matrix4 calculated_screen_projection;
     Vector2 contentScale;
@@ -59,13 +59,13 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
         // Render 3D objects with depth testing
         Gdx.gl.glDepthFunc(GL20.GL_LESS);
-        for (GDX_MeshRenderer MeshObject : MashObjects) {
+        for (GDX_MeshRenderer MeshObject : mashObjects) {
             MeshObject.render(calculated_screen_projection);
         }
 
         // Render text on top of everything, ignoring depth
         Gdx.gl.glDepthFunc(GL20.GL_ALWAYS);
-        for (GDX_TextRenderer TextMeshObject : TextMeshObjects) {
+        for (GDX_TextRenderer TextMeshObject : textMeshObjects) {
             TextMeshObject.render(calculated_screen_projection);
         }
     }
@@ -78,31 +78,31 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public void dispose() {
-        for (GDX_MeshRenderer MashObject : MashObjects) {
+        for (GDX_MeshRenderer MashObject : mashObjects) {
             MashObject.dispose();
         }
     }
 
     @Override
     public boolean addObject(RendableObject Object) {
-        for (GDX_MeshRenderer r : MashObjects)
+        for (GDX_MeshRenderer r : mashObjects)
             if (r.getObject() == Object) return false;
-        MashObjects.add(new GDX_MeshRenderer(Object, DefaultShader));
+        mashObjects.add(new GDX_MeshRenderer(Object, DefaultShader));
         return true;
     }
 
     @Override
     public boolean addText(RendableText textObject) {
-        for (GDX_TextRenderer r : TextMeshObjects)
+        for (GDX_TextRenderer r : textMeshObjects)
             if (r.getObject() == textObject) return false;
-        TextMeshObjects.add(new GDX_TextRenderer(textObject, new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+        textMeshObjects.add(new GDX_TextRenderer(textObject, new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
         return true;
     }
     @Override
     public boolean removeObject(RendableObject object) {
-        for (GDX_MeshRenderer r : MashObjects) {
+        for (GDX_MeshRenderer r : mashObjects) {
             if (r.getObject() == object) {
-                MashObjects.remove(r);
+                mashObjects.remove(r);
                 return true;
             }
         }
@@ -111,9 +111,9 @@ public class GDX_GraphicsManager implements GraphicsManager {
 
     @Override
     public boolean removeText(RendableText textObject) {
-        for (GDX_TextRenderer r : TextMeshObjects) {
+        for (GDX_TextRenderer r : textMeshObjects) {
             if (r.getObject() == textObject) {
-                TextMeshObjects.remove(r);
+                textMeshObjects.remove(r);
                 return true;
             }
         }
