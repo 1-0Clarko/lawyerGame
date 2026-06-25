@@ -1,5 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.Graphics.Interface;
-import it.unicam.cs.mpgc.rpg130398.api.Vertex;
+package it.unicam.cs.mpgc.rpg130398.api;
 import java.io.IOException;
 /**
  * Reads vertices and triangle triplets from a 3D model file.

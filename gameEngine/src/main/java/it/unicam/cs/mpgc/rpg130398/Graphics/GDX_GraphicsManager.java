@@ -9,7 +9,7 @@ import java.util.Vector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 import it.unicam.cs.mpgc.rpg130398.resources.Shaders.Simple3D_Shader;

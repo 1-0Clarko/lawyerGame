@@ -1,7 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.Graphics.Interface;
-
-import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
-import it.unicam.cs.mpgc.rpg130398.api.RendableText;
+package it.unicam.cs.mpgc.rpg130398.api;
 
 /**
  * Si occupa di disegnare oggetti 3D che implementano {@link RendableObject}.

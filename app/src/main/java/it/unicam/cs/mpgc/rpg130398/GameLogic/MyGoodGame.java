@@ -1,13 +1,9 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.StartScene;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
-
-import java.util.HashSet;
 
 public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game {
     GraphicsManager Graphics;

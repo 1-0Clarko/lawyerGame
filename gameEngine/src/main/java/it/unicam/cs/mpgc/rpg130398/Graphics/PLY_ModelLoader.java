@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.Graphics;
 
-import com.badlogic.gdx.graphics.glutils.VertexArray;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 
 import java.awt.*;

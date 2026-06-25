@@ -4,12 +4,11 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.*;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.*;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.*;
 
-import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 
 import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.DefendantAnimationsManager.Status.*;
