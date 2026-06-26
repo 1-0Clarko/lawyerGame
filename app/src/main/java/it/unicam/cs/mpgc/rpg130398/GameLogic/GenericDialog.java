@@ -75,11 +75,6 @@ public class GenericDialog implements Dialog, DialogState {
     }
 
     @Override
-    public Set<String> getOpinionatedFlags() {
-        return unlockedFlags;
-    }
-
-    @Override
     public DialogNode getNodeFromID(int id) {
         return nodes.get(id);
     }

@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg130398.api.DialogState;
 import it.unicam.cs.mpgc.rpg130398.api.ConnectionRequirement;
 
 /**
- * Requirement satisfied when the current trust value lies within
+ * Requirement satisfied when the current trust value of the conversation is within
  * [minTrust, maxTrust] (inclusive on both ends).
  */
 public class TrustRequirement implements ConnectionRequirement {

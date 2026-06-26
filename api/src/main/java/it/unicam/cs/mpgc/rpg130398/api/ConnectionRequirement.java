@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Represents a condition that mast be true for a {@link DialogNode.Connection} to be used.
  * <p>
- * Implementations encapsulate one kind of check (trust in range, flag present, ...).
+ * Implementations encapsulate one kind of check, for example (dialog trust in range, flag present, ...).
  *
  */
 public interface ConnectionRequirement extends Serializable {
