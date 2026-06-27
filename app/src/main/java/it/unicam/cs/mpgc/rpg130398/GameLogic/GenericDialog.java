@@ -1,19 +1,18 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import it.unicam.cs.mpgc.rpg130398.api.*;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.*;
 import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 import java.util.*;
 
-public class GenericDialog implements Dialog, DialogState {
+public class GenericDialog implements Dialog {
 
     private final HashMap<Integer, DialogNode> nodes = new HashMap<>();         // id node -> node
-    private final Set<Integer> visitedNodes = new HashSet<>();                  // id of already visited nodes
+    private final HashSet<Integer> visitedNodes = new HashSet<>();                  // id of already visited nodes
     private final Set<DialogNode.Connection> usedConnections = Collections.newSetFromMap(new IdentityHashMap<>()); // a set of all the used Connections
-    private final HashSet<String> unlockedFlags = new HashSet<>();
+    private final ArrayList<String> collectedFlags = new ArrayList<>();
     private DialogNode currentNode;
-    private int trust;
 
     public GenericDialog(ArrayList<DialogNode> nodes) {
         setup(nodes);
@@ -34,7 +33,6 @@ public class GenericDialog implements Dialog, DialogState {
             nodes.put(node.getId(), node);
         currentNode = nodes.get(0); // The Start of the conversation is the node with id=0
         currentNode.markVisited();
-        unlockedFlags.clear();
         visitedNodes.clear();
     }
 
@@ -58,25 +56,24 @@ public class GenericDialog implements Dialog, DialogState {
             return false;
 
         currentNode = nodes.get(connection.idOther());
-        trust += connection.trustDelta();
-
-        if (currentNode.getFlag() != null && !currentNode.getFlag().isEmpty())
-            unlockedFlags.add(currentNode.getFlag());
 
         visitedNodes.add(currentNode.getId());
         usedConnections.add(connection);
         currentNode.markVisited();
+        if (currentNode.getFlag() != null && !currentNode.getFlag().isBlank())
+            collectedFlags.add(currentNode.getFlag());
+        onChoiceMade(connection);
         return true;
     }
 
-    @Override
-    public int getTrust() {
-        return trust;
-    }
-
-    @Override
-    public Set<String> getOpinionatedFlags() {
-        return unlockedFlags;
+    /**
+     * This method is useful for superclass that extend this class
+     * It is used to update optional DialogStates
+     *
+     * @param connection the choice made and valid
+     */
+    protected void onChoiceMade(DialogNode.Connection connection) {
+        // default: nothing
     }
 
     @Override
@@ -84,11 +81,9 @@ public class GenericDialog implements Dialog, DialogState {
         return nodes.get(id);
     }
 
-    // --- DialogState: vista in sola lettura esposta ai Requirement ---
-
     @Override
-    public Set<String> getCollectedFlags() {
-        return unlockedFlags;
+    public List<String> getCollectedFlags() {
+        return collectedFlags;
     }
 
     @Override
