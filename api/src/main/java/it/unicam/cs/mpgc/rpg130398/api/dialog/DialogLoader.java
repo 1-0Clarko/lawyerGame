@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130398.api;
+package it.unicam.cs.mpgc.rpg130398.api.dialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,4 +26,8 @@ public interface DialogLoader {
      * @return list of read Nodes or null
      */
     ArrayList<DialogNode> getNodes();
+    /**
+     * @return the concrete Dialog implementation class declared by the loaded file
+     */
+    Class<? extends Dialog> getDialogClass();
 }

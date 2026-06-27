@@ -1,6 +1,8 @@
-package it.unicam.cs.mpgc.rpg130398.api;
+package it.unicam.cs.mpgc.rpg130398.api.dialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,4 +39,14 @@ public interface Dialog {
      * @return the found node or null if this id is not present in this dialog
      */
     DialogNode getNodeFromID(int id);
+
+    /**
+     * @return the set of node it has already visited in the conversation
+     * in order of visit (0 is the first)
+     */
+    Set<Integer> getVisitedNodes();
+    /**
+     * @return the list of flags in order of discovery
+     */
+    List<String> getCollectedFlags();
 }

@@ -3,13 +3,15 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FlagsDisplayUI;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.MonologueAnimation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.QuestionButtonsUI;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.Dialog.DialogWithTrust;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.JSON_DialogLoader;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericDialog;
 import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.*;
-import it.unicam.cs.mpgc.rpg130398.api.Dialog;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.Dialog;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.DialogLoader;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.DialogNode;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ class DialogueWithDefendantManager {
         graphic.addText(questionText);
 
         DialogLoader dialogLoader = new JSON_DialogLoader("DialogTrees/InterogatoryDialog.json");
-        dialogLogic = new GenericDialog(dialogLoader);
+        dialogLogic = new DialogWithTrust(dialogLoader);
         showNodeDialog(dialogLogic.getCurrentNode());
     }
 
@@ -71,7 +73,7 @@ class DialogueWithDefendantManager {
     }
 
     protected void update() {
-        flagsUI.update(new ArrayList<>(dialogLogic.getOpinionatedFlags()));
+        flagsUI.update(new ArrayList<>(dialogLogic.getCollectedFlags()));
 
         if (!answersTextAnimation.hasFinished()) {
             answersTextAnimation.update();
@@ -104,8 +106,7 @@ class DialogueWithDefendantManager {
         ArrayList<DialogNode.Connection> choices = dialogLogic.getValidChoices();
         if (choices.isEmpty()) {
             awaitingFallbackClick = true;
-            DialogNode.Connection fallback = new DialogNode.Connection(
-                    dialogLogic.getCurrentNode().getId(), NO_MORE_QUESTIONS_MESSAGE, null, 0);
+            DialogNode.Connection fallback = new DialogNode.Connection(dialogLogic.getCurrentNode().getId(), NO_MORE_QUESTIONS_MESSAGE, null, null);
             ArrayList<DialogNode.Connection> fallbackChoices = new ArrayList<>();
             fallbackChoices.add(fallback);
             buttonsUI.show(fallbackChoices);
@@ -150,7 +151,7 @@ class DialogueWithDefendantManager {
     boolean once = true;
     private void showNodeDialog(DialogNode node) {
         String defendantSpeech = node.isVisited() ? "" : node.getText();
-        if (once) { //shows the defendent text for the first node. This is necessary because node.isVisited() on the first node is always true from the start
+        if (once) { //shows the defendant text for the first node. This is necessary because node.isVisited() on the first node is always true from the start
             defendantSpeech = node.getText();
             once = false;
         }

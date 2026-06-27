@@ -1,9 +1,17 @@
 [
-{ "id": 0, "text": "Non ho altro da dirvi, e voi non mi credete.\nContinuare a parlare non servirà a niente.", "connections": [
+{
+	"DialogClass": "it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.Dialog.DialogWithTrust",
+	"NodeClass": "it.unicam.cs.mpgc.rpg130398.GameLogic.GenericDialogNode",
+	"ConnectionRequirmentClass": [
+		{ "type": "trust", "className": "it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.Dialog.TrustRequirement" }
+	]
+},
+
+{ "id": 0, "text": "Non ho altro da dirvi.\nContinuare a parlare non servirà a niente.", "connections": [
 		{ "idOther": 1, "selectionMessage": "Con chi hai parlato precisamente? Quello che hai detto può essere importante per\nla difesa." },
 		{ "idOther": 11, "selectionMessage": "Dimmi cosa è successo, cosa stavi cercando nella centrale elettrica?", "requirements": [{ "type": "trust", "minTrust": -999, "maxTrust": 0 }] },
 		{ "idOther": 12, "selectionMessage": "Puoi dirmi cosa è successo veramente nella centrale elettrica", "requirements": [{ "type": "trust", "minTrust": 1, "maxTrust": 999 }] },
-		{ "idOther": 23, "selectionMessage": "Io credo quello che mi hai detto, ma se non mi dici chi sei veramente e cosa\nfacevi nella centrale le mie opzioni sono limitate", "requirements": [{ "type": "trust", "minTrust": 4, "maxTrust": 999 }] }
+		{ "idOther": 23, "selectionMessage": "Io credo a quello che mi hai detto, ma se non mi dici chi sei veramente e cosa\nfacevi nella centrale le mie opzioni sono limitate", "requirements": [{ "type": "trust", "minTrust": 4, "maxTrust": 999 }] }
 	] },
 	{ "id": 1, "text": "Cosa intendi con difesa? Saresti il mio avvocato difensore?", "connections": [
 			{ "idOther": 2, "selectionMessage": "Esattamente, il mio incarico è quello di creare una linea difensiva" }
@@ -13,54 +21,54 @@
 				{ "idOther": 9, "selectionMessage": "Puoi dirmi con chi hai parlato?", "requirements": [{ "type": "trust", "minTrust": 1, "maxTrust": 999 }] }
 			] },
 			{ "id": 3, "text": "Perché io non potrei mai essere uno di voi.", "connections" : [
-					{ "idOther": 4, "selectionMessage": "Mm", "trustDelta": -1  }
+					{ "idOther": 4, "selectionMessage": "Mmm", "attributes": { "trustDelta": -1.0 } }
 				] },
-				{ "id": 4, "text": "Quasi mi sento offeso se non sapessi da chi viene l'insulto.", "connections": [
+				{ "id": 4, "text": "Quasi mi sentirei offeso se non sapessi da chi venisse l'insulto.", "connections": [
 						{ "idOther": 6, "selectionMessage": "Continua" }
 					] },
-					{ "id": 5, "text": "Cosi insolenti, ma ve ne pentirete.", "connections": [
-							{ "idOther": 6, "selectionMessage": "Sicuro" }
+				{ "id": 5, "text": "Cosi insolenti, ma ve ne pentirete.", "connections": [
+						{ "idOther": 6, "selectionMessage": "Sicuro" }
+					] },
+					{ "id": 6, "text": "Dovrei uccidervi tutti come ho fatto con quella ragazza.", "flag": "instabilità mentale", "connections": [
+							{ "idOther": 33, "selectionMessage": "Adesso basta, o ti dai una calmata o ti lascio marcire qui come ti sta bene.\nNon ho mai sentito una persona così.", "attributes": { "trustDelta": -4.0 } },
+							{ "idOther": 7, "selectionMessage": "Ti stai sfogando con me, tranquillo non mi hai nemmeno scalfito, vedi io credo\nche le persone siano più oneste quando sono arrabbiate.", "attributes": { "trustDelta": 2.0 } }
 						] },
-						{ "id": 6, "text": "Dovrei uccidervi tutti come ho fatto con quella ragazza.", "flag": "instabilità mentale", "connections": [
-								{ "idOther": 33, "selectionMessage": "Adesso basta, o ti dai una calmata o ti lascio marcire qui come ti sta bene.\nNon ho mai sentito una persona così.", "trustDelta": -4 },
-								{ "idOther": 7, "selectionMessage": "Ti stai sfogando con me, tranquillo non mi hai nemmeno scalfito, vedi io credo\nche le persone siano più oneste quando sono arrabbiate.", "trustDelta": 2 }
+						{ "id": 7, "text": "Sei la prima persona che non si arrabbia dopo che ha sentito questo, lo sai che ho ucciso quella ragazza?\nMi voleva fermare.\nLe tue parole non possono salvarla.\nNon vuoi farle giustizia?", "connections": [
+								{ "idOther": 8, "selectionMessage": "Non è il mio lavoro giudicare i clienti, io faccio uscire fuori la verità.\nComunque lasciamo perdere le persone prima di me, vorrei farti altre domande.", "attributes": { "trustDelta": 1.0 } },
+								{ "idOther": 9, "selectionMessage": "La giustizia verrà fatta a tempo debito, adesso puoi dirmi con chi hai parlato?" },
+								{ "idOther": 10, "selectionMessage": "Di certo vorrei chiuderti in una prigione più sicura per il bene di tutti ma.\nComunque, sei il caso più interessante che abbia mai avuto nella mia carriera." }
 							] },
-							{ "id": 7, "text": "Sei la prima persona che non si arrabbia dopo che ha sentito\ncerte cose, lo sai che ho ucciso quella ragazza che mi\nvoleva fermare vero.\nÈ successo veramente, e le tue parole non possono salvarla.\nNon vuoi farle giustizia?", "connections": [
-									{ "idOther": 8, "selectionMessage": "Non è il mio lavoro giudicare i clienti, io faccio uscire fuori la verità.\nComunque lasciamo perdere le persone prima di me, vorrei farti altre domande.", "trustDelta": 1 },
-									{ "idOther": 9, "selectionMessage": "La giustizia verrà fatta a tempo debito, adesso puoi dirmi con chi hai parlato?" },
-									{ "idOther": 10, "selectionMessage": "Di certo vorrei chiuderti in una prigione più profonda per il bene di 'noi' ma\ncomunque sei il caso più interessante che abbia mai avuto nella mia carriera." }
+							{ "id": 8, "text": "Sai è bello non essere disprezzato da voi, per una volta.", "connections": [
+									{ "idOther": 7, "selectionMessage": "" }
 								] },
-								{ "id": 8, "text": "Sai è bello non essere disprezzato da voi, per una volta.", "connections": [
-										{ "idOther": 7, "selectionMessage": "" }
+			{ "id": 9, "text": "Ho parlato con degli ispettori di qualche tipo, erano\nvestiti molto eleganti e sembravano far finta di non aver\nsentito cosa dicevo.\nAlmeno, sono piuttosto sicuro che non hanno riportato quello\nche gli ho detto.\nPerché li ho sentiti dire che ero un dipendente della\ncentrale elettrica, cosa che non sono.", "flag": "gli ispettori nascondono qualcosa", "connections": [
+					{ "idOther": 50, "selectionMessage": "Eleganti? Più nel senso di un'uniforme, o abiti civili? Riesci a descriverli\nmeglio?" }
+				] },
+				{ "id": 50, "text": "Erano uniformi ma non quelle della polizia.\nAvevano un simbolo sul petto, lo stesso che ho visto sui\ncamion fuori di qui e alla centrale.\nNon erano alla centrale elettrica per cercare me, erano li\nprima ancora che arrivasse la polizia.", "connections": [
+						{ "idOther": 51, "selectionMessage": "Forse queste persone sapevano già cosa sarebbe successo, prima che\nintervenissero le autorità", "attributes": { "trustDelta": 1.0 } },
+						{ "idOther": 51, "selectionMessage": "Questo non significa molto, era probabilmente solo il logo della compagnia\nelettrica, magari erano solo dei tecnici che per caso si trovavano alla centrale\nquel giorno", "attributes": { "trustDelta": -1.0 } }
+					] },
+					{ "id": 51, "text": "Se erano solo tecnici, non sarebbero stati loro ad\ninterrogarmi.\nInoltre hanno mentito sul motivo per il quale mi trovavo\nnella centrale.", "flag": "gli ispettori indossavano divise della centrale elettrica, non della polizia", "connections": [
+							{ "idOther": 60, "selectionMessage": "Era una trappola? Devo sapere perché ti trovavi lì." },
+							{ "idOther": 0, "selectionMessage": "Non abbiamo tempo per i complotti, cambiamo argomento" }
+						] },
+						{ "id": 60, "text": "Ero lì per la pubblicità delle ricariche Q'zzy~renn che si\nsentiva per strada.", "connections": [
+								{ "idOther": 61, "selectionMessage": "Cosa è 'Q'zzy~renn'?" }
+							] },
+							{ "id": 61, "text": "Se non le conosci... allora forse capisci meno di\nquanto pensassi.", "connections": [
+									{ "idOther": 62, "selectionMessage": "Conosci cosa?" }
+								] },
+								{ "id": 62, "text": "Se non conosci quel termine significa che non è comune,\nsapevano che io ne ho bisogno.\nNon posso continuare a parlare di questo, se sapessi di più,\ne ne parlassi con loro, il mio futuro sarebbe\nirrecuperabile.\nSe vuoi farmi altre domande ti risponderò.", "flag": "Era una trappola", "connections": [
+										{ "idOther": 0, "selectionMessage": "" }
 									] },
-								{ "id": 9, "text": "Ho parlato con degli ispettori di qualche tipo, erano\nvestiti molto elegante e sembravano far finta di non aver\nsentito cosa dicevo.\nAlmeno, sono piuttosto sicuro che non hanno riportato quello\nche gli ho detto.\nPerché li ho sentiti dire che ero un dipendente della\ncentrale elettrica, cosa che non sono.", "flag": "gli ispettori nascondono qualcosa", "connections": [
-										{ "idOther": 50, "selectionMessage": "Elegante? Più nel senso di un'uniforme, o abiti civili? Riesci a descriverli\nmeglio?" }
+							{ "id": 10, "text": "Tu sei peggio di quello che pensavo.\nHai da chiedermi altro", "connections": [
+									{ "idOther": 43, "selectionMessage": "" }
+								] },
+								{ "id": 43, "text": "Ti interessa ancora chi mi ha visitato prima?", "connections": [
+										{ "idOther": 9, "selectionMessage": "Si" },
+										{ "idOther": 0, "selectionMessage": "No" }
 									] },
-									{ "id": 50, "text": "Erano uniformi ma non quelle della polizia.\nAvevano un simbolo sul petto, lo stesso che ho visto sui\ncamion fuori di qui e alla centrale.\nNon erano alla centrale elettrica per me, erano alla\ncentrale prima ancora che arrivasse la polizia.", "connections": [
-											{ "idOther": 51, "selectionMessage": "Forse queste persone sapevano già cosa sarebbe successo, prima che\nintervenissero le autorità", "trustDelta": 1 },
-											{ "idOther": 51, "selectionMessage": "Questo non significa molto, era probabilmente solo il logo della compagnia\nelettrica, magari erano solo dei tecnici che per caso si trovavano alla centrale\nquel giorno", "trustDelta": -1 }
-										] },
-										{ "id": 51, "text": "Se erano solo tecnici, non sarebbero stati loro ad\ninterrogarmi.\nInoltre hanno mentito sul motivo per il quale mi trovavo\nnella centrale.", "flag": "gli ispettori indossavano divise della centrale elettrica, non della polizia", "connections": [
-												{ "idOther": 60, "selectionMessage": "Era una trappola? Devo sapere perché ti trovavi lì." },
-												{ "idOther": 0, "selectionMessage": "Non abbiamo tempo per i complotti, cambiamo argomento" }
-											] },
-											{ "id": 60, "text": "Ero lì per la pubblicità delle ricariche Q'zzy~renn che si\nsentiva per strada.", "connections": [
-													{ "idOther": 61, "selectionMessage": "Cosa è 'Q'zzy~renn'?" }
-												] },
-												{ "id": 61, "text": "Se non le conosci... allora forse capisci meno di\nquanto pensassi.", "connections": [
-														{ "idOther": 62, "selectionMessage": "Conosci cosa?" }
-													] },
-													{ "id": 62, "text": "Se non conosci quel termine significa che non è comune,\nsapevano che io ne ho bisogno.\nNon posso continuare a parlare di questo, se sapessi di più,\ne ne parlassi con loro, il mio futuro sarebbe\nirrecuperabile.\nSe vuoi farmi altre domande ti risponderò.", "flag": "Era una trappola", "connections": [
-															{ "idOther": 0, "selectionMessage": "" }
-														] },
-								{ "id": 10, "text": "Forse anche tu non sei normale.\nTra la mia gente non sono considerato normale sai.\nPuoi chiedermi un'altra domanda se vuoi perdere tempo\ninsieme a me.", "connections": [
-										{ "idOther": 43, "selectionMessage": "" }
-									] },
-									{ "id": 43, "text": "Ti interessa ancora di chi mi ha visitato prima?", "connections": [
-											{ "idOther": 9, "selectionMessage": "Si" },
-											{ "idOther": 0, "selectionMessage": "No" }
-										] },
-	{ "id": 11, "text": "Vi ho già detto quello che posso.\nNon mi ripeterò ancora.\nSe non mi volete credere non mi interessa.", "connections": [
+	{ "id": 11, "text": "Vi ho già detto quello che potevo.\nNon mi ripeterò ancora.\nSe non mi volete credere non mi interessa.", "connections": [
 			{ "idOther": 21, "selectionMessage": "Io non sono come loro", "requirements": [{ "type": "trust", "minTrust": -999, "maxTrust": -1 }] },
 			{ "idOther": 22, "selectionMessage": "Io non sono come loro", "requirements": [{ "type": "trust", "minTrust": 0, "maxTrust": 999 }] },
 			{ "idOther": 22, "selectionMessage": "Io ti crederò" }
@@ -75,23 +83,23 @@
 			{ "idOther": 13, "selectionMessage": "" }
 		] },
 		{ "id": 13, "text": "Cosa vuoi sapere nello specifico?", "connections": [
-				{ "idOther": 14, "selectionMessage": "Conoscevi la vittima" },
-				{ "idOther": 18, "selectionMessage": "Cosa volevi fare prima che ti fermassero" },
+				{ "idOther": 14, "selectionMessage": "Conoscevi la vittima?" },
+				{ "idOther": 18, "selectionMessage": "Cosa volevi fare prima che ti fermassero?" },
 				{ "idOther": 0, "selectionMessage": "So abbastanza sull'incidente, parliamo di altro" }
 			] },
-			{ "id": 14, "text": "No, è stata un imprevisto.\nForse potevo evitare, forse no.", "connections": [
+			{ "id": 14, "text": "No, è stato un imprevisto.\nForse lo potevo evitare di ucciderla, forse no. ", "connections": [
 					{ "idOther": 15, "selectionMessage": "Puoi dirmi altro, come era vestita, cosa ci faceva la" },
-					{ "idOther": 17, "selectionMessage": "Ti sei pentito di quello che hai fatto.\nProvi rimorso?", "trustDelta": -1 }
+					{ "idOther": 17, "selectionMessage": "Ti sei pentito di quello che hai fatto.\nProvi rimorso?", "attributes": { "trustDelta": -1.0 } }
 				] },
-				{ "id": 15, "text": "Era un qualche tipo di tecnico, era vestita di nero con un\ncasco bianco.", "flag": "La vittima era un tecnico della centrale", "connections": [
+				{ "id": 15, "text": "Sembrava un tecnico della centrale, con casco e camice bianco.", "flag": "La vittima era un tecnico della centrale", "connections": [
 						{ "idOther": 13, "selectionMessage": "" }
 					] },
-				{ "id": 17, "text": "Vorresti che fingessi di provarlo per renderti la\nconversazione più piacevole.\nPer l'ultima volta, ricordatelo, non ha senso per me provare\nrisentimento per voi.", "flag": "il cliente non prova rimorso dell'uccisione della vittima", "connections": [
+				{ "id": 17, "text": "Vorresti che fingessi di provarlo per renderti la\nconversazione più piacevole.\nPer l'ultima volta, ricordatelo, non ha senso per me provare\nrisentimento.", "flag": "L'assassino non prova rimorso", "connections": [
 						{ "idOther": 13, "selectionMessage": "" }
 					] },
 			{ "id": 18, "text": "Se ti dicessi questo, sapresti troppe cose, e anche se\nriuscissi ad uscire di qui.\nCi sarebbe il rischio che tu ne parlassi con altri e il mio\nfuturo sarebbe irrecuperabile.\nQuello che ti posso dire è che non ho opposto resistenza.", "flag": "non ho opposto resistenza", "connections": [
-					{ "idOther": 19, "selectionMessage": "Quello che mi dirai è coperto dal segreto professionale.\nNon posso andare dalla polizia o dal pubblico ministero a riferire ciò che mi\nracconti.", "trustDelta": 1 },
-					{ "idOther": 20, "selectionMessage": "Non conosco la tua preoccupazione, ma se queste informazioni fossero rilevanti\nper la sicurezza pubblica non potrei semplicemente ignorarle.", "trustDelta": -1 },
+					{ "idOther": 19, "selectionMessage": "Quello che mi dirai è coperto dal segreto professionale.\nNon posso andare dalla polizia o dal pubblico ministero a riferire ciò che mi\nracconti.", "attributes": { "trustDelta": 1.0 } },
+					{ "idOther": 20, "selectionMessage": "Non conosco la tua preoccupazione, ma se queste informazioni fossero rilevanti\nper la sicurezza pubblica non potrei semplicemente ignorarle.", "attributes": { "trustDelta": -1.0 } },
 					{ "idOther": 40, "selectionMessage": "Non hai opposto resistenza a cosa, esattamente? Alla cattura, o a qualcun altro?" }
 				] },
 				{ "id": 19, "text": "Lo terrò a mente, comunque non posso rischiare.", "connections": [
@@ -100,9 +108,9 @@
 				{ "id": 20, "text": "Avevo ragione all'inizio.\nNon sei qui per aiutarmi.\nNella tua testa stai solo pensando a quando tradirmi.", "connections": [
 						{ "idOther": 13, "selectionMessage": "" }
 					] },
-				{ "id": 40, "text": "Alle altre persone che si trovavano li, sapevo di non poter\ngestire troppe persone.\nLei aveva un'arma, l'ha puntata su di me prima ancora che io\nmi avvicinassi.\nAvrei potuto difendermi, parlarle, ma pensavo fosse sola.\nNon ne avevo nemmeno bisogno.", "connections": [
-						{ "idOther": 41, "selectionMessage": "Aveva un'arma? Questo è un dettaglio fondamentale." },
-						{ "idOther": 42, "selectionMessage": "Ti rendi conto che questo cambia tutto per la tua difesa? Cosa aspettavi a\ndirmelo?", "trustDelta": -1 }
+				{ "id": 40, "text": "Alle altre persone che si trovavano lì, sapevo di non poter\ngestire troppe persone.\nLei aveva un'arma, l'ha puntata su di me prima ancora che io\nmi avvicinassi.\nAvrei potuto difendermi, parlarle, ma pensavo fosse sola.", "connections": [
+						{ "idOther": 41, "selectionMessage": "la donna aveva un'arma? Questo è un dettaglio fondamentale." },
+						{ "idOther": 42, "selectionMessage": "Ti rendi conto che questo cambia tutto per la tua difesa? Cosa aspettavi a\ndirmelo?", "attributes": { "trustDelta": -1.0 } }
 					] },
 					{ "id": 41, "text": "Tu sei il primo che forse può aiutarmi.\nL'ha tirata fuori dalla tasca della tuta, ho visto il\nriflesso della canna dal casco.\nDopo è successo tutto molto in fretta.", "flag": "la vittima ha attaccato per prima", "connections": [
 							{ "idOther": 13, "selectionMessage": "" }
@@ -113,7 +121,7 @@
 	{ "id": 23, "text": "Va bene ok.\nMi fido di te.\nSappi però che se mi tradisci ti strangolerò davanti alla\ngiuria.\nArriviamo alla parte in cui non mi credi.", "connections": [
 			{ "idOther": 24, "selectionMessage": "" }
 		] },
-		{ "id": 24, "text": "Se ti dicessi che non sono umano.\nÈ che faccio parte di una specie molto diversa dalla vostra,\nmolto più antica, e che è stata anche più fortunata.", "flag": "dichiara di essere alieno", "connections": [
+		{ "id": 24, "text": "Se ti dicessi che non sono umano...\ne che faccio parte di una specie molto diversa dalla vostra,\nmolto più antica e più evoluta dell'umanità.", "flag": "dichiara di essere alieno", "connections": [
 				{ "idOther": 25, "selectionMessage": "Non è quello che mi aspettavo" },
 				{ "idOther": 25, "selectionMessage": "Sospettavo qualcosa di simile" }
 			] },
@@ -122,21 +130,21 @@
 					{ "idOther": 26, "selectionMessage": "Non sono ancora convinto che non sei completamente pazzo" }
 				] },
 				{ "id": 26, "text": "Mi dispiace che la pensi così, ecco una prova per te.", "connections": [
-						{ "idOther": 27, "selectionMessage": "", "trustDelta": 10 }
+						{ "idOther": 27, "selectionMessage": "", "attributes": { "trustDelta": 10.0 } }
 					] },
 					{ "id": 27, "text": "<Il prigioniero si taglia il dito con un gesto veloce dell'altra mano>\nAdesso mi credi? Puoi tenerti il dito come prova per l'udienza.\nMi ricrescerà prima dell'udienza.\nMostralo solo se pensi di poter intimidire i giudici\nabbastanza da convincerli a lasciarmi andare.\nSe non ci riesci... darò il massimo per riconquistare\nla mia libertà.\nSe capisci cosa intendo.", "flag": "Hai una prova che il prigioniero non è umano", "connections": [
 							{ "idOther": 28, "selectionMessage": "Ho capito, puoi smetterla con le minacce.\nComunque sì, adesso ti credo." }
 						] },
-				{ "id": 28, "text": "Mi fa piacere sentirlo, immagino vuoi farmi delle domande.", "connections": [
-						{ "idOther": 27, "selectionMessage": "Hai delle prove oggettive che si possono usare in tribunale, che non siano il\ncolore sbiadito della tua pelle?", "requirements": [{ "type": "trust", "minTrust": -999, "maxTrust": 9 }], "trustDelta": 10 },
-						{ "idOther": 29, "selectionMessage": "Come fai a parlare italiano" },
-						{ "idOther": 30, "selectionMessage": "Da dove vieni" },
+				{ "id": 28, "text": "Mi fa piacere sentirlo, immagino che tu voglia farmi delle domande.", "connections": [
+						{ "idOther": 27, "selectionMessage": "Hai delle prove oggettive che si possano usare in tribunale, oltre che al\ncolore sbiadito della tua carnagione?", "requirements": [{ "type": "trust", "minTrust": -999, "maxTrust": 9 }], "attributes": { "trustDelta": 10.0 } },
+						{ "idOther": 29, "selectionMessage": "Come fai a conoscere e a parlare italiano?" },
+						{ "idOther": 30, "selectionMessage": "Da dove vieni?" },
 						{ "idOther": 32, "selectionMessage": "Abbiamo finito, ci vediamo all'udienza" }
 					] },
 					{ "id": 29, "text": "L'ho imparato prima di atterrare, in caso di emergenza la\ncapsula di salvataggio è in grado di trasferire nel nostro\ncervello le informazioni più importanti per la sopravvivenza\nsul pianeta.\nSul vostro pianeta c'è solo una specie invasiva dominante,\nper imparare tutte le lingue ci sono voluti ben 4 minuti, un\ngrosso spreco di memoria, ma è servito.", "connections": [
 							{ "idOther": 28, "selectionMessage": "" }
 						] },
-					{ "id": 30, "text": "Non abbiamo tempo per discutere di queste cose adesso, ma se\nvuoi, se riesci a liberarmi, e se riusciamo ad ottenere\nl'energia necessaria per la capsula, ti prometto che puoi\nvenire con me nel cosmo.", "connections": [
+					{ "id": 30, "text": "Non abbiamo tempo per discutere di queste cose adesso, ma se\nvuoi, se riesci a liberarmi e se riusciamo ad ottenere\nl'energia necessaria per riattivare l'astronave con cui sono atterrato sulla Terra, ti prometto che potrai\nvenire con me nel Cosmo.", "connections": [
 							{ "idOther": 28, "selectionMessage": "Non ho studiato 5 anni di Giurisprudenza, più la pratica forense, per andarmene\nnello spazio con il primo alieno che me lo chiede" },
 							{ "idOther": 31, "selectionMessage": "L'idea di viaggiare nello spazio mi alletta più della mia carriera, accetto" }
 						] },
@@ -144,5 +152,5 @@
 								{ "idOther": 28, "selectionMessage": "" }
 							] },
 					{ "id": 32, "text": "", "flag": "END", "connections": [] },
-{ "id": 33, "text": "", "flag": "KILLED", "connections": [] }
+						{ "id": 33, "text": "", "flag": "KILLED", "connections": [] }
 ]
