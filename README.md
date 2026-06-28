@@ -50,3 +50,9 @@ un buon 70% del codice è stato scritto manualmente.
 📌 Per una descrizione più dettagliata dell'uso dell'AI, guardare la **[Wiki AI-Usage](https://github.com/1-0Clarko/IlSecondoCaso/wiki/AI-Usage)**.
 
 ---
+
+## Sviluppi futuri
+
+l'ultima scena ('TrialScene') è un placehodler,
+In futuro si potrà difendere il prigioniero con le informazioni ottenute attraverso il dialogo.
+
