@@ -33,10 +33,10 @@
 							{ "idOther": 33, "selectionMessage": "Adesso basta, o ti dai una calmata o ti lascio marcire qui come ti sta bene.\nNon ho mai sentito una persona così.", "attributes": { "trustDelta": -4.0 } },
 							{ "idOther": 7, "selectionMessage": "Ti stai sfogando con me, tranquillo non mi hai nemmeno scalfito, vedi io credo\nche le persone siano più oneste quando sono arrabbiate.", "attributes": { "trustDelta": 2.0 } }
 						] },
-						{ "id": 7, "text": "Sei la prima persona che non si arrabbia dopo che ha sentito questo, lo sai che ho ucciso quella ragazza?\nMi voleva fermare.\nLe tue parole non possono salvarla.\nNon vuoi farle giustizia?", "connections": [
+						{ "id": 7, "text": "Sei la prima persona che non si arrabbia dopo che ha sentito questo,\nlo sai che ho ucciso quella ragazza?\nLe tue parole non possono salvarla.\nNon vuoi farle giustizia?", "connections": [
 								{ "idOther": 8, "selectionMessage": "Non è il mio lavoro giudicare i clienti, io faccio uscire fuori la verità.\nComunque lasciamo perdere le persone prima di me, vorrei farti altre domande.", "attributes": { "trustDelta": 1.0 } },
 								{ "idOther": 9, "selectionMessage": "La giustizia verrà fatta a tempo debito, adesso puoi dirmi con chi hai parlato?" },
-								{ "idOther": 10, "selectionMessage": "Di certo vorrei chiuderti in una prigione più sicura per il bene di tutti ma.\nComunque, sei il caso più interessante che abbia mai avuto nella mia carriera." }
+								{ "idOther": 10, "selectionMessage": "Di certo vorrei chiuderti in una prigione più sicura per il bene di tutti.\nMa comunque, sei il caso più interessante che abbia mai avuto nella mia carriera." }
 							] },
 							{ "id": 8, "text": "Sai è bello non essere disprezzato da voi, per una volta.", "connections": [
 									{ "idOther": 7, "selectionMessage": "" }
