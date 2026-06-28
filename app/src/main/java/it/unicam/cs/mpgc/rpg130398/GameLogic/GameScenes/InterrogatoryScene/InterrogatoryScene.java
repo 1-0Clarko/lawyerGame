@@ -41,9 +41,9 @@ public class InterrogatoryScene implements GameScenes {
     private final ArrayList<Animation> loopAnimations = new ArrayList<>();
     private AnimationQueue cutSceneAnimations = new AnimationQueue();
 
-    // Time limit / scene end handling
-    private boolean timerStopped; // true once KILLED happens: the time limit no longer matters
-    private boolean interrogatoryOver; // true once we've moved past the dialog (END reached, time is up, or no more questions)
+    // Event
+    private boolean goNextScene = false; // True when the conversation has finished, or when the time limit has been reached,
+    private boolean deadLock = false;    // True when the player is dead
 
     public InterrogatoryScene(Game game, GraphicsManager graphic, InputManager input) {
         this.game = game;
@@ -61,15 +61,14 @@ public class InterrogatoryScene implements GameScenes {
         for (Animation animation : loopAnimations)
             animation.update();
 
-        if (!cutSceneAnimations.hasFinished()) { // if there is a CutScene, it will block the rest of the logic
-            cutSceneAnimations.update();
+        cutSceneAnimations.update();
+        if (!cutSceneAnimations.hasFinished()) // if there is a CutScene, it will block the rest of the logic
             return this;
-        }
 
-        if (timerStopped)
-            return this;
-        if (interrogatoryOver)
+        if (goNextScene)
             return nextScene();
+        if (deadLock)
+            return this;
 
         dialogueManager.update();
         handleTrustEvents();
@@ -117,9 +116,6 @@ public class InterrogatoryScene implements GameScenes {
      * trust < -3 -> killed.
      */
     private void handleTrustEvents() {
-        if (timerStopped) // already killed, nothing left to update here
-            return;
-
         float trust = ((DialogStateTrust)dialogueManager.dialogLogic).getTrust();
         if (trust >= 4)
             defendantAnimationManager.setAnimationStatus(TRUSTING);
@@ -138,19 +134,13 @@ public class InterrogatoryScene implements GameScenes {
      * defense scene with no need to wait for the time limit.
      */
     private void handleDialogEnd() {
-        if (timerStopped || interrogatoryOver)
-            return;
-
         boolean reachedEndNode = "END".equals(dialogueManager.dialogLogic.getCurrentNode().getFlag());
         boolean exhaustedQuestions = dialogueManager.isOver();
 
         if (!reachedEndNode && !exhaustedQuestions)
             return;
 
-        clearUI();
-        clearSceneObjects();
-        clearDefendant();
-        interrogatoryOver = true;
+        dialogEnd();
     }
 
     /**
@@ -160,44 +150,12 @@ public class InterrogatoryScene implements GameScenes {
      * or the interrogatory is already over.
      */
     private void handleTimeLimit() {
-        if (timerStopped || interrogatoryOver)
-            return;
-
         remainingFrames--;
         if (remainingFrames != 0)
             return;
 
-        clearUI();
-        interrogatoryOver = true;
-        loopAnimations.remove(defendantAnimationManager);
-        cutSceneAnimations = new AnimationQueue();
-        cutSceneAnimations.add(new GuardInterruptionAnimation(graphic));
+        timeFinished();
     }
-
-    private void killed() {
-        clearUI();
-        timerStopped = true;
-        defendantAnimationManager.setAnimationStatus(KILLANIMATION);
-        // Moves the animation from a cyclic animation to a blocking animation
-        loopAnimations.remove(defendantAnimationManager);
-        cutSceneAnimations = new AnimationQueue();
-        cutSceneAnimations.add(defendantAnimationManager);
-        cutSceneAnimations.add(new KilledAnimation(table, physicalFolder, graphic));
-    }
-
-    private void clearUI() {
-        dialogueManager.clear();
-    }
-    private void clearSceneObjects() {
-        graphic.removeObject(table);
-        graphic.removeObject(physicalFolder);
-        graphic.removeObject(clockBody);
-        graphic.removeObject(clockHand);
-    }
-    private void clearDefendant() {
-        defendantAnimationManager.clear();
-    }
-
     /**
      * @return the next scene to move to once the interrogatory is over.
      */
@@ -210,5 +168,48 @@ public class InterrogatoryScene implements GameScenes {
         graphic.addObject(clockHand);
         float[] zero = {0,0,0};
         loopAnimations.add(new TransformAnimation(clockHand, CLOCK_POS, CLOCK_POS, zero, new float[]{0,0,-90}, FRAME_LIMIT, TransformAnimation.Easing.LINEAR));
+    }
+
+    //       -- End events --
+
+    private void killed() {
+        clearUI();
+        defendantAnimationManager.setAnimationStatus(KILLANIMATION);
+        // Moves the animation from a cyclic animation to a blocking animation
+        cutSceneAnimations = new AnimationQueue();
+        loopAnimations.remove(defendantAnimationManager);
+        cutSceneAnimations.add(defendantAnimationManager);
+        cutSceneAnimations.add(new KilledAnimation(table, physicalFolder, graphic));
+        deadLock = true;
+    }
+    private void dialogEnd() {
+        clearAll();
+        goNextScene = true;
+    }
+    private void timeFinished() {
+        clearUI();
+        loopAnimations.remove(defendantAnimationManager);
+        cutSceneAnimations = new AnimationQueue();
+        cutSceneAnimations.add(new GuardInterruptionAnimation(graphic), null, this::clearAll);
+        goNextScene = true;
+    }
+
+
+    private void clearAll() {
+        clearUI();
+        clearSceneObjects();
+        clearDefendant();
+    }
+    private void clearUI() {
+        dialogueManager.clear();
+    }
+    private void clearSceneObjects() {
+        graphic.removeObject(table);
+        graphic.removeObject(physicalFolder);
+        graphic.removeObject(clockBody);
+        graphic.removeObject(clockHand);
+    }
+    private void clearDefendant() {
+        defendantAnimationManager.clear();
     }
 }

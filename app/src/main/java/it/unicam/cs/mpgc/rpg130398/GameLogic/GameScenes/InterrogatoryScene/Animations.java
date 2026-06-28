@@ -280,9 +280,9 @@ class GuardInterruptionAnimation implements Animation {
         Animation monologue = new MonologueAnimation(GUARD_LINES, textBox, 1f, 60);
         animationQueue.add(monologue);
         Animation fadeOutBox = new FadeAnimation(blackBar, 14, true);
-        animationQueue.add(fadeOutBox, this::onFadeOut);
+        animationQueue.add(fadeOutBox, this::onFadeOutBox);
         Animation fadeOutTransition = new FadeAnimation(blackScreen, 34, false);
-        animationQueue.add(fadeOutTransition, this::onFadeStart);
+        animationQueue.add(fadeOutTransition, this::onFadeStart, this::onFadeEnd);
     }
 
     @Override
@@ -299,10 +299,15 @@ class GuardInterruptionAnimation implements Animation {
         graphic.addObject(blackBar);
     }
 
-    private void onFadeOut() {
+    private void onFadeOutBox() {
         graphic.removeText(textBox);
     }
     private void onFadeStart() {
         graphic.addObject(blackScreen);
+    }
+    private void onFadeEnd() {
+        graphic.removeObject(blackScreen);
+        graphic.removeObject(blackBar);
+        graphic.removeText(textBox);
     }
 }

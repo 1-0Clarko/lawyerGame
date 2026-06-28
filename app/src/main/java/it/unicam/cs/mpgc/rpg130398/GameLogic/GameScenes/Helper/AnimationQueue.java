@@ -46,13 +46,16 @@ public class AnimationQueue implements Sequence<Animation> {
 
     @Override
     public void update() {
+        if (hasFinished()) return;
         if (currentAnimationIndex == -1)
             showNext();
-        if (hasFinished()) return;
+
+        getCurrent().update();
         if (getCurrent().hasFinished()) {
             showNext();
-        } else
-            getCurrent().update();
+            update(); // instantly show the first frame of the next animation
+        }
+
     }
 
     @Override
