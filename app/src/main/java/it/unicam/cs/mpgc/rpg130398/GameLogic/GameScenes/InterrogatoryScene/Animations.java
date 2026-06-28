@@ -77,7 +77,7 @@ class StartMonologAnimation implements Animation {
         Animation monologue = new MonologueAnimation(INTRO, textBox, 1f, 60);
         animationQueue.add(monologue);
         Animation fadeOutBox = new FadeAnimation(blackBar, 14, true);
-        animationQueue.add(fadeOutBox, this::onFadeOut);
+        animationQueue.add(fadeOutBox,null, this::onFadeOut);
     }
 
     @Override
