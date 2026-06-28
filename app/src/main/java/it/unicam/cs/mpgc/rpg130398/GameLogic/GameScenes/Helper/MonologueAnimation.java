@@ -8,18 +8,19 @@ public class MonologueAnimation implements Monologue {
     private final RendableText textObject;
     private final float charsPerFrame;
     private final int endPagesWait;
+    private final int endSentenceWait;
 
     private int currentPage = -1;
     private float charIndex = 0;
-    private int pauseCounter = 0;
-    private boolean pageFinished = false;
-    private boolean hasFinished = false;
+    private int timeToWait = 0;
+    private boolean showNext;
 
-    public MonologueAnimation(String[] pages, RendableText textObject, float charsPerFrame, int endPagesWait) {
+    public MonologueAnimation(String[] pages, RendableText textObject, float charsPerFrame, int endPagesWait, int endSentenceWait) {
         this.pages = pages;
         this.textObject = textObject;
         this.charsPerFrame = charsPerFrame;
         this.endPagesWait = endPagesWait;
+        this.endSentenceWait = endSentenceWait;
         textObject.setText("");
         showNext();
     }
@@ -28,48 +29,66 @@ public class MonologueAnimation implements Monologue {
     public void showNext() {
         if (hasFinished()) return;
         currentPage++;
+        if (!hasFinished()) {
+            charIndex = 0;
+            timeToWait = 0;
+            textObject.setText("");
+        }
+    }
+    private void clear() {
         charIndex = 0;
-        pauseCounter = 0;
-        pageFinished = false;
+        timeToWait = 0;
         textObject.setText("");
     }
 
     @Override
     public void update() {
-        if (hasFinished) return;
-        if (pageFinished) {
-            showNext();
+        if (timeToWait != 0) {
+            timeToWait--;
             return;
         }
-
-        String current = pages[currentPage];
-        if (charIndex < current.length()) {
-            charIndex = Math.min(charIndex + charsPerFrame, current.length());
-            textObject.setText(getCurrent());
-        } else {
-            pauseCounter++;
-            if (pauseCounter >= endPagesWait) {
-                pageFinished = true;
-
-                if (currentPage == pages.length-1)
-                    hasFinished = true;
-            }
+        if (showNext) {
+            showNext();
+            showNext = false;
         }
+        if (hasFinished()) return;
+
+        int currentPageSize = pages[currentPage].length();
+        charIndex = Math.min(charIndex + charsPerFrame, currentPageSize);
+        textObject.setText(getCurrent());
+
+        controlPageEnd();
+        controlSentenceEnd();
+    }
+    private void controlPageEnd() {
+        if (hasCurrentItemFinished()) {
+            timeToWait = endPagesWait;
+            showNext = true;
+        }
+    }
+    private void controlSentenceEnd() {
+        if (getCurrent().endsWith("\n") || getCurrent().endsWith("?"))
+            timeToWait = endSentenceWait;
     }
 
     @Override
     public boolean hasCurrentItemFinished() {
-        return pageFinished;
+        if (hasFinished())
+            return true;
+
+        return charIndex == pages[currentPage].length();
     }
 
     @Override
     public boolean hasFinished() {
-        return hasFinished;
+        return currentPage == pages.length;
     }
 
     @Override
     public String getCurrent() {
-        if (hasFinished) return null;
+        if (hasFinished())
+            return null;
+
         return pages[currentPage].substring(0, (int)charIndex);
     }
 }

@@ -74,7 +74,7 @@ class StartMonologAnimation implements Animation {
 
         Animation fadeInBox = new FadeAnimation(blackBar, 10, false);
         animationQueue.add(fadeInBox, this::onTextStart);
-        Animation monologue = new MonologueAnimation(INTRO, textBox, 1f, 60);
+        Animation monologue = new MonologueAnimation(INTRO, textBox, 1f, 60, 10);
         animationQueue.add(monologue);
         Animation fadeOutBox = new FadeAnimation(blackBar, 14, true);
         animationQueue.add(fadeOutBox,null, this::onFadeOut);
@@ -220,7 +220,7 @@ class KilledAnimation implements Animation {
         textBox.setColor(Color.gray);
         textBox.setSize(6);
         graphic.addText(textBox);
-        Monologue gameOverTextAnimation = new MonologueAnimation(new String[]{"Game Over"}, textBox, 0.1f, 0);
+        Monologue gameOverTextAnimation = new MonologueAnimation(new String[]{"Game Over"}, textBox, 0.1f, 0, 10);
 
         cutScene.add(killAnimation);
         cutScene.add(fadeInTransition, this::onFadeStart);
@@ -277,7 +277,7 @@ class GuardInterruptionAnimation implements Animation {
 
         Animation fadeInBox = new FadeAnimation(blackBar, 10, false);
         animationQueue.add(fadeInBox, this::onTextStart);
-        Animation monologue = new MonologueAnimation(GUARD_LINES, textBox, 1f, 60);
+        Animation monologue = new MonologueAnimation(GUARD_LINES, textBox, 1f, 60, 10);
         animationQueue.add(monologue);
         Animation fadeOutBox = new FadeAnimation(blackBar, 14, true);
         animationQueue.add(fadeOutBox, this::onFadeOutBox);

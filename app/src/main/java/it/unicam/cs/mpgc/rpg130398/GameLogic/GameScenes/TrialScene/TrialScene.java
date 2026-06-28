@@ -117,6 +117,6 @@ public class TrialScene implements GameScenes {
         graphic.addObject(blackScreen);
         Animation fadeInTransition = new FadeAnimation(blackScreen, 34, true);
         cutSceneAnimations.add(fadeInTransition);
-        cutSceneAnimations.add(new MonologueAnimation(THANKS, text, 0.8f, 30));
+        cutSceneAnimations.add(new MonologueAnimation(THANKS, text, 0.8f, 30, 10));
     }
 }

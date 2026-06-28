@@ -52,9 +52,9 @@ public class StartScene implements GameScenes {
 
 
         Animation FadeInTransition = new FadeAnimation(blackScreen, 34, true);
-        Monologue playerMonologueIntro = new MonologueAnimation(INTRO, textBox, 0.4f, 20);
+        Monologue playerMonologueIntro = new MonologueAnimation(INTRO, textBox, 0.4f, 20, 10);
         Animation FadeOutTransition = new FadeAnimation(blackScreen, 25, false);
-        Monologue playerMonologueOutro = new MonologueAnimation(OUTRO, textBox, 0.2f, 20);
+        Monologue playerMonologueOutro = new MonologueAnimation(OUTRO, textBox, 0.2f, 20, 10);
 
         animationQueue = new AnimationQueue();
         animationQueue.add(FadeInTransition);
