@@ -44,7 +44,7 @@ Per capire velocemente la struttura del codice è fortemente consigliato leggere
   * Come aiuto alla scrittura dei dialoghi.
 
 Tutto il codice e stato visionato manualmente.
-un buon 80% del codice è stato scritto manualmente.
+un buon 70% del codice è stato scritto manualmente.
 
 📌 Per una descrizione più dettagliata dell'uso dell'AI, guardare la **[Wiki AI-Usage](https://github.com/1-0Clarko/IlSecondoCaso/wiki/AI-Usage)**.
 
