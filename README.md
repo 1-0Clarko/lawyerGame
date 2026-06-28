@@ -1,9 +1,10 @@
+
 # Il Secondo Caso
 
 In questo gioco entrerai nei panni di un avvocato alle prime armi.
 Sei stato assegnato a un caso di omicidio, la vittima non sembra interessata a collaborare.
 Cosa farai? Riuscirai a scoprire la verità oppure avrai lo stesso destino della vittima?
-
+<img width="1443" height="918" alt="Schermata_20260628_222647" src="https://github.com/user-attachments/assets/2777e50a-9a97-4b38-b8ab-975a7f45c981" />
 ---
 
 ## Come eseguire il progetto 🚀
