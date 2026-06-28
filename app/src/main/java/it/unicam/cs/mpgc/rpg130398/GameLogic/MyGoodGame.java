@@ -2,36 +2,37 @@ package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.InterrogatoryScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.StartScene;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 
-import java.util.HashSet;
-
 public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game {
-    GraphicsManager Graphics;
-    InputManager Input;
-    GameScenes CurrentGameFace;
+    public static float[] FRUSTUM = new float[]{16,9,16};
+
+    GraphicsManager graphics;
+    InputManager input;
+    GameScenes currentGameFace;
 
     public MyGoodGame(GraphicsManager GraphicsManager, InputManager InputManager) {
-        Graphics = GraphicsManager;
-        Input = InputManager;
+        graphics = GraphicsManager;
+        input = InputManager;
 
-        CurrentGameFace = new StartScene(this, Graphics, Input);
+        graphics.setFrustum(FRUSTUM);
+
+        currentGameFace = new StartScene(this, graphics, input);
     }
 
     @Override
     public void updateLogic(long FrameNumber) {
-        if (CurrentGameFace == null)
+        if (currentGameFace == null)
             return;
 
-        CurrentGameFace = CurrentGameFace.update(FrameNumber);
+        currentGameFace = currentGameFace.update(FrameNumber);
     }
     @Override
-    public void render() {Graphics.render();};
+    public void render() {graphics.render();};
     @Override
-    public void resizeWindow(int width, int height) {Graphics.resize(width, height);};
+    public void resizeWindow(int width, int height) {graphics.resize(width, height);};
     @Override
-    public void dispose() {Graphics.dispose();};
+    public void dispose() {graphics.dispose();};
 }

@@ -1,18 +1,21 @@
-package it.unicam.cs.mpgc.rpg130398.Graphics.Interface;
-
-import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
-import it.unicam.cs.mpgc.rpg130398.api.RendableText;
+package it.unicam.cs.mpgc.rpg130398.api;
 
 /**
  * Si occupa di disegnare oggetti 3D che implementano {@link RendableObject}.
  * Oppure testo, oggetti che implementano {@link RendableText}
  *
- * Un oggetto è visibile solo se almeno parte di esso è compresa in: 0 <= pos.x, pos.y <= FRUSTUM.
- * il FRUSTUM viene chiesto nel costruttore, oppure sarà la classe implementatrice a dichiararne uno.
+ * Un oggetto è visibile solo se almeno parte di esso è compresa in: 0 <= (pos.x, pos.y, pos.z) <= FRUSTUM.
+ * il FRUSTUM viene chiesto nel costruttore, oppure sarà la classe Implementatrice a dichiararne uno.
  *
  * Per mostrare un oggetto che implementa {@link RendableObject} o {@link RendableText} in scena, basta aggiungere quell'ogetto utilizzando i rispettivi metodi: {addObject} e {addText}
  */
-public interface GraphicsManager {
+public interface GraphicsManager extends WindowPropriety {
+    /**
+     * Imposta il frustum da utilizzare.
+     * È necessario impostartelo almeno una volta.
+     * È necessario che il frustum sia impostato prima di chiamare metodi come {@link #render()}
+     */
+    void setFrustum(float[] FRUSTUM_To_Use);
     /**
      * Ridisegna la scena corrente.
      */
@@ -56,21 +59,4 @@ public interface GraphicsManager {
      * @return true se il testo è stato rimosso
      */
     boolean removeText(RendableText textObject);
-
-    /**
-     * Restituisce il fattore di scala applicato al contenuto mantenendone le proporzioni.
-     *
-     * Il valore restituito contiene due componenti:
-     * <ul>
-     *     <li>indice 0: scala applicata sull'asse X</li>
-     *     <li>indice 1: scala applicata sull'asse Y</li>
-     * </ul>
-     *
-     * Un valore inferiore a 1 indica che l'asse è stato compresso per
-     * preservare l'aspect ratio del FRUSTUM, mentre un valore pari a 1
-     * indica che non è stata applicata alcuna riduzione su quell'asse.
-     *
-     * @return array contenente i fattori di scala {scaleX, scaleY}
-     */
-    float[] getContentScale();
 }

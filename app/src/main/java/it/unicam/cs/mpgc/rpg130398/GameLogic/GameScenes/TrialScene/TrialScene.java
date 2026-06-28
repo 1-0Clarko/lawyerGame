@@ -8,13 +8,14 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Animation;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -63,13 +64,13 @@ public class TrialScene implements GameScenes {
     /**
      * @param collectedFlags the flags that the player collected in the interrogatory dialog
      */
-    public TrialScene (Game game, GraphicsManager graphic, InputManager input, Set<String> collectedFlags) {
+    public TrialScene (Game game, GraphicsManager graphic, InputManager input, List<String> collectedFlags) {
         this.game = game;
         this.graphic = graphic;
         this.input = input;
 
 
-        dialogueManager = new DialogueWithJudgeManager(graphic, collectedFlags.stream().toList());
+        dialogueManager = new DialogueWithJudgeManager(graphic, collectedFlags);
 
         setupSceneObjects();
         setupPlaceHolderText();

@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.DialogNode;
 
 import java.util.Arrays;
 

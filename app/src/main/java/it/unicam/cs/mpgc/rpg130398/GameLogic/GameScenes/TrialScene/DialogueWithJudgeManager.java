@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.FlagsDisplayUI;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 
 import java.util.List;
 

@@ -1,16 +1,19 @@
-package it.unicam.cs.mpgc.rpg130398.api;
+package it.unicam.cs.mpgc.rpg130398.api.dialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
  * It manages a Conversation between two people,
  * One person makes the questions and the other answere
- * the conversation fallows the roules imposed by a given DialogNode array making a networks of nodes
+ * the conversation fallows the paths imposed by a given DialogNode array and the connections between them
  *
  * The conversation ollways starts on the DialogNode with the id 0
- * The 'current node' rappresent where is the conversation inside the DialogNode array
- * The user can not use the same Choice/Connection more the once. This blocks any loops in the dialog
+ * The CurrentNode rappresent where is the conversation now, inside the DialogNode array,
+ * at the begining the CurrentNode will be the node with id 0.
+ * Is not allower to use the same Choice/Connection more the once. This blocks any loops in the dialog
  */
 public interface Dialog {
     /**
@@ -32,19 +35,18 @@ public interface Dialog {
     boolean makeChoices(DialogNode.Connection connection);
 
     /**
-     * returns the current trust that the person answering has of the person making the questions
-     * @return the trust
-     */
-    int getTrust();
-
-    /**
-     * returns a collection of flags that have been reached in the conversation
-     * @return set of flags collected
-     */
-    Set<String> getOpinionatedFlags();
-    /**
      * returns the node how has the given id
      * @return the found node or null if this id is not present in this dialog
      */
     DialogNode getNodeFromID(int id);
+
+    /**
+     * @return the set of node it has already visited in the conversation
+     * in order of visit (0 is the first)
+     */
+    Set<Integer> getVisitedNodes();
+    /**
+     * @return the list of flags in order of discovery
+     */
+    List<String> getCollectedFlags();
 }

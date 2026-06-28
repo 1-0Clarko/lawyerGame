@@ -1,15 +1,15 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
 
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.Helper.*;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.Dialog.DialogStateTrust;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.TrialScene.TrialScene;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.*;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.GraphicsManager;
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
+import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.*;
 
-import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 
 import static it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.DefendantAnimationsManager.Status.*;
@@ -120,7 +120,7 @@ public class InterrogatoryScene implements GameScenes {
         if (timerStopped) // already killed, nothing left to update here
             return;
 
-        int trust = dialogueManager.dialogLogic.getTrust();
+        float trust = ((DialogStateTrust)dialogueManager.dialogLogic).getTrust();
         if (trust >= 4)
             defendantAnimationManager.setAnimationStatus(TRUSTING);
         else if (trust >= 0)
@@ -202,7 +202,7 @@ public class InterrogatoryScene implements GameScenes {
      * @return the next scene to move to once the interrogatory is over.
      */
     private GameScenes nextScene() {
-        return new TrialScene(game, graphic, input, dialogueManager.dialogLogic.getOpinionatedFlags());
+        return new TrialScene(game, graphic, input, dialogueManager.dialogLogic.getCollectedFlags());
     }
     private void startTheClock() {
         // setup the clock

@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
-import it.unicam.cs.mpgc.rpg130398.Graphics.Interface.ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 import it.unicam.cs.mpgc.rpg130398.api.Transform;

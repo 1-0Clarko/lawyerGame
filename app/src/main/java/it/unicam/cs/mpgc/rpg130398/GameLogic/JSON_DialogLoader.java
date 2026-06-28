@@ -11,40 +11,44 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.TrustRequirement;
-import it.unicam.cs.mpgc.rpg130398.api.ConnectionRequirement;
-import it.unicam.cs.mpgc.rpg130398.api.DialogLoader;
-import it.unicam.cs.mpgc.rpg130398.api.DialogNode;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.ConnectionRequirement;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.Dialog;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.DialogLoader;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.DialogNode;
 
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Loads a DialogNode array from a json file
+ *
+ */
 public class JSON_DialogLoader implements DialogLoader {
 
     private String relativePath;
     private ArrayList<DialogNode> nodes;
+    private Class<? extends Dialog> dialogClass;
+    private Class<? extends DialogNode> nodeClass;
+    // Map:  (abbreviate name used in the data -> corresponding Class)
+    // for example: ("trust", TrustRequirementClass)
+    private Map<String, Class<? extends ConnectionRequirement>> connectionRequirementClasses;
 
-    // Registro tipo -> classe concreta. Aggiungere qui una riga per ogni
-    // nuova implementazione di ConnectionRequirement.
-    // E necessario memorizzare un identificativo di che implementazione di TrustRequirement è memorizzata.
-    // Perche le diverse implementazioni di TrustRequirement hanno attributi diversi, con nomi diversi da memorizzare
-    private static final Map<String, Class<? extends ConnectionRequirement>> REQUIREMENT_TYPES = Map.of(
-            "trust", TrustRequirement.class
-    );
+    // Fields used in the json Header (first element of the array).
+    // used to obtain the concrete classes that the dialog is using
+    private static final String DIALOG_CLASS_FIELD = "DialogClass"; // class used for the dialog
+    private static final String NODE_CLASS_FIELD = "NodeClass"; // class used for the node
+    private static final String CONNECTION_REQUIREMENT_FIELD = "ConnectionRequirmentClass";
+    private static final String CONNECTION_REQUIREMENT_TYPE_FIELD = "type";
+    private static final String CONNECTION_REQUIREMENT_CLASS_FIELD = "className";
 
     public JSON_DialogLoader() {}
 
     public JSON_DialogLoader(String relativePath) {
         setPath(relativePath);
-    }
-
-    public static Gson createGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(ConnectionRequirement.class, new RequirementTypeAdapter())
-                .create();
     }
 
     @Override
@@ -56,14 +60,23 @@ public class JSON_DialogLoader implements DialogLoader {
     public void read() throws java.io.IOException, UnsupportedOperationException {
         nodes = new ArrayList<>();
         String fileContent = Files.readString(Path.of(relativePath));
+        JsonArray jsonArray = JsonParser.parseString(fileContent).getAsJsonArray();
 
-        Gson gson = createGson();
+        readClassHeader(jsonArray.get(0).getAsJsonObject());
 
-        JsonArray nodeJsonArray = JsonParser.parseString(fileContent).getAsJsonArray();
-        for (JsonElement nodeJson : nodeJsonArray) {
-            DialogNode currentNode = gson.fromJson(nodeJson, GenericDialogNode.class);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ConnectionRequirement.class, new RequirementTypeAdapter(connectionRequirementClasses))
+                .create();
+
+        for (int i = 1; i < jsonArray.size(); i++) {
+            DialogNode currentNode = gson.fromJson(jsonArray.get(i), nodeClass);
             nodes.add(currentNode);
         }
+    }
+
+    @Override
+    public Class<? extends Dialog> getDialogClass() {
+        return dialogClass;
     }
 
     @Override
@@ -71,24 +84,52 @@ public class JSON_DialogLoader implements DialogLoader {
         return nodes;
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> Class<? extends T> resolveClass(String className, Class<T> expectedClass) {
+        Class<?> resolvedClass;
+        try {
+            resolvedClass = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new JsonParseException("Unknown class " + className, e);
+        }
+        if (!expectedClass.isAssignableFrom(resolvedClass))
+            throw new JsonParseException("Class " + className + " is not a type of " + expectedClass.getName());
+        return (Class<? extends T>) resolvedClass;
+    }
+    private void readClassHeader(JsonObject header) {
+        dialogClass = resolveClass(header.get(DIALOG_CLASS_FIELD).getAsString(), Dialog.class);
+        nodeClass = resolveClass(header.get(NODE_CLASS_FIELD).getAsString(), DialogNode.class);
+        connectionRequirementClasses = readConnectionRequirementMap(header.getAsJsonArray(CONNECTION_REQUIREMENT_FIELD));
+    }
+
+    private static Map<String, Class<? extends ConnectionRequirement>> readConnectionRequirementMap(JsonArray ConnectionRequirementAssociations) {
+        Map<String, Class<? extends ConnectionRequirement>> result = new HashMap<>();
+        for (JsonElement Association : ConnectionRequirementAssociations) {
+            JsonObject AssociationObject = Association.getAsJsonObject();
+            String type = AssociationObject.get(CONNECTION_REQUIREMENT_TYPE_FIELD).getAsString();
+            String className = AssociationObject.get(CONNECTION_REQUIREMENT_CLASS_FIELD).getAsString();
+            result.put(type, resolveClass(className, ConnectionRequirement.class));
+        }
+        return result;
+    }
     /**
-     * (De)serializes {@link ConnectionRequirement} using the stable "type"
-     * value returned by {@link ConnectionRequirement#getType()} as the JSON
-     * discriminant, mapped to a concrete class via {@link #REQUIREMENT_TYPES}.
-     * <p>
-     * Adding a new ConnectionRequirement kind requires one entry in
-     * REQUIREMENT_TYPES; renaming or moving the implementing class requires
-     * no change at all, since the type string is independent of the class name.
+     * (De)serializes {@link ConnectionRequirement} using the "type" value present on
+     * each requirement object, mapped to a concrete class via a type -> class table
+     * read from the file's header ("ConnectionRequirmentClass").
      */
     private static class RequirementTypeAdapter
             implements JsonSerializer<ConnectionRequirement>, JsonDeserializer<ConnectionRequirement> {
 
-        private static final String TYPE_FIELD = "type";
+        private final Map<String, Class<? extends ConnectionRequirement>> requirementTypes;
+
+        private RequirementTypeAdapter(Map<String, Class<? extends ConnectionRequirement>> requirementTypes) {
+            this.requirementTypes = requirementTypes;
+        }
 
         @Override
         public JsonElement serialize(ConnectionRequirement src, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject jsonObject = context.serialize(src, src.getClass()).getAsJsonObject();
-            jsonObject.addProperty(TYPE_FIELD, src.getType());
+            jsonObject.addProperty(CONNECTION_REQUIREMENT_TYPE_FIELD, src.getType());
             return jsonObject;
         }
 
@@ -96,11 +137,11 @@ public class JSON_DialogLoader implements DialogLoader {
         public ConnectionRequirement deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            if (!jsonObject.has(TYPE_FIELD))
-                throw new JsonParseException("ConnectionRequirement JSON object is missing the \"" + TYPE_FIELD + "\" field: " + json);
+            if (!jsonObject.has(CONNECTION_REQUIREMENT_TYPE_FIELD))
+                throw new JsonParseException("ConnectionRequirement JSON object is missing the \"" + CONNECTION_REQUIREMENT_TYPE_FIELD + "\" field: " + json);
 
-            String type = jsonObject.get(TYPE_FIELD).getAsString();
-            Class<? extends ConnectionRequirement> concreteClass = REQUIREMENT_TYPES.get(type);
+            String type = jsonObject.get(CONNECTION_REQUIREMENT_TYPE_FIELD).getAsString();
+            Class<? extends ConnectionRequirement> concreteClass = requirementTypes.get(type);
             if (concreteClass == null)
                 throw new JsonParseException("Unknown requirement type: " + type);
 
@@ -108,26 +149,46 @@ public class JSON_DialogLoader implements DialogLoader {
         }
     }
 
+
     /**
-     * Prints an example of a correct json to standard output.
-     * It is not formated
-     **/
-    private void printExampleFile() {
-        Gson gson = JSON_DialogLoader.createGson();
+     * Writes a dialog to file in the JSON_DialogLoader format: the first array element
+     * is a header declaring the concrete classes used.
+     * The rest of the elements are DialogNodes and DialogNodes.Connections.
+     *
+     * @param path path of the file to write, relative to the working directory
+     * @param dialogClass the concrete Dialog implementation this file should be loaded with
+     * @param nodeClass the concrete DialogNode implementation used by the nodes
+     * @param connectionRequirementClasses the type -> class mapping for ConnectionRequirement declarations
+     * @param nodes the dialog nodes to write
+     * @throws java.io.IOException if the file cannot be written
+     */
+    public static void write(String path,
+                             Class<? extends Dialog> dialogClass,
+                             Class<? extends DialogNode> nodeClass,
+                             Map<String, Class<? extends ConnectionRequirement>> connectionRequirementClasses,
+                             ArrayList<DialogNode> nodes) throws java.io.IOException {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ConnectionRequirement.class, new RequirementTypeAdapter(connectionRequirementClasses))
+                .create();
 
-        ArrayList<ConnectionRequirement> requirements = new ArrayList<>();
-        requirements.add(new TrustRequirement(0, 5));
+        JsonArray jsonArray = new JsonArray();
 
-        DialogNode.Connection[] connections = {
-                new DialogNode.Connection(1, "Vai al nodoID1, devi avere fiducia tra 0 e 5", requirements, 1),
-                new DialogNode.Connection(2, "Vai al nodoID2", null, -1)
-        };
+        JsonObject header = new JsonObject();
+        header.addProperty(DIALOG_CLASS_FIELD, dialogClass.getName());
+        header.addProperty(NODE_CLASS_FIELD, nodeClass.getName());
+        JsonArray requirementDeclarations = new JsonArray();
+        for (Map.Entry<String, Class<? extends ConnectionRequirement>> entry : connectionRequirementClasses.entrySet()) {
+            JsonObject declaration = new JsonObject();
+            declaration.addProperty(CONNECTION_REQUIREMENT_TYPE_FIELD, entry.getKey());
+            declaration.addProperty(CONNECTION_REQUIREMENT_CLASS_FIELD, entry.getValue().getName());
+            requirementDeclarations.add(declaration);
+        }
+        header.add(CONNECTION_REQUIREMENT_FIELD, requirementDeclarations);
+        jsonArray.add(header);
 
-        ArrayList<DialogNode> nodes = new ArrayList<>();
-        nodes.add(new GenericDialogNode(0, "Testo nodo id0", "Flag nodo id0", connections));
-        nodes.add(new GenericDialogNode(1, "Testo nodo id1", "Flag nodo id1", null));
-        nodes.add(new GenericDialogNode(2, "Testo nodo id2", null, null));
+        for (DialogNode node : nodes)
+            jsonArray.add(gson.toJsonTree(node, nodeClass));
 
-        System.out.println(gson.toJson(nodes));
+        Files.writeString(Path.of(path), gson.toJson(jsonArray));
     }
 }

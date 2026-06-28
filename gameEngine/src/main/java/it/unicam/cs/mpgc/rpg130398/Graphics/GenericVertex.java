@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.Arrays;
 
 public class GenericVertex implements Vertex {
-    private float[] position = new float[3];
+    private float[] position;
     private Color color;
 
     public GenericVertex(float x, float y, float z, Color color) {

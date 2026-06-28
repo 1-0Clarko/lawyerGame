@@ -10,7 +10,7 @@ import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
  *
  * The dirty flag signals the graphics engine that the object has changed and needs to be re-rendered.
  */
-public interface RendableObject extends Transform {
+public interface RendableObject extends Transform, Dirtable {
     /**
      * Restituisce i vertici LocalSpace(Relative all'oggetto).
      * @return array di vertici
@@ -38,14 +38,6 @@ public interface RendableObject extends Transform {
      * Non è garantito che questa preferenza venga applicata
      */
     void SetPreferdShader (ShadersSource ShadersSource);
-    /**
-     * @return true se qualcosa è cambiato nell'oggetto vertici ecc
-     */
-    boolean isDirty();
-    /**
-     * Chiamato dal graphics engine dopo aver letto isDirty
-     */
-    void clearDirty();
 
     /**
      * Returns a float array of 6 values.

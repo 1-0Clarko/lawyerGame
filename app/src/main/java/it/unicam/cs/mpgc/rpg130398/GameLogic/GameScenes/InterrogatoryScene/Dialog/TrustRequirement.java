@@ -1,10 +1,11 @@
-package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene;
+package it.unicam.cs.mpgc.rpg130398.GameLogic.GameScenes.InterrogatoryScene.Dialog;
 
-import it.unicam.cs.mpgc.rpg130398.api.DialogState;
-import it.unicam.cs.mpgc.rpg130398.api.ConnectionRequirement;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.Dialog;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.DialogState;
+import it.unicam.cs.mpgc.rpg130398.api.dialog.ConnectionRequirement;
 
 /**
- * Requirement satisfied when the current trust value lies within
+ * Requirement satisfied when the current trust value of the conversation is within
  * [minTrust, maxTrust] (inclusive on both ends).
  */
 public class TrustRequirement implements ConnectionRequirement {
@@ -19,9 +20,13 @@ public class TrustRequirement implements ConnectionRequirement {
     }
 
     @Override
-    public boolean isSatisfied(DialogState state) {
-        int trust = state.getTrust();
-        return trust >= minTrust && trust <= maxTrust;
+    public boolean isSatisfiedBy(Dialog dialog) {
+        if (dialog instanceof DialogStateTrust TrustState) {
+            return (TrustState.getTrust() >= minTrust && TrustState.getTrust() <= maxTrust);
+        }
+
+        DialogStateNotPresent();
+        return false;
     }
 
     @Override

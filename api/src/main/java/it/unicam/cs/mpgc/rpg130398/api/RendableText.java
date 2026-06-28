@@ -5,11 +5,11 @@ import java.awt.*;
 /**
  * Represents a text object that can be rendered in the game world.
  * Has a x, y, z position but z is not used.
- * Holds the text content, optional font path, size and position.
+ * Holds the text content, optional font path (default font if none is given), size and position.
  *
  * The dirty flag signals the graphics engine that the object has changed and needs to be re-rendered.
  */
-public interface RendableText extends Positionable {
+public interface RendableText extends Positionable, Dirtable {
 
     /**
      * @return the text to display
@@ -42,15 +42,6 @@ public interface RendableText extends Positionable {
      */
     void setSize(float size);
 
-    /**
-     * @return true if the text object has changed and needs to be re-rendered
-     */
-    boolean isDirty();
-
-    /**
-     * Called by the graphics engine after reading isDirty.
-     */
-    void clearDirty();
     /**
      * @return the color of the text
      */

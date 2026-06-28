@@ -6,7 +6,6 @@ package it.unicam.cs.mpgc.rpg130398.api;
  *
  */
 public interface InputManager {
-
     /**
      * @return true if the user is left-clicking with the mouse or tapping
      */
