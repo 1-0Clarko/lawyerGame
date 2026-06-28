@@ -20,4 +20,4 @@
 ## Module structure
 - `api/` — shared interfaces, no external dependencies
 - `gameEngine/` — rendering Implementations, depends on `api`
-- `app/` — game logic Implementations, depends on `api` and `gameEngine` if the game has a graphic
+- `app/` — game logic Implementations, depends on `api` and `gameEngine`
