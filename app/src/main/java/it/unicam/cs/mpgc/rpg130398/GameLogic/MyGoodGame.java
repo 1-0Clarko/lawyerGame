@@ -7,6 +7,8 @@ import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 
 public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game {
+    public static float[] FRUSTUM = new float[]{16,9,16};
+
     GraphicsManager graphics;
     InputManager input;
     GameScenes currentGameFace;
@@ -14,6 +16,8 @@ public final class MyGoodGame implements it.unicam.cs.mpgc.rpg130398.GameLogic.I
     public MyGoodGame(GraphicsManager GraphicsManager, InputManager InputManager) {
         graphics = GraphicsManager;
         input = InputManager;
+
+        graphics.setFrustum(FRUSTUM);
 
         currentGameFace = new StartScene(this, graphics, input);
     }

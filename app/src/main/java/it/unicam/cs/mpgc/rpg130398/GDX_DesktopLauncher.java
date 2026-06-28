@@ -15,7 +15,6 @@ import it.unicam.cs.mpgc.rpg130398.api.InputManager;
  */
 public class GDX_DesktopLauncher extends ApplicationAdapter {
     private static Game Game;
-    public static float[] FRUSTUM = new float[]{16,9,16};
     final static int FPSMAX = 30;
     final static long LOGIC_UPDATE_INTERVAL = 1000 / (FPSMAX);
 
@@ -33,8 +32,8 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
 
         @Override
         public void create() {
-            GraphicsManager GraphicsManager = new GDX_GraphicsManager(FRUSTUM);
-            InputManager InputManager = new GDX_InputManager(FRUSTUM, GraphicsManager);
+            GraphicsManager GraphicsManager = new GDX_GraphicsManager();
+            InputManager InputManager = new GDX_InputManager(GraphicsManager);
 
             Game = new MyGoodGame(GraphicsManager, InputManager);
         }

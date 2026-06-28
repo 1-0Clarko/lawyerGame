@@ -8,10 +8,10 @@ import java.util.Set;
 /**
  * It manages a Conversation between two people,
  * One person makes the questions and the other answere
- * the conversation fallows the paths imposed by a given DialogNode array and the connections between nodes
+ * the conversation fallows the paths imposed by a given DialogNode array and the connections between them
  *
  * The conversation ollways starts on the DialogNode with the id 0
- * The CurrentNode rappresent where is the conversation inside the DialogNode array,
+ * The CurrentNode rappresent where is the conversation now, inside the DialogNode array,
  * at the begining the CurrentNode will be the node with id 0.
  * Is not allower to use the same Choice/Connection more the once. This blocks any loops in the dialog
  */
