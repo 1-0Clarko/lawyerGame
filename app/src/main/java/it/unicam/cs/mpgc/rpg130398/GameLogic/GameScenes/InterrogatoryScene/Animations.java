@@ -8,7 +8,7 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Monologue;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Sequence;
 import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
-import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 

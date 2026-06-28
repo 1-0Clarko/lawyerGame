@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.Generic3DObject;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.GenericTextObject;
 import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
-import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 

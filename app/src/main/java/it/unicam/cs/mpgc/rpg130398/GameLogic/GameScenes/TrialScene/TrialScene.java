@@ -10,13 +10,12 @@ import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.Game;
 import it.unicam.cs.mpgc.rpg130398.GameLogic.Interface.GameScenes;
 import it.unicam.cs.mpgc.rpg130398.api.GraphicsManager;
 import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
-import it.unicam.cs.mpgc.rpg130398.Graphics.PLY_ModelLoader;
+import it.unicam.cs.mpgc.rpg130398.GameLogic.PLY_ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.InputManager;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * (Incomplete/Place-holder)

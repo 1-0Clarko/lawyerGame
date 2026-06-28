@@ -1,5 +1,6 @@
-package it.unicam.cs.mpgc.rpg130398.Graphics;
+package it.unicam.cs.mpgc.rpg130398.GameLogic;
 
+import it.unicam.cs.mpgc.rpg130398.Graphics.GenericVertex;
 import it.unicam.cs.mpgc.rpg130398.api.ModelLoader;
 import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 
