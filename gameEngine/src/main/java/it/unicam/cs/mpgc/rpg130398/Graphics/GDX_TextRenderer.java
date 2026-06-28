@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import it.unicam.cs.mpgc.rpg130398.api.RendableText;
 
-public class GDX_TextRenderer {
+class GDX_TextRenderer {
     RendableText Object;
     SpriteBatch batch;
     BitmapFont font;
@@ -24,12 +24,12 @@ public class GDX_TextRenderer {
         resize((int) ScreenSize.x, (int) ScreenSize.y);
     }
 
-    public void resize(int width, int height) {
+    protected void resize(int width, int height) {
         screenWidth = width;
         screenHeight = height;
     }
 
-    public void render(Matrix4 screen_projection) {
+    protected void render(Matrix4 screen_projection) {
         if (Object.isDirty()) {
             setupFont();
             Object.clearDirty();
@@ -44,12 +44,12 @@ public class GDX_TextRenderer {
         batch.end();
     }
 
-    public void dispose() {
+    protected void dispose() {
         batch.dispose();
         font.dispose();
     }
 
-    public RendableText getObject() { return Object; }
+    protected RendableText getObject() { return Object; }
 
     private void setupFont() {
         if (font != null) font.dispose();

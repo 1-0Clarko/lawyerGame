@@ -11,7 +11,7 @@ import it.unicam.cs.mpgc.rpg130398.api.ShadersSource;
 import it.unicam.cs.mpgc.rpg130398.api.Vertex;
 import it.unicam.cs.mpgc.rpg130398.api.RendableObject;
 
-public class GDX_MeshRenderer {
+class GDX_MeshRenderer {
     RendableObject object;
     Mesh mesh;
     ShaderProgram defaultShader;
@@ -26,7 +26,7 @@ public class GDX_MeshRenderer {
         recalculateMash();
         setupShader();
     }
-    public void render(Matrix4 screen_projection) {
+    protected void render(Matrix4 screen_projection) {
         if (object.isDirty()) {
             if(!recalculateMash())
                 return;
@@ -40,10 +40,10 @@ public class GDX_MeshRenderer {
         sendTimeDataToTheShader();
         mesh.render(inUseShader, GL20.GL_TRIANGLES, 0, object.getTriangleTriplets().length);
     }
-    public void dispose() {
+    protected void dispose() {
         mesh.dispose();
     }
-    public RendableObject getObject() { return object; }
+    protected RendableObject getObject() { return object; }
 
     /**
      *

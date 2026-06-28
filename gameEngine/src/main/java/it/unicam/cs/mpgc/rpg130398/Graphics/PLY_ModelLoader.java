@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-/* example file .ply:
+/* example supported file .ply:
 ply
 format ascii 1.0
 comment Created in Blender version 5.1.0
