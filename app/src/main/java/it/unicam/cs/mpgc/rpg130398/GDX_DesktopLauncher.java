@@ -32,7 +32,7 @@ public class GDX_DesktopLauncher extends ApplicationAdapter {
 
         @Override
         public void create() {
-            GraphicsManager GraphicsManager = new GDX_GraphicsManager();
+            GraphicsManager GraphicsManager = new GDX_GraphicsManager("Il secondo caso");
             InputManager InputManager = new GDX_InputManager(GraphicsManager);
 
             Game = new MyGoodGame(GraphicsManager, InputManager);

@@ -26,7 +26,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
     Matrix4 calculated_screen_projection;
     Vector2 contentScale;
 
-    public GDX_GraphicsManager() {
+    public GDX_GraphicsManager(String windowTitle) {
         // Enable depth testing to correctly render overlapping objects
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
         Gdx.gl.glDepthFunc(GL20.GL_LESS);
@@ -42,6 +42,7 @@ public class GDX_GraphicsManager implements GraphicsManager {
             throw new RuntimeException("Shader error: " + DefaultShader.getLog());
 
         Gdx.graphics.setWindowedMode(START_WIDTH, START_HEIGHT);
+        Gdx.graphics.setTitle(windowTitle);
     }
 
     @Override
